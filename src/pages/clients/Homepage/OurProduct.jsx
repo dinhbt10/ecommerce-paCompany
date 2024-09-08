@@ -6,7 +6,7 @@ const data = Array.from({ length: 8 }).fill({
 
 const OurProduct = () => {
   return (
-    <div className="mt-10">
+    <div className="mt-5 px-20">
       <span className="flex justify-center text-[#3A3A3A] font-bold text-3xl mb-5">
         Sản phẩm của chúng tôi
       </span>

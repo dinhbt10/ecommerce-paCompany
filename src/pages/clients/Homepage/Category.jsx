@@ -18,22 +18,21 @@ const Category = () => {
     <>
       <div className="flex w-full my-5 items-center justify-center flex-col">
         <span className="font-bold text-[30px]">Danh mục</span>
-        <span className="text-[#666666] text-sm">
+        <span className="text-[#666666] text-[18px]">
           Những loại sách phổ biến nhất
         </span>
       </div>
-      <div className="flex flex-row w-full justify-center gap-10">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2 mx-16 px-20">
         {category.map((item, index) => (
-          <div
-            key={index}
-            className="h-[400px] lg:w-[300px] md:w-[100%] flex justify-center flex-col gap-3"
-          >
-            <img
-              src={item.url}
-              alt={item.title}
-              className="h-full object-fill w-full rounded-lg"
-            />
-            <span className="text-center text-[#333333] font-semibold">
+          <div className="col-span-1" key={index}>
+            <div className="h-[400px] flex justify-center flex-col overflow-hidden">
+              <img
+                src={item.url}
+                alt={item.title}
+                className="h-full object-cover w-full rounded-lg transform transition duration-200 hover:scale-110"
+              />
+            </div>
+            <span className="block text-center text-[#333333] font-semibold mt-1">
               {item.title}
             </span>
           </div>

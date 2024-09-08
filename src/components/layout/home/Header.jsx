@@ -6,7 +6,7 @@ import {
   NavbarToggle,
   Button,
 } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const menuItems = [
   {
@@ -15,12 +15,7 @@ const menuItems = [
   },
   {
     title: "Cửa hàng",
-    path: "/shop",
-    items: [
-      { title: "Services 1", href: "#" },
-      { title: "Services 2", href: "#" },
-      { title: "Services 3", href: "#" },
-    ],
+    path: "/product",
   },
   {
     title: "Về chúng tôi",
@@ -33,10 +28,9 @@ const menuItems = [
 ];
 
 function Header() {
-  const location = useLocation();
   return (
     <Navbar fluid rounded>
-      <NavbarBrand as={Link} href="https://flowbite-react.com">
+      <NavbarBrand as={Link} to="/">
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           Pa Company
         </span>
@@ -45,9 +39,9 @@ function Header() {
       <NavbarCollapse>
         {menuItems.map((item, index) => (
           <NavbarLink
-            as={Link}
-            href={item.path}
-            active={location.pathname.includes(item.path)}
+            as={NavLink}
+            to={item.path}
+            className={({ isActive }) => (isActive ? "active" : "")}
             key={index}
           >
             {item.title}
