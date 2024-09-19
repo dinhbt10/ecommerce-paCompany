@@ -2,11 +2,10 @@ import {
   Navbar,
   NavbarBrand,
   NavbarCollapse,
-  NavbarLink,
   NavbarToggle,
   Button,
 } from "flowbite-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
@@ -28,6 +27,7 @@ const menuItems = [
 ];
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <Navbar fluid rounded>
       <NavbarBrand as={Link} to="/">
@@ -38,19 +38,25 @@ function Header() {
       <NavbarToggle />
       <NavbarCollapse>
         {menuItems.map((item, index) => (
-          <NavbarLink
-            as={NavLink}
+          <NavLink
             to={item.path}
-            className={({ isActive }) => (isActive ? "active" : "")}
+            className={({ isActive }) =>
+              isActive ? "active" : "hover:text-[#816f5a]"
+            }
             key={index}
           >
             {item.title}
-          </NavbarLink>
+          </NavLink>
         ))}
       </NavbarCollapse>
       <NavbarCollapse>
         <div className="flex flex-wrap gap-2">
-          <Button>Login</Button>
+          <Button
+            className="bg-[#F9F1E7] hover:!bg-[#F9F1E7] text-black"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Button>
           <Button color="gray">Register</Button>
         </div>
       </NavbarCollapse>

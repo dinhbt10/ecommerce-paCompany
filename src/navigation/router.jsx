@@ -5,6 +5,7 @@ import Orders from "../pages/admins/Orders/Orders";
 import Products from "../pages/admins/Products/Product";
 import HomePage from "../pages/clients/Homepage/Homepage";
 import Product from "../pages/clients/Product/Product";
+import ProductDetail from "../pages/clients/Product/ProductDetail";
 
 export const router = [
   {
@@ -14,6 +15,10 @@ export const router = [
   {
     path: "/product",
     component: <Product />,
+  },
+  {
+    path: "/product/:id",
+    component: <ProductDetail />,
   },
 ];
 

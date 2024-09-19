@@ -4,7 +4,7 @@
 
 .active {
   font-weight: bold;
-  color: rgb(14 116 144);
+  color: #ecd3b5;
 }
 
 @layer base {
