@@ -7,6 +7,8 @@ import {
   HiViewBoards,
 } from "react-icons/hi";
 import { FaUser } from "react-icons/fa";
+import { SiLibreofficewriter } from "react-icons/si";
+import { FaWarehouse } from "react-icons/fa";
 
 const router = [
   {
@@ -23,6 +25,16 @@ const router = [
     path: "/admin/products",
     title: "Sản phẩm",
     icon: HiShoppingBag,
+  },
+  {
+    path: "/admin/publisher",
+    title: "Nhà xuất bản",
+    icon: SiLibreofficewriter,
+  },
+  {
+    path: "/admin/distributor",
+    title: "Nhà phân phối",
+    icon: FaWarehouse,
   },
   {
     path: "/admin/customers",
@@ -43,15 +55,33 @@ const router = [
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
-
+  const currentPathKey = location.pathname.split("/admin/")[1]?.split("/")[0];
   return (
     <div className="flex">
-      <Sidebar className="h-[100vh] bg-[#FAFAFA]">
-        <Sidebar.Logo href="/admin">Pa Company</Sidebar.Logo>
+      <Sidebar className="h-[100vh]">
+        <Sidebar.Logo href="/admin">BOOKSTORE</Sidebar.Logo>
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             {router.map((route, index) => {
-              const active = location.pathname === route.path;
+              const active = route.path.includes(currentPathKey);
+              if (route.path === "/admin") {
+                const isActive = location.pathname === "/admin";
+                return (
+                  <Sidebar.Item
+                    key={index}
+                    as={Link}
+                    to={route.path}
+                    icon={route.icon}
+                    className={
+                      isActive
+                        ? "text-slate-600 font-bold bg-slate-300 hover:text-slate-600 hover:bg-slate-300"
+                        : ""
+                    }
+                  >
+                    {route.title}
+                  </Sidebar.Item>
+                );
+              }
               return (
                 <Sidebar.Item
                   key={index}
@@ -71,7 +101,7 @@ const AdminLayout = ({ children }) => {
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
-      <div className="p-6 w-full h-[100vh] overflow-auto bg-[#E7E7E3]">
+      <div className="p-6 w-full h-[100vh] overflow-auto bg-[#F5F6FA]">
         <p>{children}</p>
       </div>
     </div>

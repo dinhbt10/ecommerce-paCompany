@@ -2,13 +2,13 @@ import { Button, Modal } from "flowbite-react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 
-export function ModalComponents({
+export function ModalEdit({
   openModal,
   setOpenModal,
-  title,
+  item,
   handleAddCategory,
 }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(item?.nameCategory || "");
   const [file, setFile] = useState(null);
 
   const handleSubmit = () => {
@@ -24,7 +24,7 @@ export function ModalComponents({
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>{title}</Modal.Header>
+        <Modal.Header>Chỉnh sửa danh mục</Modal.Header>
         <Modal.Body>
           <div className="mb-3">
             <div className="mb-2 block">
