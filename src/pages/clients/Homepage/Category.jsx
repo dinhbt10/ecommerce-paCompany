@@ -29,7 +29,7 @@ const Category = () => {
                   <img
                     src={item.imageUrl}
                     alt={item.nameCategory}
-                    className="h-full object-cover w-full rounded-lg transform transition duration-200 hover:scale-110"
+                    className="h-full object-cover w-full rounded-lg transform transition duration-200 hover:scale-110 z-50"
                   />
                 </div>
                 <span className="block text-center text-[#333333] font-semibold mt-1">

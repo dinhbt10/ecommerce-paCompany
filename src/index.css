@@ -2,17 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.active {
-  font-weight: bold;
-  color: #ecd3b5;
-}
-
 input {
-  outline: none;
+  border: 1px solid #ccc;
 }
 
-@layer base {
-  html {
-    font-family: "Poppins", sans-serif !important;
-  }
+input:focus {
+  outline: none;
+  box-shadow: none;
 }

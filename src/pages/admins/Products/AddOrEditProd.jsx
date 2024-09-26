@@ -49,8 +49,8 @@ export function AddOrEditProduct() {
   };
 
   const handleRemoveImage = (id) => {
-    setImageUrls((pre) => pre.filter((_, index) => index !== id));
-    setProduct((pre) => pre.images.filter((_, index) => index !== id));
+    setImageUrls((pre) => pre?.filter((_, index) => index !== id));
+    setProduct((pre) => pre.images?.filter((_, index) => index !== id));
   };
 
   const getCategoryApi = async () => {
