@@ -13,7 +13,7 @@ function Header() {
   const navigate = useNavigate();
 
   const getProductList = async (value) => {
-    const res = await getBook(value);
+    const res = await getBook({ nameBook: value });
 
     if (res.data.data.books && res.data.data.books.length > 0) {
       setBooks(res.data.data.books);
@@ -39,14 +39,30 @@ function Header() {
     }
   };
 
+  const handleOnkyDown = (e) => {
+    if (e.key === "Delete" || e.key === "Backspace") {
+      if (value && value.length > 1) {
+        getProductList(value);
+      } else {
+        setBooks([]);
+      }
+    }
+  };
+
   useEffect(() => {
     if (value && isFocused) {
       getProductList(value);
     }
-    if (!value) {
-      getProductList("");
-    }
   }, [value, isFocused]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOnkyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOnkyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -58,18 +74,23 @@ function Header() {
 
   return (
     <div className="max-w-[1100px] w-full mx-auto">
-      <div className="flex justify-end items-center mt-3 text-white text-sm gap-3">
-        <div
-          className="flex justify-start items-center cursor-pointer gap-1"
-          onClick={() => navigate("/register")}
-        >
-          Tạo tài khoản
+      <div className="flex justify-between items-center mb-2">
+        <div className="text-white text-sm">
+          Chào mừng bạn đến với BookStore
         </div>
-        <div
-          className="flex justify-start items-center cursor-pointer gap-1"
-          onClick={() => navigate("/login")}
-        >
-          Đăng nhập
+        <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
+          <div
+            className="flex justify-start items-center cursor-pointer gap-1"
+            onClick={() => navigate("/register")}
+          >
+            Tạo tài khoản
+          </div>
+          <div
+            className="flex justify-start items-center cursor-pointer gap-1"
+            onClick={() => navigate("/login")}
+          >
+            Đăng nhập
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-6 pb-8 pt-3 gap-3">
@@ -83,6 +104,7 @@ function Header() {
           <form action="">
             <div className="flex items-center relative z-[100000]">
               <input
+                onKeyDown={handleOnkyDown}
                 ref={inputRef}
                 onFocus={handleFocus}
                 value={value}

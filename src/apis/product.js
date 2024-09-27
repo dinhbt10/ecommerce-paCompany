@@ -6,8 +6,10 @@ export const createBook = (formData) => {
   });
 };
 
-export const getBook = (nameBook) => {
-  return instance.get(`/book/list?nameBook=${nameBook || ""}`);
+export const getBook = (params) => {
+  return instance.get(`/book/list`, {
+    params,
+  });
 };
 
 export const getDetailBook = (id) => {

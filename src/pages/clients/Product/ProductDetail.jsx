@@ -29,8 +29,8 @@ const ProductDetail = () => {
   }, [id]);
 
   return (
-    <div className="max-w-[1200px] mx-auto mt-6">
-      <div className="h-8 flex items-center gap-3 justify-start bg-white mb-4 px-2">
+    <div className="max-w-[1100px] mx-auto mt-6">
+      <div className="h-10 flex items-center gap-3 justify-start bg-white mb-4 px-2 border">
         <Link className="text-sm text-gray-700" to="/">
           Trang chủ
         </Link>
@@ -182,7 +182,7 @@ const ProductDetail = () => {
         </div>
         <div className="col-span-3">
           <div className="bg-white border border-gray-200">
-            <div className="flex items-center gap-2 bg-[#2c55a5] px-4 py-2">
+            <div className="flex items-center gap-2 bg-[#cd5f5f] px-4 py-2">
               <img
                 src="https://newshop.vn/public/assets/frontend/img/shipping.png"
                 alt="abc"

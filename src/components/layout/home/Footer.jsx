@@ -4,7 +4,7 @@ const Footer = () => {
   const navigate = useNavigate();
   return (
     <div className="bg-white border-t">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-[1100px] mx-auto">
         <div className="grid grid-cols-3 py-10 border-b">
           <div className="col-span-1">
             <div className="text-[20px] font-semibold text-black mb-3">

@@ -12,7 +12,7 @@ const OurProduct = () => {
     getProductList();
   }, []);
   return (
-    <div className="mt-5 max-w-[1236px] mx-auto">
+    <div className="mt-5 max-w-[1100px] mx-auto">
       <span className="flex justify-center text-[#3A3A3A] font-bold text-3xl mb-5">
         Sản phẩm của chúng tôi
       </span>
