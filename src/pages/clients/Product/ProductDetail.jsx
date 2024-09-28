@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { getDetailBook } from "../../../apis/product";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [book, setBook] = useState({});
   const [urlBook, setUrlBook] = useState();
+  const navigate = useNavigate();
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
@@ -86,7 +87,12 @@ const ProductDetail = () => {
             </span>
             <div className="flex items-center gap-[45px]">
               <div className="text-[15px] text-[#757575]">Danh mục:</div>
-              <div className="text-[15px] text-[#2a87cd] cursor-pointer">
+              <div
+                className="text-[15px] text-[#2a87cd] cursor-pointer"
+                onClick={() =>
+                  navigate(`/product?categoryName=${book.categoryName}`)
+                }
+              >
                 {book.categoryName}
               </div>
             </div>

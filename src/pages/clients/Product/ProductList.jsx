@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getBook } from "../../../apis/product";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -9,24 +9,6 @@ import { TbCategory } from "react-icons/tb";
 import instance from "../../../utils/http";
 import { GoInbox } from "react-icons/go";
 import useQueryParams from "../../../hook/useQueryParam";
-
-function filterDataBySearchParams(data, searchParams) {
-  // console.log(searchParams);
-  // console.log(data);
-
-  return data.filter((item) => {
-    // Lọc qua tất cả các key-value trong searchParams
-    const ok = Object.entries(searchParams).every(([key, value]) => {
-      console.log(key);
-      console.log(value);
-      // Kiểm tra xem key có tồn tại trong item và khớp với giá trị trong searchParams
-      return key in item && value;
-    });
-    console.log(ok);
-
-    return ok;
-  });
-}
 
 const ProductList = () => {
   const [books, setBooks] = useState([]);
@@ -53,7 +35,18 @@ const ProductList = () => {
     });
   };
 
-  const filteredData = filterDataBySearchParams(books, queryParams);
+  const filteredData = useMemo(() => {
+    return books.filter((item) => {
+      // Lặp qua tất cả các key-value trong searchParams
+      return Object.entries(queryParams).every(([key, value]) => {
+        // Kiểm tra xem key có tồn tại trong item và giá trị khớp với searchParams
+        return (
+          key in item &&
+          item[key].toString().toLowerCase() === value.toLowerCase()
+        );
+      });
+    });
+  }, [books, queryParams]);
   console.log(filteredData);
 
   useEffect(() => {
@@ -98,14 +91,14 @@ const ProductList = () => {
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => {
                       const newSearchParams = new URLSearchParams(searchParams);
-                      newSearchParams.delete("nameCategory");
+                      newSearchParams.delete("categoryName");
                       setSearchParams(newSearchParams);
                     }}
                   >
                     <Radio
                       className="cursor-pointer"
                       value={""}
-                      checked={!queryParams.nameCategory}
+                      checked={!queryParams.categoryName}
                     />
                     <Label className="cursor-pointer">Tất cả</Label>
                   </div>
@@ -117,14 +110,14 @@ const ProductList = () => {
                     onClick={() =>
                       setSearchParams({
                         ...queryParams,
-                        nameCategory: item.nameCategory,
+                        categoryName: item.nameCategory,
                       })
                     }
                   >
                     <Radio
                       className="cursor-pointer"
                       value={item.nameCategory}
-                      checked={item.nameCategory === queryParams.nameCategory}
+                      checked={item.nameCategory === queryParams.categoryName}
                     />
                     <Label className="text-[#475156] cursor-pointer">
                       {item.nameCategory}
@@ -151,14 +144,14 @@ const ProductList = () => {
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => {
                       const newSearchParams = new URLSearchParams(searchParams);
-                      newSearchParams.delete("namePublisher");
+                      newSearchParams.delete("publisherName");
                       setSearchParams(newSearchParams);
                     }}
                   >
                     <Radio
                       className="cursor-pointer"
                       value={""}
-                      checked={!queryParams.namePublisher}
+                      checked={!queryParams.publisherName}
                     />
                     <Label className="cursor-pointer">Tất cả</Label>
                   </div>
@@ -170,14 +163,14 @@ const ProductList = () => {
                     onClick={() =>
                       setSearchParams({
                         ...queryParams,
-                        namePublisher: item.namePublisher,
+                        publisherName: item.namePublisher,
                       })
                     }
                   >
                     <Radio
                       className="cursor-pointer"
                       value={item.namePublisher}
-                      checked={item.namePublisher === queryParams.namePublisher}
+                      checked={item.namePublisher === queryParams.publisherName}
                     />
                     <Label className="text-[#475156] cursor-pointer">
                       {item.namePublisher}
@@ -204,13 +197,13 @@ const ProductList = () => {
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => {
                       const newSearchParams = new URLSearchParams(searchParams);
-                      newSearchParams.delete("nameDistributor");
+                      newSearchParams.delete("distributorName");
                       setSearchParams(newSearchParams);
                     }}
                   >
                     <Radio
                       className="cursor-pointer"
-                      checked={!queryParams.nameDistributor}
+                      checked={!queryParams.distributorName}
                     />
                     <Label className="cursor-pointer">Tất cả</Label>
                   </div>
@@ -222,7 +215,7 @@ const ProductList = () => {
                     onClick={() =>
                       setSearchParams({
                         ...queryParams,
-                        nameDistributor: item.nameDistributor,
+                        distributorName: item.nameDistributor,
                       })
                     }
                   >
@@ -230,7 +223,7 @@ const ProductList = () => {
                       className="cursor-pointer"
                       value={item.nameDistributor}
                       checked={
-                        item.nameDistributor === queryParams.nameDistributor
+                        item.nameDistributor === queryParams.distributorName
                       }
                     />
                     <Label className="text-[#475156] cursor-pointer">

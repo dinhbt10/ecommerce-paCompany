@@ -24,7 +24,7 @@ const OurProduct = () => {
         {books.map((item, index) => (
           <div className="col-span-1 border p-3" key={index}>
             <div
-              className="h-[301px] flex justify-center flex-col gap-1"
+              className="h-[301px] flex justify-center flex-col gap-1 cursor-pointer"
               onClick={() => navigate(`/product/${item.idBook}`)}
             >
               <img

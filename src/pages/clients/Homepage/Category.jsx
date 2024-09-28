@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { getCategory } from "../../../apis/category";
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const [category, setCategory] = useState([]);
+  const navigate = useNavigate();
   const getCategoryApi = async () => {
     const res = await getCategory();
     setCategory(res.data.data.categories);
@@ -11,6 +13,7 @@ const Category = () => {
   useEffect(() => {
     getCategoryApi();
   }, []);
+
   return (
     <>
       <div className="flex w-full my-5 items-center justify-center flex-col">
@@ -24,7 +27,13 @@ const Category = () => {
           {category.map((item, index) => {
             if (index > 2) return;
             return (
-              <div className="col-span-1" key={index}>
+              <div
+                className="col-span-1 cursor-pointer"
+                key={index}
+                onClick={() =>
+                  navigate(`/product?categoryName=${item.nameCategory}`)
+                }
+              >
                 <div className="h-[250px] flex justify-center flex-col overflow-hidden">
                   <img
                     src={item.imageUrl}
