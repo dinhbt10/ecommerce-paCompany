@@ -14,3 +14,16 @@ export function getDateIfWithin7Days(isoString) {
     return false;
   }
 }
+
+export const saveToLocalStorage = (userinfo) => {
+  localStorage.setItem("userinfo", JSON.stringify(userinfo));
+};
+
+export const getUserInfoLocalStorage = () => {
+  const userData = localStorage.getItem("userinfo");
+  return JSON.parse(userData);
+};
+
+export const clearLocalStorage = () => {
+  localStorage.clear();
+};

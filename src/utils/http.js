@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const instance = axios.create({
   baseURL: "http://localhost:8080",
@@ -23,6 +24,12 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
+    if (error) {
+      toast.error("Có lỗi xảy ra", {
+        position: "bottom-right",
+        autoClose: 1500,
+      });
+    }
     return Promise.reject(error);
   }
 );

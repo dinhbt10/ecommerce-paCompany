@@ -1,7 +1,10 @@
 import Header from "../layout/home/Header.jsx";
 import Footer from "./home/Footer.jsx";
+import { useLocation } from "react-router-dom";
 
 const MainLayout = (orops) => {
+  const location = useLocation();
+
   const { children } = orops;
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#cd5f5f]">
@@ -9,7 +12,7 @@ const MainLayout = (orops) => {
       <div className="bg-[#f4f4f4] flex-grow">
         <div>{children}</div>
       </div>
-      <Footer />
+      {location.pathname !== "/cart" && <Footer />}
     </div>
   );
 };

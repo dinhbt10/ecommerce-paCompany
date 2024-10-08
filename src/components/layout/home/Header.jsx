@@ -2,6 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useEffect, useRef, useState } from "react";
 import { getBook } from "../../../apis/product";
+import {
+  clearLocalStorage,
+  getUserInfoLocalStorage,
+} from "../../../utils/common";
+import { FaUserAlt } from "react-icons/fa";
+import { Popover } from "flowbite-react";
+import { CiLogout } from "react-icons/ci";
+import { MdOutlineDashboard } from "react-icons/md";
+import { LuUserSquare2 } from "react-icons/lu";
 
 function Header() {
   const [value, setValue] = useState("");
@@ -9,6 +18,7 @@ function Header() {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const searchListRef = useRef(null);
+  const userInfo = getUserInfoLocalStorage();
 
   const navigate = useNavigate();
 
@@ -49,6 +59,11 @@ function Header() {
     }
   };
 
+  const handleLogout = () => {
+    clearLocalStorage();
+    navigate("/");
+  };
+
   useEffect(() => {
     if (value && isFocused) {
       getProductList(value);
@@ -78,20 +93,55 @@ function Header() {
         <div className="text-white text-sm">
           Chào mừng bạn đến với BookStore
         </div>
-        <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
-          <div
-            className="flex justify-start items-center cursor-pointer gap-1"
-            onClick={() => navigate("/register")}
+        {userInfo && (
+          <Popover
+            trigger="hover"
+            content={
+              <div className="flex flex-col bg-white min-w-[200px] w-full justify-start cursor-pointer">
+                <div
+                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                  onClick={() => navigate("/user")}
+                >
+                  <LuUserSquare2 /> Thông tin cá nhân
+                </div>
+                <div
+                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                  onClick={() => navigate("/admin")}
+                >
+                  <MdOutlineDashboard /> Đi tới trang quản trị
+                </div>
+                <div
+                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                  onClick={handleLogout}
+                >
+                  <CiLogout /> Đăng xuất
+                </div>
+              </div>
+            }
           >
-            Tạo tài khoản
+            <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
+              <div className="flex justify-start items-center cursor-pointer gap-1">
+                <FaUserAlt /> {userInfo.fullname}
+              </div>
+            </div>
+          </Popover>
+        )}
+        {!userInfo && (
+          <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
+            <div
+              className="flex justify-start items-center cursor-pointer gap-1"
+              onClick={() => navigate("/register")}
+            >
+              Tạo tài khoản
+            </div>
+            <div
+              className="flex justify-start items-center cursor-pointer gap-1"
+              onClick={() => navigate("/login")}
+            >
+              Đăng nhập
+            </div>
           </div>
-          <div
-            className="flex justify-start items-center cursor-pointer gap-1"
-            onClick={() => navigate("/login")}
-          >
-            Đăng nhập
-          </div>
-        </div>
+        )}
       </div>
       <div className="grid grid-cols-6 pb-8 pt-3 gap-3">
         <div
@@ -158,11 +208,14 @@ function Header() {
                 0123456789
               </div>
             </div>
-            <div className="flex items-center border border-white w-3/7 h-[36px] pt-[4px] pr-[2px] rounded gap-1 flex-1 justify-start">
+            <div
+              onClick={() => navigate("/cart")}
+              className="flex items-center border border-white w-3/7 h-[36px] pt-[4px] pr-[2px] rounded gap-1 flex-1 justify-start cursor-pointer"
+            >
               <div className="text-white text-[20px] uppercase pl-[10px] pr-1 pb-[5px]">
                 <BsFillBagCheckFill />
               </div>
-              <div className="text-white text-[12px] leading-[13px]">
+              <div className="text-white text-[12px] leading-[13px] ">
                 <div className="uppercase">Giỏ hàng</div>
                 <div className="pb-1">0đ</div>
               </div>

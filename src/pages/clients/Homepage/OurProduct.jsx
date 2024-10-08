@@ -6,9 +6,10 @@ import { formatNumber } from "../../../utils/common";
 const OurProduct = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+
   const getProductList = async () => {
     const res = await getBook();
-    setBooks(res.data.data.books);
+    setBooks(res.data.data.book || []);
   };
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const OurProduct = () => {
         Sản phẩm của chúng tôi
       </span>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 gap-4 bg-white p-4">
-        {books.map((item, index) => (
+        {books?.map((item, index) => (
           <div className="col-span-1 border p-3" key={index}>
             <div
               className="h-[301px] flex justify-center flex-col gap-1 cursor-pointer"

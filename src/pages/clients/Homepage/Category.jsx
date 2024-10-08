@@ -24,7 +24,7 @@ const Category = () => {
       </div>
       <div className="max-w-[1100px] mx-auto">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-2">
-          {category.map((item, index) => {
+          {category?.map((item, index) => {
             if (index > 2) return;
             return (
               <div

@@ -33,7 +33,7 @@ const tableHead = [
 const Publisher = () => {
   const [isOpen, setIsOpen] = useState();
   const [isOpenEdit, setIsOpenEdit] = useState();
-  const [publisher, setPublisher] = useState(null);
+  const [publisher, setPublisher] = useState([]);
   const [openDelete, setDelete] = useState(false);
   const [idDelete, setIdDelete] = useState();
   const [item, setItem] = useState({
@@ -63,7 +63,7 @@ const Publisher = () => {
   const getPublisher = async () => {
     const res = await instance.get("publisher/list");
     if (res.status === 200) {
-      setPublisher(res.data);
+      setPublisher(res.data.data);
     }
   };
 

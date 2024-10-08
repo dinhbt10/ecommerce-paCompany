@@ -9,6 +9,7 @@ import Publisher from "../pages/admins/Publisher/Publisher";
 import HomePage from "../pages/clients/Homepage/Homepage";
 import Product from "../pages/clients/Product/Product";
 import ProductDetail from "../pages/clients/Product/ProductDetail";
+import Cart from "../pages/clients/Cart/Cart";
 
 export const router = [
   {
@@ -22,6 +23,10 @@ export const router = [
   {
     path: "/product/:id",
     component: <ProductDetail />,
+  },
+  {
+    path: "/cart",
+    component: <Cart />,
   },
 ];
 

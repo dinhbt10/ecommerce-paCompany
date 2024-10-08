@@ -1,8 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import AdminLayout from "../components/layout/AdminLayout";
+import { getUserInfoLocalStorage } from "../utils/common";
 
-const PrivateRouter = ({ isAuthenticated, isAdmin }) => {
-  if (!isAuthenticated) {
+const PrivateRouter = ({ isAdmin }) => {
+  const userInfo = getUserInfoLocalStorage();
+  if (!userInfo) {
     return <Navigate to="/login" />;
   }
 

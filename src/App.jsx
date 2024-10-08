@@ -4,10 +4,11 @@ import MainLayout from "./components/layout/MainLayout";
 import PrivateRouter from "./navigation/PrivateRouter";
 import Login from "./pages/Auth/Login/Login";
 import { ToastContainer } from "react-toastify";
+import Register from "./pages/Auth/Register/Register";
 
 function App() {
-  const isAuthenticated = true;
   const isAdmin = true;
+
   return (
     <>
       <Routes>
@@ -18,14 +19,7 @@ function App() {
             element={<MainLayout>{route.component}</MainLayout>}
           />
         ))}
-        <Route
-          element={
-            <PrivateRouter
-              isAuthenticated={isAuthenticated}
-              isAdmin={isAdmin}
-            />
-          }
-        >
+        <Route element={<PrivateRouter isAdmin={isAdmin} />}>
           {adminRouter.map((route, index) => (
             <Route key={index} path={route.path} element={route.component}>
               {route.children &&
@@ -41,20 +35,10 @@ function App() {
           ))}
         </Route>
         <Route path="login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        draggable={false}
-        pauseOnHover={true}
-        theme="light"
-        transition="Bounce"
-      />
+      <ToastContainer />
     </>
   );
 }

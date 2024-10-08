@@ -35,7 +35,7 @@ const Distributor = () => {
   const [idDelete, setIdDelete] = useState();
   const [isOpenEdit, setIsOpenEdit] = useState();
   const [openDelete, setDelete] = useState(false);
-  const [distributor, setDistributor] = useState(null);
+  const [distributor, setDistributor] = useState([]);
   const [item, setItem] = useState({
     idDistributor: "",
     nameDistributor: "",
@@ -63,7 +63,7 @@ const Distributor = () => {
   const getDistributor = async () => {
     const res = await instance.get("distributor/list");
     if (res.status === 200) {
-      setDistributor(res.data);
+      setDistributor(res.data.data ? res.data.data : []);
     }
   };
 
@@ -134,34 +134,35 @@ const Distributor = () => {
           <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {distributor?.map((item, index) => (
-            <Table.Row
-              key={item.idDistributor}
-              className="bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-              <Table.Cell>
-                <div className="pl-1">{index + 1}</div>
-              </Table.Cell>
-              <Table.Cell>{item.nameDistributor}</Table.Cell>
-              <Table.Cell>{item.address}</Table.Cell>
-              <Table.Cell>{item.phone}</Table.Cell>
-              <Table.Cell>{item.email}</Table.Cell>
-              <Table.Cell>
-                <div className="flex justify-center items-center gap-2 cursor-pointer">
-                  <RiEdit2Fill
-                    fontSize={22}
-                    onClick={() => handleUpdate(item)}
-                  />
-                  <FaRegTrashAlt
-                    fontSize={18}
-                    className="text-red-700"
-                    onClick={() => handleRemove(item.idDistributor)}
-                  />
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-          {distributor?.length === 0 && (
+          {distributor.length > 0 &&
+            distributor?.map((item, index) => (
+              <Table.Row
+                key={item.idDistributor}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>
+                  <div className="pl-1">{index + 1}</div>
+                </Table.Cell>
+                <Table.Cell>{item.nameDistributor}</Table.Cell>
+                <Table.Cell>{item.address}</Table.Cell>
+                <Table.Cell>{item.phone}</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>
+                  <div className="flex justify-center items-center gap-2 cursor-pointer">
+                    <RiEdit2Fill
+                      fontSize={22}
+                      onClick={() => handleUpdate(item)}
+                    />
+                    <FaRegTrashAlt
+                      fontSize={18}
+                      className="text-red-700"
+                      onClick={() => handleRemove(item.idDistributor)}
+                    />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          {distributor.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>
                 <div className="flex justify-center items-center h-[300px]">
