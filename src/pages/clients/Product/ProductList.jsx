@@ -30,16 +30,14 @@ const ProductList = () => {
     const distributorApi = instance.get("distributor/list");
     Promise.all([categoryApi, publisherApi, distributorApi]).then((results) => {
       setCategory(results[0].data.data.categories);
-      setPublisher(results[1].data);
-      setDistributor(results[2].data);
+      setPublisher(results[1].data.data.categories);
+      setDistributor(results[2].data.data.categories);
     });
   };
 
   const filteredData = useMemo(() => {
     return books.filter((item) => {
-      // Lặp qua tất cả các key-value trong searchParams
       return Object.entries(queryParams).every(([key, value]) => {
-        // Kiểm tra xem key có tồn tại trong item và giá trị khớp với searchParams
         return (
           key in item &&
           item[key].toString().toLowerCase() === value.toLowerCase()
@@ -47,18 +45,11 @@ const ProductList = () => {
       });
     });
   }, [books, queryParams]);
-  console.log(filteredData);
 
   useEffect(() => {
     getCategoryApi();
     getProductList();
   }, []);
-
-  useEffect(() => {
-    // console.log(books);
-    // console.log(queryParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(queryParams), books]);
 
   return (
     <div className="max-w-[1100px] w-full mx-auto">

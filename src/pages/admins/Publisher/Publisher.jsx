@@ -61,9 +61,14 @@ const Publisher = () => {
   };
 
   const getPublisher = async () => {
-    const res = await instance.get("publisher/list");
-    if (res.status === 200) {
-      setPublisher(res.data.data);
+    try {
+      const res = await instance.get("publisher/list");
+      const { data, success } = res.data;
+      if (success) {
+        setPublisher(data.categories);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -135,33 +140,34 @@ const Publisher = () => {
           <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {publisher?.map((item, index) => (
-            <Table.Row
-              key={item.idPublisher}
-              className="bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-              <Table.Cell>
-                <div className="pl-1">{index + 1}</div>
-              </Table.Cell>
-              <Table.Cell>{item.namePublisher}</Table.Cell>
-              <Table.Cell>{item.addressPublisher}</Table.Cell>
-              <Table.Cell>{item.phonePublisher}</Table.Cell>
-              <Table.Cell>{item.emailPublisher}</Table.Cell>
-              <Table.Cell>
-                <div className="flex justify-center items-center gap-2 cursor-pointer">
-                  <RiEdit2Fill
-                    fontSize={22}
-                    onClick={() => handleUpdate(item)}
-                  />
-                  <FaRegTrashAlt
-                    fontSize={18}
-                    className="text-red-700"
-                    onClick={() => handleRemove(item.idPublisher)}
-                  />
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+          {publisher &&
+            publisher.map((item, index) => (
+              <Table.Row
+                key={item.idPublisher}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>
+                  <div className="pl-1">{index + 1}</div>
+                </Table.Cell>
+                <Table.Cell>{item.namePublisher}</Table.Cell>
+                <Table.Cell>{item.addressPublisher}</Table.Cell>
+                <Table.Cell>{item.phonePublisher}</Table.Cell>
+                <Table.Cell>{item.emailPublisher}</Table.Cell>
+                <Table.Cell>
+                  <div className="flex justify-center items-center gap-2 cursor-pointer">
+                    <RiEdit2Fill
+                      fontSize={22}
+                      onClick={() => handleUpdate(item)}
+                    />
+                    <FaRegTrashAlt
+                      fontSize={18}
+                      className="text-red-700"
+                      onClick={() => handleRemove(item.idPublisher)}
+                    />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           {publisher?.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>

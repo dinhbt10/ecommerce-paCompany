@@ -16,8 +16,15 @@ const Categories = () => {
   const [idDelete, setIdDelete] = useState();
   const [item, setItem] = useState();
   const getCategoryApi = async () => {
-    const res = await getCategory();
-    setCategory(res.data.data ? res.data.data.categories : null);
+    try {
+      const res = await getCategory();
+      const { success, data } = res.data;
+      if (success) {
+        setCategory(data.categories);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAddCategory = async (name, file) => {
@@ -68,33 +75,34 @@ const Categories = () => {
         </Button>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {category?.map((item) => (
-          <div
-            key={item.idCategory}
-            className="bg-white shadow-md rounded-md overflow-hidden"
-          >
-            <img
-              src={item.imageUrl}
-              alt={item.nameCategory}
-              className="w-full h-44 object-cover"
-            />
-            <div className="flex justify-between items-center p-4">
-              <h2 className="text-lg font-semibold">{item.nameCategory}</h2>
-              <div className="flex items-center gap-1">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => handleEdit(item)}
-                >
-                  <AiFillEdit className="text-2xl" />
+        {category &&
+          category.map((item) => (
+            <div
+              key={item.idCategory}
+              className="bg-white shadow-md rounded-md overflow-hidden"
+            >
+              <img
+                src={item.imageUrl}
+                alt={item.nameCategory}
+                className="w-full h-44 object-cover"
+              />
+              <div className="flex justify-between items-center p-4">
+                <h2 className="text-lg font-semibold">{item.nameCategory}</h2>
+                <div className="flex items-center gap-1">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleEdit(item)}
+                  >
+                    <AiFillEdit className="text-2xl" />
+                  </div>
+                  <FaRegTrashAlt
+                    className="text-[18px] text-red-700 cursor-pointer"
+                    onClick={() => handleDelete(item.idCategory)}
+                  />
                 </div>
-                <FaRegTrashAlt
-                  className="text-[18px] text-red-700 cursor-pointer"
-                  onClick={() => handleDelete(item.idCategory)}
-                />
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       <ModalComponents
         openModal={isOpen}

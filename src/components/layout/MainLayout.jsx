@@ -2,10 +2,9 @@ import Header from "../layout/home/Header.jsx";
 import Footer from "./home/Footer.jsx";
 import { useLocation } from "react-router-dom";
 
-const MainLayout = (orops) => {
+const MainLayout = (props) => {
   const location = useLocation();
-
-  const { children } = orops;
+  const { children } = props;
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#cd5f5f]">
       <Header />

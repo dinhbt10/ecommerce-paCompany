@@ -104,7 +104,7 @@ const Product = () => {
           ))}
           {books?.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell colSpan={8}>
+              <Table.Cell colSpan={9}>
                 <div className="flex justify-center items-center h-[300px]">
                   Không có dữ liệu
                 </div>

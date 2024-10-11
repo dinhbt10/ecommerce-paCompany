@@ -61,9 +61,14 @@ const Distributor = () => {
   };
 
   const getDistributor = async () => {
-    const res = await instance.get("distributor/list");
-    if (res.status === 200) {
-      setDistributor(res.data.data ? res.data.data : []);
+    try {
+      const res = await instance.get("distributor/list");
+      const { data, success } = res.data;
+      if (success) {
+        setDistributor(data.categories);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

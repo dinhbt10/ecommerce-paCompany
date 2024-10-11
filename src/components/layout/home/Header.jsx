@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { getBook } from "../../../apis/product";
 import {
   clearLocalStorage,
+  formatNumber,
   getUserInfoLocalStorage,
 } from "../../../utils/common";
 import { FaUserAlt } from "react-icons/fa";
@@ -11,6 +12,7 @@ import { Popover } from "flowbite-react";
 import { CiLogout } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
+import instance from "../../../utils/http";
 
 function Header() {
   const [value, setValue] = useState("");
@@ -19,6 +21,7 @@ function Header() {
   const inputRef = useRef(null);
   const searchListRef = useRef(null);
   const userInfo = getUserInfoLocalStorage();
+  const [total, setTotal] = useState(0);
 
   const navigate = useNavigate();
 
@@ -64,6 +67,24 @@ function Header() {
     navigate("/");
   };
 
+  const handleGetListCart = async () => {
+    try {
+      if (!userInfo) return;
+      const res = await instance.get(`/cart/list?userId=${userInfo.idUser}`);
+      const { data } = res.data;
+      setTotal(
+        data.reduce((a, b) => a.price * a.quantity + b.price * b.quantity)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetListCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (value && isFocused) {
       getProductList(value);
@@ -104,12 +125,14 @@ function Header() {
                 >
                   <LuUserSquare2 /> Thông tin cá nhân
                 </div>
-                <div
-                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
-                  onClick={() => navigate("/admin")}
-                >
-                  <MdOutlineDashboard /> Đi tới trang quản trị
-                </div>
+                {userInfo?.roles[0] === "ROLE_ADMIN" && (
+                  <div
+                    className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                    onClick={() => navigate("/admin")}
+                  >
+                    <MdOutlineDashboard /> Đi tới trang quản trị
+                  </div>
+                )}
                 <div
                   className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                   onClick={handleLogout}
@@ -215,9 +238,9 @@ function Header() {
               <div className="text-white text-[20px] uppercase pl-[10px] pr-1 pb-[5px]">
                 <BsFillBagCheckFill />
               </div>
-              <div className="text-white text-[12px] leading-[13px] ">
+              <div className="text-white text-[12px] leading-[13px]">
                 <div className="uppercase">Giỏ hàng</div>
-                <div className="pb-1">0đ</div>
+                <div className="pb-1">{formatNumber(total)}</div>
               </div>
             </div>
           </div>

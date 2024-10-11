@@ -1,6 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
+import instance from "../utils/http";
 
 export function ModalEdit({
   openModal,
@@ -15,12 +16,22 @@ export function ModalEdit({
     handleAddCategory(name, file);
   };
 
-  useEffect(() => {
-    if (!openModal) {
-      setFile("");
-      setName("");
+  const getDetailCategory = async (id) => {
+    try {
+      const res = await instance.get(`/category/${id}`);
+      // const {} = res.data;
+      console.log(res);
+    } catch (error) {
+      console.log(error);
     }
-  }, [openModal]);
+  };
+
+  useEffect(() => {
+    if (item?.idCategory) {
+      getDetailCategory(item.idCategory);
+    }
+  }, [item?.idCategory]);
+
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>

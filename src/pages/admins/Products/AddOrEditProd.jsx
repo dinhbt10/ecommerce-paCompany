@@ -32,7 +32,6 @@ export function AddOrEditProduct() {
   const handleAddFile = (e) => {
     const files = e.target.files;
     const listFile = Array.from(files);
-
     setProduct((prev) => ({
       ...prev,
       images: [...prev.images, ...listFile],
@@ -50,7 +49,10 @@ export function AddOrEditProduct() {
 
   const handleRemoveImage = (id) => {
     setImageUrls((pre) => pre?.filter((_, index) => index !== id));
-    setProduct((pre) => pre.images?.filter((_, index) => index !== id));
+    setProduct((pre) => ({
+      ...pre,
+      images: pre.images?.filter((_, index) => index !== id),
+    }));
   };
 
   const getCategoryApi = async () => {
@@ -59,8 +61,8 @@ export function AddOrEditProduct() {
     const distributorApi = instance.get("distributor/list");
     Promise.all([categoryApi, publisherApi, distributorApi]).then((results) => {
       setCategory(results[0].data.data.categories);
-      setPublisher(results[1].data);
-      setDistributor(results[2].data);
+      setPublisher(results[1].data.data.categories);
+      setDistributor(results[2].data.data.categories);
     });
   };
 
@@ -87,37 +89,37 @@ export function AddOrEditProduct() {
 
   useEffect(() => {
     if (category) {
-      if (!product.idCategory) {
+      if (!product?.idCategory) {
         setProduct((prev) => ({
           ...prev,
-          idCategory: category?.find((_, index) => index === 0)?.idCategory,
+          idCategory: category.find((_, index) => index === 0)?.idCategory,
         }));
       }
     }
-  }, [category, product.idCategory]);
+  }, [category, product?.idCategory]);
 
   useEffect(() => {
     if (publisher) {
-      if (!product.idPublisher) {
+      if (!product?.idPublisher) {
         setProduct((prev) => ({
           ...prev,
           idPublisher: publisher?.find((_, index) => index === 0)?.idPublisher,
         }));
       }
     }
-  }, [publisher, product.idPublisher]);
+  }, [publisher, product?.idPublisher]);
 
   useEffect(() => {
     if (distributor) {
-      if (!product.idDistributor) {
+      if (!product?.idDistributor) {
         setProduct((prev) => ({
           ...prev,
-          idDistributor: distributor?.find((_, index) => index === 0)
+          idDistributor: distributor.find((_, index) => index === 0)
             ?.idDistributor,
         }));
       }
     }
-  }, [distributor, product.idDistributor]);
+  }, [distributor, product?.idDistributor]);
 
   return (
     <div>
@@ -145,7 +147,7 @@ export function AddOrEditProduct() {
                   id="3"
                   type="text"
                   placeholder="Nhập tên sản phẩm"
-                  value={product.nameBook}
+                  value={product?.nameBook}
                   onChange={(e) =>
                     setProduct({
                       ...product,
@@ -162,7 +164,7 @@ export function AddOrEditProduct() {
                       id="3"
                       type="text"
                       placeholder="Nhập tên tác giả"
-                      value={product.author}
+                      value={product?.author}
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -179,7 +181,7 @@ export function AddOrEditProduct() {
                       id="3"
                       type="text"
                       placeholder="Nhập năm phát hành"
-                      value={product.year_publisher}
+                      value={product?.year_publisher}
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -199,7 +201,7 @@ export function AddOrEditProduct() {
                         id="3"
                         type="text"
                         placeholder="Nhập kích thước sách"
-                        value={product.size}
+                        value={product?.size}
                         onChange={(e) =>
                           setProduct({
                             ...product,
@@ -216,7 +218,7 @@ export function AddOrEditProduct() {
                         id="3"
                         type="text"
                         placeholder="Nhập số trang"
-                        value={product.page_number}
+                        value={product?.page_number}
                         onChange={(e) =>
                           setProduct({
                             ...product,
@@ -236,7 +238,7 @@ export function AddOrEditProduct() {
                       id="3"
                       type="text"
                       placeholder="Nhập mã vạch"
-                      value={product.barcode}
+                      value={product?.barcode}
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -253,7 +255,7 @@ export function AddOrEditProduct() {
                       id="3"
                       type="number"
                       placeholder="Nhập giá tiền"
-                      value={product.price}
+                      value={product?.price}
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -270,7 +272,7 @@ export function AddOrEditProduct() {
                       id="3"
                       type="number"
                       placeholder="Nhập số lượng"
-                      value={product.quantity}
+                      value={product?.quantity}
                       onChange={(e) =>
                         setProduct({
                           ...product,
@@ -316,7 +318,7 @@ export function AddOrEditProduct() {
                 <Textarea
                   placeholder="Nhập mô tả ngắn"
                   rows={2}
-                  value={product.description_short}
+                  value={product?.description_short}
                   onChange={(e) =>
                     setProduct({
                       ...product,
@@ -331,7 +333,7 @@ export function AddOrEditProduct() {
                   <Textarea
                     placeholder="Nhập mô tả dài"
                     rows={4}
-                    value={product.description_long}
+                    value={product?.description_long}
                     onChange={(e) =>
                       setProduct({
                         ...product,
@@ -353,7 +355,7 @@ export function AddOrEditProduct() {
                       <div key={index} className="flex items-center gap-2">
                         <Radio
                           value={item.idCategory}
-                          checked={item.idCategory === product.idCategory}
+                          checked={item.idCategory === product?.idCategory}
                           onChange={() =>
                             setProduct({
                               ...product,
@@ -366,7 +368,7 @@ export function AddOrEditProduct() {
                         </Label>
                       </div>
                     ))}
-                    {category.length === 0 && (
+                    {category && category.length === 0 && (
                       <div className="flex justify-center items-center text-red-700">
                         Bạn chưa có danh mục
                       </div>
@@ -382,7 +384,9 @@ export function AddOrEditProduct() {
                       <div key={index} className="flex items-center gap-2">
                         <Radio
                           value={item.idDistributor}
-                          checked={item.idDistributor === product.idDistributor}
+                          checked={
+                            item.idDistributor === product?.idDistributor
+                          }
                           onChange={() =>
                             setProduct({
                               ...product,
@@ -411,7 +415,7 @@ export function AddOrEditProduct() {
                       <div key={index} className="flex items-center gap-2">
                         <Radio
                           value={item.idPublisher}
-                          checked={item.idPublisher === product.idPublisher}
+                          checked={item.idPublisher === product?.idPublisher}
                           onChange={() =>
                             setProduct({
                               ...product,

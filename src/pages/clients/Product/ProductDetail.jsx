@@ -4,23 +4,50 @@ import { getDetailBook } from "../../../apis/product";
 import { useEffect, useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdLocalShipping } from "react-icons/md";
-import { formatNumber } from "../../../utils/common";
+import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
 import { FaCartPlus } from "react-icons/fa";
 import DetailDescription from "./DetailDescription";
 import DetailProduct from "./DetailProduct";
 import CategoryDetail from "./CategoryDetail";
 import UiBox from "../../../components/UiBox";
+import instance from "../../../utils/http";
+import { toast } from "react-toastify";
+// import { AppContext } from "../../../context/app.context";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [book, setBook] = useState({});
   const [urlBook, setUrlBook] = useState();
+  const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
+  const userInfo = getUserInfoLocalStorage();
+  // const { setRenderOne } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
     setBook(res.data);
     setUrlBook(res.data.imageUrls[0]);
+  };
+
+  const handleAddProduct = async () => {
+    const res = await instance.post("/cart/add", undefined, {
+      params: { bookId: book.idBook, quantity, userId: userInfo.idUser },
+    });
+
+    const { success, data } = res.data;
+
+    if (success) {
+      toast.success("Thêm sản phẩm mới thành công", {
+        autoClose: 1000,
+        position: "bottom-right",
+      });
+      // setRenderOne((prev) => prev + 1);
+    } else {
+      toast.error(data, {
+        autoClose: 1000,
+        position: "bottom-right",
+      });
+    }
   };
 
   useEffect(() => {
@@ -133,9 +160,21 @@ const ProductDetail = () => {
             <div className="text-[15px] text-[#757575] flex justify-start items-center">
               <span className="inline-block mr-[50px]">Số lượng: </span>{" "}
               <div className="flex justify-center items-center mr-6">
-                <div className="border px-3 py-1 cursor-pointer">-</div>
-                <div className="border px-5 py-1 w-[80px] text-center">1</div>
-                <div className="border px-3 py-1 cursor-pointer">+</div>
+                <div
+                  className="border px-3 py-1 cursor-pointer"
+                  onClick={() => setQuantity(quantity - 1)}
+                >
+                  -
+                </div>
+                <div className="border px-5 py-1 w-[80px] text-center">
+                  {quantity}
+                </div>
+                <div
+                  className="border px-3 py-1 cursor-pointer"
+                  onClick={() => setQuantity(quantity + 1)}
+                >
+                  +
+                </div>
               </div>
             </div>
             <div className="my-4 text-[#757575] text-[15px] flex items-center gap-[50px]">
@@ -157,7 +196,10 @@ const ProductDetail = () => {
               <div className="text-[15px] text-[#757575] min-w-[43px]">
                 Đặt hàng:
               </div>
-              <button className="bg-red-600 hover:bg-red-600 rounded px-3 text-white text-[15px] w-1/2 h-[45px] flex justify-center items-center gap-2">
+              <button
+                className="bg-red-600 hover:bg-red-600 rounded px-3 text-white text-[15px] w-1/2 h-[45px] flex justify-center items-center gap-2"
+                onClick={handleAddProduct}
+              >
                 <FaCartPlus />
                 Thêm Vào Giỏ Hàng
               </button>

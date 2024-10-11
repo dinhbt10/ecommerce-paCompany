@@ -43,6 +43,11 @@ const Login = () => {
         setTimeout(() => {
           navigate("/");
         }, 500);
+      } else {
+        toast.error("Tài khoản hoặc mật khẩu không chính xác", {
+          position: "bottom-right",
+          autoClose: 1500,
+        });
       }
     }
   };

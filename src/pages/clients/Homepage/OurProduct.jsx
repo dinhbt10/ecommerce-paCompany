@@ -9,7 +9,7 @@ const OurProduct = () => {
 
   const getProductList = async () => {
     const res = await getBook();
-    setBooks(res.data.data.book || []);
+    setBooks(res.data.data.books || []);
   };
 
   useEffect(() => {
