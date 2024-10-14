@@ -4,6 +4,8 @@ import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
 import { useEffect, useState } from "react";
 import { Checkbox } from "flowbite-react";
 import classNames from "classnames";
+import { toast } from "react-toastify";
+import { FiShoppingCart } from "react-icons/fi";
 
 const Cart = () => {
   const [carts, setCarts] = useState([]);
@@ -13,7 +15,7 @@ const Cart = () => {
     const res = await instance.get(`/cart/list?userId=${idUser}`);
     const { data } = res.data;
     setCarts(
-      data.map((item) => ({
+      data.cartItems.map((item) => ({
         ...item,
         checked: false,
       }))
@@ -48,6 +50,27 @@ const Cart = () => {
     };
     cloneDateCart[index] = payload;
     setCarts(cloneDateCart);
+  };
+
+  const handleDeleteBookInCart = async (idBook) => {
+    try {
+      const res = await instance.delete("/cart/delete", {
+        params: {
+          idBook,
+          userId: userInfo.idUser,
+        },
+      });
+      const { success } = res.data;
+      if (success) {
+        getCart(userInfo.idUser);
+        toast.success("Xoá sản phẩm thành công", {
+          autoClose: 1500,
+          position: "bottom-right",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -164,7 +187,10 @@ const Cart = () => {
                   <div className="col-span-1 flex justify-center items-center text-[#cd5f5f] font-medium">
                     {formatNumber(cart.price * cart.quantity)}
                   </div>
-                  <div className="col-span-1 flex justify-center items-center">
+                  <div
+                    className="col-span-1 flex justify-center items-center cursor-pointer"
+                    onClick={() => handleDeleteBookInCart(cart.bookId)}
+                  >
                     Xóa
                   </div>
                 </div>
@@ -204,6 +230,16 @@ const Cart = () => {
               <button className="px-10 bg-[#cd5f5f] text-sm text-white rounded py-2">
                 Mua hàng
               </button>
+            </div>
+          </div>
+        )}
+
+        {carts.length === 0 && (
+          <div className="flex w-full min-h-[300px] flex-col mt-3 bg-white justify-center items-center gap-1">
+            <FiShoppingCart className="text-[40px]" />
+            <div className="text-lg font-semibold">Giỏ hàng trống</div>
+            <div className="text-sm text-gray-500">
+              Có vẻ như bạn vẫn chưa đưa ra lựa chọn của mình
             </div>
           </div>
         )}

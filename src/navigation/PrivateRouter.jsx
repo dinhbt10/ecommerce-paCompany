@@ -12,6 +12,10 @@ const PrivateRouter = ({ isAdmin }) => {
     return <Navigate to="/unauthorized" />;
   }
 
+  if (userInfo.roles[0] === "USER") {
+    return <Navigate to="/" />;
+  }
+
   return (
     <AdminLayout>
       <Outlet />

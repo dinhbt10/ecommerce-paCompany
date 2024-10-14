@@ -73,7 +73,9 @@ function Header() {
       const res = await instance.get(`/cart/list?userId=${userInfo.idUser}`);
       const { data } = res.data;
       setTotal(
-        data.reduce((a, b) => a.price * a.quantity + b.price * b.quantity)
+        data.cartItems.reduce(
+          (a, b) => a.price * a.quantity + b.price * b.quantity
+        )
       );
     } catch (error) {
       console.log(error);
