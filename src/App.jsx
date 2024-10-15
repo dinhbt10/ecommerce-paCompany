@@ -8,7 +8,6 @@ import Register from "./pages/Auth/Register/Register";
 
 function App() {
   const isAdmin = true;
-
   return (
     <>
       <Routes>

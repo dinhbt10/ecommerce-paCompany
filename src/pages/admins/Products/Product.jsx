@@ -76,9 +76,9 @@ const Product = () => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {books?.map((item) => (
+          {books?.map((item, index) => (
             <Table.Row
-              key={item.id}
+              key={index}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell>
@@ -96,7 +96,10 @@ const Product = () => {
               <Table.Cell>{item.categoryName}</Table.Cell>
               <Table.Cell>{item.publisherName}</Table.Cell>
               <Table.Cell>
-                <div className="flex justify-center items-center gap-2 cursor-pointer">
+                <div
+                  className="flex justify-center items-center gap-2 cursor-pointer"
+                  onClick={() => navigate(`/admin/products/${item.idBook}`)}
+                >
                   <RiEdit2Fill fontSize={20} />
                 </div>
               </Table.Cell>

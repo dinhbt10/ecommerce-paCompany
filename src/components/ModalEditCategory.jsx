@@ -9,18 +9,17 @@ export function ModalEdit({
   item,
   handleAddCategory,
 }) {
-  const [name, setName] = useState(item?.nameCategory || "");
+  const [category, setCategory] = useState(null);
   const [file, setFile] = useState(null);
 
   const handleSubmit = () => {
-    handleAddCategory(name, file);
+    handleAddCategory(category?.nameCategory, file && file[0]);
   };
 
   const getDetailCategory = async (id) => {
     try {
       const res = await instance.get(`/category/${id}`);
-      // const {} = res.data;
-      console.log(res);
+      setCategory(res.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -31,6 +30,13 @@ export function ModalEdit({
       getDetailCategory(item.idCategory);
     }
   }, [item?.idCategory]);
+
+  useEffect(() => {
+    return () => {
+      setFile(null);
+      setCategory(null);
+    };
+  }, []);
 
   return (
     <>
@@ -46,8 +52,13 @@ export function ModalEdit({
               type="text"
               placeholder="Nhập tên danh mục"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={category?.nameCategory}
+              onChange={(e) =>
+                setCategory((prev) => ({
+                  ...prev,
+                  nameCategory: e.target.value,
+                }))
+              }
             />
           </div>
           <div>
@@ -57,13 +68,17 @@ export function ModalEdit({
             <FileInput
               id="file-upload"
               placeholder="Tải ảnh danh mục"
-              //   value={file}
               onChange={(e) => setFile(e.target.files)}
             />
           </div>
+          {!file && (
+            <div className="w-full flex justify-center mt-3">
+              <img src={category?.imageUrl} className="w-[100px]" />
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleSubmit}>Thêm</Button>
+          <Button onClick={handleSubmit}>Cập nhật</Button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy
           </Button>

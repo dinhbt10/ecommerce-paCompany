@@ -6,6 +6,12 @@ export const createBook = (formData) => {
   });
 };
 
+export const updateBook = (formData, id) => {
+  return instance.put(`/book/${id}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
 export const getBook = (params) => {
   return instance.get(`/book/list`, {
     params,

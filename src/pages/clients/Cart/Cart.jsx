@@ -83,7 +83,7 @@ const Cart = () => {
     const handleIsCheckedAll = () => {
       const cloneDataCart = [...carts];
       cloneDataCart.forEach((item) => {
-        item.checked = !item.checked;
+        item.checked = isCheckedAll;
       });
       setCarts(cloneDataCart);
     };

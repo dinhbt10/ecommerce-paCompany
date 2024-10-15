@@ -10,6 +10,8 @@ import HomePage from "../pages/clients/Homepage/Homepage";
 import Product from "../pages/clients/Product/Product";
 import ProductDetail from "../pages/clients/Product/ProductDetail";
 import Cart from "../pages/clients/Cart/Cart";
+import { EditBook } from "../pages/admins/Products/EditBook";
+import User from "../pages/clients/User/User";
 
 export const router = [
   {
@@ -27,6 +29,10 @@ export const router = [
   {
     path: "/cart",
     component: <Cart />,
+  },
+  {
+    path: "/user",
+    component: <User />,
   },
 ];
 
@@ -46,6 +52,10 @@ export const adminRouter = [
   {
     path: "/admin/products/create",
     component: <AddOrEditProduct />,
+  },
+  {
+    path: "/admin/products/:id",
+    component: <EditBook />,
   },
   {
     path: "/admin/customers",

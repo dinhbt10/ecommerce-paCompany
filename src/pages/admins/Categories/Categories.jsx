@@ -38,6 +38,21 @@ const Categories = () => {
     }
   };
 
+  const handleUpdateCategory = async (name, file) => {
+    const formData = new FormData();
+    formData.append("nameCategory", name);
+    if (file) {
+      formData.append("image", file);
+    }
+    const res = await instance.put(`category/${item.idCategory}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    if (res.data.success) {
+      setItEdit(false);
+      getCategoryApi();
+    }
+  };
+
   const handleEdit = (item) => {
     setItem(item);
     setItEdit(true);
@@ -114,7 +129,7 @@ const Categories = () => {
         openModal={isOpenEdit}
         setOpenModal={setItEdit}
         item={item}
-        handleAddCategory={handleAddCategory}
+        handleAddCategory={handleUpdateCategory}
       />
       <ConfirmCategory
         openModal={openDelete}

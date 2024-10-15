@@ -8,7 +8,7 @@ const MainLayout = (props) => {
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#cd5f5f]">
       <Header />
-      <div className="bg-[#f4f4f4] flex-grow">
+      <div className="bg-[#f4f4f4] flex-grow pb-5">
         <div>{children}</div>
       </div>
       {location.pathname !== "/cart" && <Footer />}

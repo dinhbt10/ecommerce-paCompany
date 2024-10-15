@@ -34,7 +34,7 @@ const OurProduct = () => {
                 className="h-[60%] object-cover w-full rounded"
               />
               <div className="bg-[#F4F5F7] py-5">
-                <span className="block text-center text-[#333333] font-semibold text-[20px]">
+                <span className="block text-center text-[#333333] font-semibold text-[20px] px-1">
                   {item.nameBook}
                 </span>
                 <span className="block text-center text-[#333333] font-semibold text-[16px]">

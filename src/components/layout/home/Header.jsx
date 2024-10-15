@@ -13,6 +13,9 @@ import { CiLogout } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuUserSquare2 } from "react-icons/lu";
 import instance from "../../../utils/http";
+import FlagEN from "../../../../public/english.png";
+import FlagVN from "../../../../public/vietnam.png";
+import { useTranslation } from "react-i18next";
 
 function Header() {
   const [value, setValue] = useState("");
@@ -22,6 +25,7 @@ function Header() {
   const searchListRef = useRef(null);
   const userInfo = getUserInfoLocalStorage();
   const [total, setTotal] = useState(0);
+  const { i18n } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -63,6 +67,7 @@ function Header() {
   };
 
   const handleLogout = () => {
+    setTotal(0);
     clearLocalStorage();
     navigate("/");
   };
@@ -73,13 +78,19 @@ function Header() {
       const res = await instance.get(`/cart/list?userId=${userInfo.idUser}`);
       const { data } = res.data;
       setTotal(
-        data.cartItems.reduce(
-          (a, b) => a.price * a.quantity + b.price * b.quantity
-        )
+        data.cartItems.length > 1
+          ? data.cartItems.reduce(
+              (a, b) => a.price * a.quantity + b.price * b.quantity
+            )
+          : data.cartItems[0].total
       );
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng); // Thay đổi ngôn ngữ
   };
 
   useEffect(() => {
@@ -117,39 +128,55 @@ function Header() {
           Chào mừng bạn đến với BookStore
         </div>
         {userInfo && (
-          <Popover
-            trigger="hover"
-            content={
-              <div className="flex flex-col bg-white min-w-[200px] w-full justify-start cursor-pointer">
-                <div
-                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
-                  onClick={() => navigate("/user")}
-                >
-                  <LuUserSquare2 /> Thông tin cá nhân
-                </div>
-                {userInfo?.roles[0] === "ROLE_ADMIN" && (
+          <div className="flex items-center gap-4 justify-end">
+            <div className="flex justify-center items-center gap-1">
+              <img
+                src={FlagEN}
+                width="25px"
+                className="cursor-pointer"
+                onClick={() => changeLanguage("en")}
+              />
+              <img
+                src={FlagVN}
+                width="28px"
+                className="cursor-pointer"
+                onClick={() => changeLanguage("vi")}
+              />
+            </div>
+            <Popover
+              trigger="hover"
+              content={
+                <div className="flex flex-col bg-white min-w-[200px] w-full justify-start cursor-pointer">
                   <div
                     className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
-                    onClick={() => navigate("/admin")}
+                    onClick={() => navigate("/user")}
                   >
-                    <MdOutlineDashboard /> Đi tới trang quản trị
+                    <LuUserSquare2 /> Thông tin cá nhân
                   </div>
-                )}
-                <div
-                  className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
-                  onClick={handleLogout}
-                >
-                  <CiLogout /> Đăng xuất
+                  {userInfo?.roles[0] === "ROLE_ADMIN" && (
+                    <div
+                      className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                      onClick={() => navigate("/admin")}
+                    >
+                      <MdOutlineDashboard /> Đi tới trang quản trị
+                    </div>
+                  )}
+                  <div
+                    className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
+                    onClick={handleLogout}
+                  >
+                    <CiLogout /> Đăng xuất
+                  </div>
+                </div>
+              }
+            >
+              <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
+                <div className="flex justify-start items-center cursor-pointer gap-1">
+                  <FaUserAlt /> {userInfo.fullname}
                 </div>
               </div>
-            }
-          >
-            <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
-              <div className="flex justify-start items-center cursor-pointer gap-1">
-                <FaUserAlt /> {userInfo.fullname}
-              </div>
-            </div>
-          </Popover>
+            </Popover>
+          </div>
         )}
         {!userInfo && (
           <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
