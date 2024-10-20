@@ -6,11 +6,13 @@ import { Checkbox } from "flowbite-react";
 import classNames from "classnames";
 import { toast } from "react-toastify";
 import { FiShoppingCart } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [carts, setCarts] = useState([]);
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const userInfo = getUserInfoLocalStorage();
+  const navigate = useNavigate();
   const getCart = async (idUser) => {
     const res = await instance.get(`/cart/list?userId=${idUser}`);
     const { data } = res.data;
@@ -22,23 +24,24 @@ const Cart = () => {
     );
   };
 
-  const handleChangCount = (type, index) => {
-    let cloneDateCart = [...carts];
-    if (type === "increase") {
-      const payload = {
-        ...cloneDateCart[index],
-        quantity: cloneDateCart[index].quantity + 1,
-      };
-      cloneDateCart[index] = payload;
-      setCarts(cloneDateCart);
-    }
-    if (type === "decrease") {
-      const payload = {
-        ...cloneDateCart[index],
-        quantity: cloneDateCart[index].quantity - 1,
-      };
-      cloneDateCart[index] = payload;
-      setCarts(cloneDateCart);
+  const handleChangCount = async (type, cart, index) => {
+    try {
+      let cloneDateCart = [...carts];
+      const res = await instance.put(
+        `/cart/update-quantity?bookId=${cart.bookId}&userId=${userInfo.idUser}&operation=${type}`
+      );
+      const { success } = res.data;
+      if (success) {
+        const payload = {
+          ...cloneDateCart[index],
+          quantity:
+            cloneDateCart[index].quantity + (type === "increase" ? 1 : -1),
+        };
+        cloneDateCart[index] = payload;
+        setCarts(cloneDateCart);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -73,6 +76,18 @@ const Cart = () => {
     }
   };
 
+  const handleSubmit = () => {
+    const isEmtyProduct = carts.every((item) => !item.checked);
+    const isChecked = carts.filter((item) => item.checked);
+    if (isEmtyProduct) {
+      return toast.error("Bạn chưa chọn sản phẩm nào để đặt hàng", {
+        autoClose: 1500,
+        position: "bottom-right",
+      });
+    }
+    navigate("/checkout", { state: { data: isChecked } });
+  };
+
   useEffect(() => {
     if (userInfo.idUser) {
       getCart(userInfo.idUser);
@@ -95,7 +110,7 @@ const Cart = () => {
     <div className="">
       <div className="bg-white">
         <div className="flex justify-between items-center max-w-[1100px] mx-auto py-5">
-          <div className="text-xl text-[#cd5f5f] font-semibold">
+          <div className="text-2xl text-[#cd5f5f] font-semibold">
             Giỏ hàng <FaCartShopping className="inline-block mx-1" />(
             {carts.length})
           </div>
@@ -168,7 +183,7 @@ const Cart = () => {
                         })}
                         onClick={() => {
                           if (cart.quantity === 1) return;
-                          handleChangCount("decrease", index);
+                          handleChangCount("decrease", cart, index);
                         }}
                       >
                         -
@@ -178,7 +193,9 @@ const Cart = () => {
                       </div>
                       <div
                         className="border px-3 py-1 cursor-pointer"
-                        onClick={() => handleChangCount("increase", index)}
+                        onClick={() =>
+                          handleChangCount("increase", cart, index)
+                        }
                       >
                         +
                       </div>
@@ -205,7 +222,6 @@ const Cart = () => {
                 onChange={() => setIsCheckedAll(!isCheckedAll)}
               />
               <div className="">Chọn tất cả ({carts.length})</div>
-              <div className="">Xóa</div>
             </div>
             <div className="flex items-center justify-start gap-3">
               <div className="">
@@ -227,7 +243,10 @@ const Cart = () => {
                     : carts.filter((item) => item.checked).length}
                 </span>
               </div>
-              <button className="px-10 bg-[#cd5f5f] text-sm text-white rounded py-2">
+              <button
+                className="px-10 bg-[#cd5f5f] text-sm text-white rounded py-2"
+                onClick={handleSubmit}
+              >
                 Mua hàng
               </button>
             </div>

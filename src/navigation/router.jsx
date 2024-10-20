@@ -12,6 +12,7 @@ import ProductDetail from "../pages/clients/Product/ProductDetail";
 import Cart from "../pages/clients/Cart/Cart";
 import { EditBook } from "../pages/admins/Products/EditBook";
 import User from "../pages/clients/User/User";
+import Checkout from "../pages/clients/Checkout/Checkout";
 
 export const router = [
   {
@@ -33,6 +34,10 @@ export const router = [
   {
     path: "/user",
     component: <User />,
+  },
+  {
+    path: "/checkout",
+    component: <Checkout />,
   },
 ];
 

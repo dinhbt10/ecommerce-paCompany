@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { RiEdit2Fill } from "react-icons/ri";
 import { getBook } from "../../../apis/product";
 import { useNavigate } from "react-router-dom";
+import { formatNumber } from "../../../utils/common";
 
 const tableHead = [
   {
@@ -91,8 +92,8 @@ const Product = () => {
               <Table.Cell>{item.nameBook}</Table.Cell>
               <Table.Cell>{item.author}</Table.Cell>
               <Table.Cell>{item.publisherName}</Table.Cell>
+              <Table.Cell>{formatNumber(item.price)}</Table.Cell>
               <Table.Cell>{item.quantity}</Table.Cell>
-              <Table.Cell>{item.price}</Table.Cell>
               <Table.Cell>{item.categoryName}</Table.Cell>
               <Table.Cell>{item.publisherName}</Table.Cell>
               <Table.Cell>

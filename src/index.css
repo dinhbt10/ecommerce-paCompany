@@ -10,3 +10,13 @@ input:focus {
   outline: none;
   box-shadow: none;
 }
+.tabs-item:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.flowbite-tab-item:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

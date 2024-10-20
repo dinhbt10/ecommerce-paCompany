@@ -15,6 +15,23 @@ export function getDateIfWithin7Days(isoString) {
   }
 }
 
+export function isWithin24Hours(inputDateString) {
+  // Chuyển đổi chuỗi thời gian input thành đối tượng Date
+  const inputDate = new Date(inputDateString);
+
+  // Lấy thời gian hiện tại
+  const currentDate = new Date();
+
+  // Tính khoảng cách giữa hai thời gian (đơn vị là milliseconds)
+  const timeDifference = currentDate - inputDate;
+
+  // 24 giờ = 24 * 60 * 60 * 1000 milliseconds
+  const hours24 = 24 * 60 * 60 * 1000;
+
+  // Kiểm tra xem khoảng cách có nhỏ hơn hoặc bằng 24 giờ không
+  return timeDifference <= hours24;
+}
+
 export const saveToLocalStorage = (userinfo) => {
   localStorage.setItem("userinfo", JSON.stringify(userinfo));
 };
