@@ -18,40 +18,62 @@ const CartStatus = () => {
       title: "Chở xác nhận",
       content: (
         <PurchaseOrder
-          data={data.filter((item) => item.status === "Pending")}
+          data={data && data.filter((item) => item.status === "Processing")}
         />
       ),
       icons: <MdOutlineEventNote />,
     },
     {
       title: "Chở thanh toán",
-      content: "Đang phát triển",
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Transport")}
+        />
+      ),
       icons: <MdOutlineEventNote />,
     },
     {
       title: "Chờ giao hàng",
-      content: "Đang phát triển",
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Waited")}
+        />
+      ),
       icons: <MdOutlineEventNote />,
     },
     {
       title: "Đã giao",
-      content: "Đang phát triển",
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Completed")}
+        />
+      ),
       icons: <MdOutlineEventNote />,
     },
     {
       title: "Huỷ đơn hàng",
-      content: "Đang phát triển",
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Cancel")}
+        />
+      ),
       icons: <MdOutlineEventNote />,
     },
     {
       title: "Trả hàng/Hoàn tiền",
-      content: "Đang phát triển",
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Return")}
+        />
+      ),
       icons: <MdOutlineEventNote />,
     },
   ];
   const userInfo = getUserInfoLocalStorage();
   const getAllStatus = async () => {
-    const res = await instance.get(`orders/list?userId=${userInfo.idUser}`);
+    const res = await instance.get(
+      `orders/list/order_user?userId=${userInfo.idUser}`
+    );
     const { success, data } = res.data;
     if (success) {
       setData(data);

@@ -25,16 +25,16 @@ const OurProduct = () => {
         {books?.map((item, index) => (
           <div className="col-span-1 border p-3" key={index}>
             <div
-              className="h-[301px] flex justify-center flex-col gap-1 cursor-pointer"
+              className="h-[300px] flex justify-center flex-col gap-1 cursor-pointer"
               onClick={() => navigate(`/product/${item.idBook}`)}
             >
               <img
                 src={item.imageUrls[0]}
                 alt={item.nameBook}
-                className="h-[60%] object-cover w-full rounded"
+                className="object-contain  h-2/3 rounded"
               />
-              <div className="bg-[#F4F5F7] py-5">
-                <span className="block text-center text-[#333333] font-semibold text-[20px] px-1">
+              <div className="bg-[#F4F5F7] py-5 h-1/3">
+                <span className="block text-center text-[#333333] font-semibold text-sm px-1 line-clamp-2">
                   {item.nameBook}
                 </span>
                 <span className="block text-center text-[#333333] font-semibold text-[16px]">

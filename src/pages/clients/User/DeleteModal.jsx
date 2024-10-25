@@ -1,7 +1,16 @@
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import instance from "../../../utils/http";
+import { getUserInfoLocalStorage } from "../../../utils/common";
 
-export function DeleteModal({ openModal, setOpenModal }) {
+export function DeleteModal({ orderId, openModal, setOpenModal }) {
+  const userInfo = getUserInfoLocalStorage();
+
+  const handleDeleteOrder = async () => {
+    const res = await instance.delete(
+      `orders/cancel?userId=${userInfo.idUser}&orderId=${orderId}`
+    );
+  };
   return (
     <>
       <Modal
@@ -18,12 +27,16 @@ export function DeleteModal({ openModal, setOpenModal }) {
               Bạn có chắc chắn muốn huỷ đơn hàng không?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setOpenModal(false)}>
+              <Button color="failure" onClick={handleDeleteOrder}>
                 Huỷ đơn hàng
               </Button>
-              <Button color="gray" onClick={() => setOpenModal(false)}>
-                Không phải bây giờ
-              </Button>
+              <button
+                className="border px-10 rounded-lg bg-gray-50"
+                color="gray"
+                onClick={() => setOpenModal(false)}
+              >
+                Đóng
+              </button>
             </div>
           </div>
         </Modal.Body>

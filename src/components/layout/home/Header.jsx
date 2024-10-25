@@ -77,13 +77,15 @@ function Header() {
       if (!userInfo) return;
       const res = await instance.get(`/cart/list?userId=${userInfo.idUser}`);
       const { data } = res.data;
-      setTotal(
-        data.cartItems.length > 1
-          ? data.cartItems.reduce(
-              (a, b) => a.price * a.quantity + b.price * b.quantity
-            )
-          : data.cartItems[0].total
-      );
+      if (data.cartItems.length !== 0) {
+        setTotal(
+          data.cartItems.length > 1
+            ? data.cartItems.reduce(
+                (a, b) => a.price * a.quantity + b.price * b.quantity
+              )
+            : data.cartItems[0]?.total
+        );
+      }
     } catch (error) {
       console.log(error);
     }

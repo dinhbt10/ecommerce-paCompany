@@ -1,132 +1,75 @@
 import { Table } from "flowbite-react";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { RiEdit2Fill } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import { CiViewBoard } from "react-icons/ci";
+import instance from "../../../utils/http";
+import {
+  convertDate,
+  formatNumber,
+  getUserInfoLocalStorage,
+} from "../../../utils/common";
+import { orderStatus } from "./Config";
+import { toast } from "react-toastify";
 
 const tableHead = [
   {
     id: 1,
-    name: "Tên sản phẩm",
+    name: "Mã đơn hàng",
   },
   {
     id: 2,
-    name: "Tên khách hàng",
+    name: "Ngày đặt",
   },
   {
     id: 3,
-    name: "Địa chỉ",
+    name: "Ngày nhận",
   },
   {
     id: 4,
-    name: "Số lượng",
+    name: "Trạng thái",
   },
   {
     id: 5,
-    name: "Đơn giá",
-  },
-  {
-    id: 6,
-    name: "Tổng tiền",
+    name: "SDT",
   },
   {
     id: 7,
-    name: "Ngày đặt",
-  },
-];
-
-const data = [
-  {
-    productName: "Laptop Dell XPS 13",
-    customerName: "Nguyễn Văn A",
-    address: "123 Đường ABC, Quận 1, TP. Hồ Chí Minh",
-    price: "28,000,000 VND",
-    quantity: 1,
-    totalPrice: "28,000,000 VND",
-    orderDate: "2023-09-01",
-  },
-  {
-    productName: "iPhone 14 Pro",
-    customerName: "Trần Thị B",
-    address: "456 Đường DEF, Quận 3, TP. Hà Nội",
-    price: "25,000,000 VND",
-    quantity: 2,
-    totalPrice: "50,000,000 VND",
-    orderDate: "2023-09-02",
-  },
-  {
-    productName: "Samsung Galaxy S21",
-    customerName: "Phạm Văn C",
-    address: "789 Đường GHI, Quận 5, TP. Đà Nẵng",
-    price: "18,500,000 VND",
-    quantity: 1,
-    totalPrice: "18,500,000 VND",
-    orderDate: "2023-09-03",
-  },
-  {
-    productName: "Sony WH-1000XM5",
-    customerName: "Lê Thị D",
-    address: "101 Đường JKL, Quận 7, TP. Hải Phòng",
-    price: "7,000,000 VND",
-    quantity: 3,
-    totalPrice: "21,000,000 VND",
-    orderDate: "2023-09-04",
-  },
-  {
-    productName: "MacBook Air M2",
-    customerName: "Đặng Văn E",
-    address: "202 Đường MNO, Quận 9, TP. Cần Thơ",
-    price: "35,000,000 VND",
-    quantity: 1,
-    totalPrice: "35,000,000 VND",
-    orderDate: "2023-09-05",
-  },
-  {
-    productName: "Google Pixel 7",
-    customerName: "Ngô Thị F",
-    address: "303 Đường PQR, Quận 2, TP. Bình Dương",
-    price: "15,000,000 VND",
-    quantity: 2,
-    totalPrice: "30,000,000 VND",
-    orderDate: "2023-09-06",
-  },
-  {
-    productName: "Apple Watch Series 8",
-    customerName: "Vũ Văn G",
-    address: "404 Đường STU, Quận 4, TP. Vũng Tàu",
-    price: "12,000,000 VND",
-    quantity: 1,
-    totalPrice: "12,000,000 VND",
-    orderDate: "2023-09-07",
-  },
-  {
-    productName: "Xbox Series X",
-    customerName: "Hoàng Thị H",
-    address: "505 Đường VWX, Quận 6, TP. Nha Trang",
-    price: "15,000,000 VND",
-    quantity: 2,
-    totalPrice: "30,000,000 VND",
-    orderDate: "2023-09-08",
-  },
-  {
-    productName: "PlayStation 5",
-    customerName: "Đỗ Văn I",
-    address: "606 Đường YZ, Quận 8, TP. Huế",
-    price: "14,500,000 VND",
-    quantity: 1,
-    totalPrice: "14,500,000 VND",
-    orderDate: "2023-09-09",
-  },
-  {
-    productName: "HP Spectre x360",
-    customerName: "Phan Thị J",
-    address: "707 Đường XYZ, Quận 10, TP. Quy Nhơn",
-    price: "30,000,000 VND",
-    quantity: 1,
-    totalPrice: "30,000,000 VND",
-    orderDate: "2023-09-10",
+    name: "Tổng tiền",
   },
 ];
 
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
+  const userInfo = getUserInfoLocalStorage();
+  const getOrderListAdmin = async () => {
+    const res = await instance.get(
+      `orders/list/admin?userId=${userInfo.idUser}`
+    );
+    const { success, data } = res.data;
+    if (success) {
+      setOrders(data.orders);
+    }
+  };
+
+  const handleChangeOrderStatus = async (idCart, idStatus) => {
+    const res = await instance.put(
+      `orders/update-status?userId=${userInfo.idUser}&orderId=${idCart}&statusId=${idStatus}`
+    );
+    const { success } = res.data;
+
+    if (success) {
+      toast.success(`Thay đổi trạng thái đơn hàng ${idCart} thành công`, {
+        autoClose: 1500,
+        position: "bottom-right",
+      });
+      getOrderListAdmin();
+    }
+  };
+
+  useEffect(() => {
+    getOrderListAdmin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
@@ -142,26 +85,46 @@ const Orders = () => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {data.map((item) => (
-            <Table.Row
-              key={item.id}
-              className="bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-              <Table.Cell>{item.productName}</Table.Cell>
-              <Table.Cell>{item.customerName}</Table.Cell>
-              <Table.Cell>{item.address}</Table.Cell>
-              <Table.Cell>{item.quantity}</Table.Cell>
-              <Table.Cell>{item.price}</Table.Cell>
-              <Table.Cell>{item.totalPrice}</Table.Cell>
-              <Table.Cell>{item.orderDate}</Table.Cell>
-              <Table.Cell>
-                <div className="flex justify-center items-center gap-2">
-                  <RiEdit2Fill fontSize={20} />
-                  <FaRegTrashAlt />
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+          {orders.length > 0 &&
+            orders.map((item) => (
+              <Table.Row
+                key={item.id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>{convertDate(item.createdAt)}</Table.Cell>
+                <Table.Cell>{convertDate(item.deliveryDate)}</Table.Cell>
+                <Table.Cell>
+                  <select
+                    className="rounded border border-gray-300"
+                    style={{
+                      outline: "none",
+                      boxShadow: "none",
+                    }}
+                    value={
+                      orderStatus.find((check) => check.label === item.status)
+                        .value
+                    }
+                    onChange={(e) =>
+                      handleChangeOrderStatus(item.id, Number(e.target.value))
+                    }
+                  >
+                    {orderStatus.map((order) => (
+                      <option value={order.value} key={order.value}>
+                        {order.label}
+                      </option>
+                    ))}
+                  </select>
+                </Table.Cell>
+                <Table.Cell>{item.phone}</Table.Cell>
+                <Table.Cell>{formatNumber(item.total)}</Table.Cell>
+                <Table.Cell>
+                  <div className="flex justify-center items-center gap-2">
+                    <CiViewBoard fontSize={18} className="cursor-pointer" />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
         </Table.Body>
       </Table>
     </div>
