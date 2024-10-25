@@ -2,6 +2,7 @@ import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import instance from "../../../utils/http";
 import { getUserInfoLocalStorage } from "../../../utils/common";
+import { toast } from "react-toastify";
 
 export function DeleteModal({ orderId, openModal, setOpenModal }) {
   const userInfo = getUserInfoLocalStorage();
@@ -10,6 +11,13 @@ export function DeleteModal({ orderId, openModal, setOpenModal }) {
     const res = await instance.delete(
       `orders/cancel?userId=${userInfo.idUser}&orderId=${orderId}`
     );
+    const { success } = res.data;
+    if (success) {
+      toast.success("Huỷ đơn hàng thành công", {
+        autoClose: 1500,
+        position: "bottom-right",
+      });
+    }
   };
   return (
     <>
