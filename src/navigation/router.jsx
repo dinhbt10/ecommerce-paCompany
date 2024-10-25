@@ -78,4 +78,8 @@ export const adminRouter = [
     path: "/admin/distributor",
     component: <Distributor />,
   },
+  {
+    path: "/admin/employee",
+    component: <span>Đang phát triển</span>,
+  },
 ];
