@@ -20,7 +20,7 @@ export function DeleteModal({
     );
     const { success } = res.data;
     if (success) {
-      toast.success("Huỷ đơn hàng thành công", {
+      toast.success(t("text-151"), {
         autoClose: 1500,
         position: "bottom-right",
       });
