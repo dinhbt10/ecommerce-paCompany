@@ -4,11 +4,13 @@ import { MdOutlineWrongLocation } from "react-icons/md";
 import { Select, Table, TextInput } from "flowbite-react";
 import { useState } from "react";
 import instance from "../../../utils/http";
+import { useTranslation } from "react-i18next";
 
 const Checkout = () => {
   const location = useLocation();
   const { data } = location.state || {};
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [checkout, setCheckout] = useState({
     note: "",
     shipmentId: 1,
@@ -37,14 +39,14 @@ const Checkout = () => {
         <div className="bg-white">
           <div className="flex justify-between items-center max-w-[1100px] mx-auto py-5">
             <div className="text-2xl text-[#cd5f5f] font-semibold">
-              Thanh toán
+              {t("text-115")}
             </div>
           </div>
         </div>
       </div>
       <div className="max-w-[1100px] mx-auto my-3 bg-white px-8 py-6">
         <div className="flex text-xl text-[#cd5f5f] items-center justify-start gap-2 font-medium">
-          <MdOutlineWrongLocation /> Địa Chỉ Nhận Hàng
+          <MdOutlineWrongLocation /> {t("text-116")}
         </div>
         <div className="flex text-xl text-black items-center justify-start gap-2  mt-3">
           <div className="font-medium">
@@ -59,11 +61,11 @@ const Checkout = () => {
             <Table.Body>
               <Table.Row className="bg-white">
                 <Table.Cell className="w-[58%] text-[#0a0a0a] font-medium p-2 text-xl">
-                  Sản phẩm
+                  {t("text-117")}
                 </Table.Cell>
-                <Table.Cell className="p-2 w-[14%]">Đơn giá</Table.Cell>
-                <Table.Cell className="p-2 w-[14%]">Số lượng</Table.Cell>
-                <Table.Cell className="p-2 w-[14%]">Thành tiền</Table.Cell>
+                <Table.Cell className="p-2 w-[14%]">{t("text-118")}</Table.Cell>
+                <Table.Cell className="p-2 w-[14%]">{t("text-119")}</Table.Cell>
+                <Table.Cell className="p-2 w-[14%]">{t("text-120")}</Table.Cell>
               </Table.Row>
               {data &&
                 data.map((item, index) => (
@@ -94,7 +96,7 @@ const Checkout = () => {
         </div>
         <div className="flex flex-row bg-gray-50 px-5 py-8 gap-5 border-b">
           <div className="flex items-center gap-3 outline-none border-none w-[50%]">
-            <span>Lời nhắn:</span>
+            <span>{t("text-121")}:</span>
             <TextInput
               value={checkout.note}
               onChange={(e) =>
@@ -110,7 +112,7 @@ const Checkout = () => {
             />
           </div>
           <div className="flex items-center gap-3 outline-none border-none w-[50%]">
-            <span>Đơn vị vận chuyển:</span>
+            <span>{t("text-122")}:</span>
             <Select
               onChange={(e) =>
                 setCheckout((prev) => ({
@@ -119,14 +121,14 @@ const Checkout = () => {
                 }))
               }
             >
-              <option value={1}>Vận chuyển thường</option>
-              <option value={2}>Vận chuyển nhanh</option>
+              <option value={1}>{t("text-123")}</option>
+              <option value={2}>{t("text-124")}</option>
             </Select>
           </div>
         </div>
         <div className="flex flex-row bg-gray-50 px-5 py-4 gap-5 border-b justify-end items-center">
           <span className="text-sm text-gray-500">
-            Tổng số tiền ({data.length} sản phẩm):
+            {t("text-125")} ({data.length} {t("text-126")}):
           </span>
           <span className="text-xl text-[#cd5f5f] font-semibold">
             {formatNumber(
@@ -141,7 +143,7 @@ const Checkout = () => {
       </div>
       <div className="bg-white max-w-[1100px] mx-auto mt-5">
         <div className="flex justify-between items-center p-5 border-b">
-          <div className="">Phương thức thanh toán</div>
+          <div className="">{t("text-127")}</div>
           <Select
             onChange={(e) =>
               setCheckout((prev) => ({
@@ -150,14 +152,14 @@ const Checkout = () => {
               }))
             }
           >
-            <option value={1}>Thanh toán khi nhận hàng</option>
-            <option value={2}>Thanh toán nhanh</option>
+            <option value={1}>{t("text-128")}</option>
+            <option value={2}>{t("text-129")}</option>
           </Select>
         </div>
         <div className="flex justify-end p-5 border-b">
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center w-[300px]">
-              <span className="text-sm text-gray-500">Tổng tiền hàng</span>
+              <span className="text-sm text-gray-500">{t("text-130")}</span>
               <span className="text-md">
                 {formatNumber(
                   data.length > 1
@@ -169,13 +171,11 @@ const Checkout = () => {
               </span>
             </div>
             <div className="flex justify-between items-center w-[300px]">
-              <span className="text-sm text-gray-500">
-                Tổng tiền phí vận chuyển
-              </span>
+              <span className="text-sm text-gray-500">{t("text-131")}</span>
               <span className="text-md">{formatNumber(30000)}</span>
             </div>
             <div className="flex justify-between items-center w-[300px]">
-              <span className="text-sm text-gray-500">Tổng thanh toán</span>
+              <span className="text-sm text-gray-500">{t("text-132")}</span>
               <span className="text-xl text-[#cd5f5f] font-semibold">
                 {formatNumber(
                   (data.length > 1
@@ -189,15 +189,12 @@ const Checkout = () => {
           </div>
         </div>
         <div className="flex justify-between items-center p-5 border-b">
-          <div className="text-sm text-gray-500">
-            Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo
-            Điều khoản BOOKSTORE
-          </div>
+          <div className="text-sm text-gray-500">{t("text-133")}</div>
           <button
             className="bg-[#cd5f5f] w-[200px] p-2 rounded-sm text-white"
             onClick={handleSubmit}
           >
-            Đặt hàng
+            {t("text-134")}
           </button>
         </div>
       </div>

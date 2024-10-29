@@ -5,70 +5,11 @@ import PurchaseOrder from "./PurchaseOrder";
 import { useEffect, useState } from "react";
 import { getUserInfoLocalStorage } from "../../../utils/common";
 import instance from "../../../utils/http";
+import { useTranslation } from "react-i18next";
 
 const CartStatus = () => {
   const [data, setData] = useState([]);
-  const tabData = [
-    {
-      title: "Tất cả",
-      content: <PurchaseOrder data={data} />,
-      icons: <CgProfile />,
-    },
-    {
-      title: "Chở xác nhận",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Processing")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-    {
-      title: "Chở thanh toán",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Transport")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-    {
-      title: "Chờ giao hàng",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Waited")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-    {
-      title: "Đã giao",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Completed")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-    {
-      title: "Huỷ đơn hàng",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Cancel")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-    {
-      title: "Trả hàng/Hoàn tiền",
-      content: (
-        <PurchaseOrder
-          data={data && data.filter((item) => item.status === "Return")}
-        />
-      ),
-      icons: <MdOutlineEventNote />,
-    },
-  ];
+  const { t } = useTranslation();
   const userInfo = getUserInfoLocalStorage();
   const getAllStatus = async () => {
     const res = await instance.get(
@@ -79,6 +20,74 @@ const CartStatus = () => {
       setData(data);
     }
   };
+
+  const tabData = [
+    {
+      title: t("text-15"),
+      content: <PurchaseOrder data={data} getAllStatus={getAllStatus} />,
+      icons: <CgProfile />,
+    },
+    {
+      title: t("text-90"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Processing")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+    {
+      title: t("text-91"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Transport")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+    {
+      title: t("text-92"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Waited")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+    {
+      title: t("text-93"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Completed")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+    {
+      title: t("text-94"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Cancel")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+    {
+      title: t("text-95"),
+      content: (
+        <PurchaseOrder
+          data={data && data.filter((item) => item.status === "Return")}
+          getAllStatus={getAllStatus}
+        />
+      ),
+      icons: <MdOutlineEventNote />,
+    },
+  ];
 
   useEffect(() => {
     getAllStatus();

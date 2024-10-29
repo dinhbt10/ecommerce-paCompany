@@ -7,9 +7,11 @@ import classNames from "classnames";
 import { toast } from "react-toastify";
 import { FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
   const [carts, setCarts] = useState([]);
+  const { t } = useTranslation();
   const [isCheckedAll, setIsCheckedAll] = useState(false);
   const userInfo = getUserInfoLocalStorage();
   const navigate = useNavigate();
@@ -66,7 +68,7 @@ const Cart = () => {
       const { success } = res.data;
       if (success) {
         getCart(userInfo.idUser);
-        toast.success("Xoá sản phẩm thành công", {
+        toast.success(t("text-64"), {
           autoClose: 1500,
           position: "bottom-right",
         });
@@ -80,7 +82,7 @@ const Cart = () => {
     const isEmtyProduct = carts.every((item) => !item.checked);
     const isChecked = carts.filter((item) => item.checked);
     if (isEmtyProduct) {
-      return toast.error("Bạn chưa chọn sản phẩm nào để đặt hàng", {
+      return toast.error(t("text-63"), {
         autoClose: 1500,
         position: "bottom-right",
       });
@@ -111,7 +113,7 @@ const Cart = () => {
       <div className="bg-white">
         <div className="flex justify-between items-center max-w-[1100px] mx-auto py-5">
           <div className="text-2xl text-[#cd5f5f] font-semibold">
-            Giỏ hàng <FaCartShopping className="inline-block mx-1" />(
+            {t("text-8")} <FaCartShopping className="inline-block mx-1" />(
             {carts.length})
           </div>
         </div>
@@ -124,22 +126,22 @@ const Cart = () => {
                 checked={isCheckedAll}
                 onChange={() => setIsCheckedAll(!isCheckedAll)}
               />
-              Sản Phẩm
+              {t("text-65")}
             </span>
           </div>
           <div className="col-span-1">
             <div className="grid grid-cols-5">
               <div className="col-span-1 flex justify-center items-center">
-                Đơn Giá
+                {t("text-66")}
               </div>
               <div className="col-span-2 flex justify-center items-center">
-                Số Lượng
+                {t("text-67")}
               </div>
               <div className="col-span-1 flex justify-center items-center">
-                Số Tiền
+                {t("text-68")}
               </div>
               <div className="col-span-1 flex justify-center items-center">
-                Thao Tác
+                {t("text-69")}
               </div>
             </div>
           </div>
@@ -208,7 +210,7 @@ const Cart = () => {
                     className="col-span-1 flex justify-center items-center cursor-pointer"
                     onClick={() => handleDeleteBookInCart(cart.bookId)}
                   >
-                    Xóa
+                    {t("text-70")}
                   </div>
                 </div>
               </div>
@@ -221,12 +223,14 @@ const Cart = () => {
                 checked={isCheckedAll}
                 onChange={() => setIsCheckedAll(!isCheckedAll)}
               />
-              <div className="">Chọn tất cả ({carts.length})</div>
+              <div className="">
+                {t("text-71")} ({carts.length})
+              </div>
             </div>
             <div className="flex items-center justify-start gap-3">
               <div className="">
-                Tổng thanh toán ({carts.filter((item) => item.checked).length}{" "}
-                Sản phẩm):{" "}
+                {t("text-72")} ({carts.filter((item) => item.checked).length}{" "}
+                {t("text-73")}):{" "}
                 <span className="text-lg text-[#cd5f5f]">
                   {carts.filter((item) => item.checked).length > 0
                     ? formatNumber(
@@ -247,7 +251,7 @@ const Cart = () => {
                 className="px-10 bg-[#cd5f5f] text-sm text-white rounded py-2"
                 onClick={handleSubmit}
               >
-                Mua hàng
+                {t("text-74")}
               </button>
             </div>
           </div>
@@ -256,10 +260,8 @@ const Cart = () => {
         {carts.length === 0 && (
           <div className="flex w-full min-h-[300px] flex-col mt-3 bg-white justify-center items-center gap-1">
             <FiShoppingCart className="text-[40px]" />
-            <div className="text-lg font-semibold">Giỏ hàng trống</div>
-            <div className="text-sm text-gray-500">
-              Có vẻ như bạn vẫn chưa đưa ra lựa chọn của mình
-            </div>
+            <div className="text-lg font-semibold">{t("text-75")}</div>
+            <div className="text-sm text-gray-500">{t("text-76")}</div>
           </div>
         )}
       </div>

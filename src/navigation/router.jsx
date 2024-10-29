@@ -13,6 +13,7 @@ import Cart from "../pages/clients/Cart/Cart";
 import { EditBook } from "../pages/admins/Products/EditBook";
 import User from "../pages/clients/User/User";
 import Checkout from "../pages/clients/Checkout/Checkout";
+import OrderDetail from "../pages/clients/Orders/OrderDetail";
 
 export const router = [
   {
@@ -38,6 +39,10 @@ export const router = [
   {
     path: "/checkout",
     component: <Checkout />,
+  },
+  {
+    path: "/orders/:id",
+    component: <OrderDetail />,
   },
 ];
 

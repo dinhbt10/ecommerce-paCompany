@@ -9,6 +9,7 @@ import { TbCategory } from "react-icons/tb";
 import instance from "../../../utils/http";
 import { GoInbox } from "react-icons/go";
 import useQueryParams from "../../../hook/useQueryParam";
+import { useTranslation } from "react-i18next";
 
 const ProductList = () => {
   const [books, setBooks] = useState([]);
@@ -18,6 +19,7 @@ const ProductList = () => {
   const [distributor, setDistributor] = useState([]);
   const [publisher, setPublisher] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   const getProductList = async () => {
     const res = await getBook();
@@ -55,15 +57,15 @@ const ProductList = () => {
     <div className="max-w-[1100px] w-full mx-auto">
       <div className="h-10 border flex items-center gap-3 justify-start bg-white mb-4 px-2">
         <Link className="text-sm text-gray-700" to="/">
-          Trang chủ
+          {t("text-13")}
         </Link>
         <MdKeyboardArrowRight />
         <Link className="text-sm text-gray-700" to="/product">
-          Cửa hàng
+          {t("text-14")}
         </Link>
         <MdKeyboardArrowRight />
         <span className="text-sm text-black border-l-2 border-[#9F9F9F] font-medium pl-4">
-          {queryParams.nameCategory || "Tất cả"}
+          {queryParams.nameCategory || t("text-15")}
         </span>
       </div>
       <div className="grid grid-cols-5 bg-white gap-3 mb-5 pb-5">
@@ -74,7 +76,7 @@ const ProductList = () => {
                 <div className="p-3 bg-[#d5d4d4]">
                   <TbCategory className="text-md" />
                 </div>
-                Danh mục
+                {t("text-11")}
               </div>
               <fieldset className="flex max-w-md flex-col gap-4 p-5 pt-0">
                 {category.length > 0 && (
@@ -91,7 +93,7 @@ const ProductList = () => {
                       value={""}
                       checked={!queryParams.categoryName}
                     />
-                    <Label className="cursor-pointer">Tất cả</Label>
+                    <Label className="cursor-pointer"> {t("text-15")}</Label>
                   </div>
                 )}
                 {category?.map((item, index) => (
@@ -117,7 +119,7 @@ const ProductList = () => {
                 ))}
                 {category.length === 0 && (
                   <div className="flex justify-center items-center text-red-700">
-                    Bạn chưa có danh mục
+                    {t("text-16")}
                   </div>
                 )}
               </fieldset>
@@ -127,7 +129,7 @@ const ProductList = () => {
                 <div className="p-3 bg-[#d5d4d4]">
                   <GoInbox className="text-md" />
                 </div>
-                Nhà cung cấp
+                {t("text-17")}
               </div>
               <fieldset className="flex max-w-md flex-col gap-4 p-5 pt-0">
                 {category.length > 0 && (
@@ -144,7 +146,7 @@ const ProductList = () => {
                       value={""}
                       checked={!queryParams.publisherName}
                     />
-                    <Label className="cursor-pointer">Tất cả</Label>
+                    <Label className="cursor-pointer">{t("text-15")}</Label>
                   </div>
                 )}
                 {publisher?.map((item, index) => (
@@ -170,7 +172,7 @@ const ProductList = () => {
                 ))}
                 {category.length === 0 && (
                   <div className="flex justify-center items-center text-red-700">
-                    Bạn chưa có danh mục
+                    {t("text-16")}
                   </div>
                 )}
               </fieldset>
@@ -180,7 +182,7 @@ const ProductList = () => {
                 <div className="p-3 bg-[#d5d4d4]">
                   <GoInbox className="text-md" />
                 </div>
-                Nhà xuất bản
+                {t("text-18")}
               </div>
               <fieldset className="flex max-w-md flex-col gap-4 p-5 pt-0">
                 {distributor.length > 0 && (
@@ -196,7 +198,7 @@ const ProductList = () => {
                       className="cursor-pointer"
                       checked={!queryParams.distributorName}
                     />
-                    <Label className="cursor-pointer">Tất cả</Label>
+                    <Label className="cursor-pointer">{t("text-15")}</Label>
                   </div>
                 )}
                 {distributor?.map((item, index) => (
@@ -224,7 +226,7 @@ const ProductList = () => {
                 ))}
                 {category.length === 0 && (
                   <div className="flex justify-center items-center text-red-700">
-                    Bạn chưa có danh mục
+                    {t("text-16")}
                   </div>
                 )}
               </fieldset>
@@ -233,12 +235,12 @@ const ProductList = () => {
         </div>
         <div className="col-span-4 min-h-[500px]">
           <div className="flex justify-between items-center bg-[#F2F4F5] mt-5 p-2 px-5 mr-4">
-            <div className="text-sm text-[#5F6C72]">Bộ lọc:</div>
+            <div className="text-sm text-[#5F6C72]">{t("text-19")}</div>
             <div className="text-sm text-[#5F6C72]">
               <span className="text-[#141414] font-semibold">
                 {filteredData.length}
               </span>{" "}
-              Kết quả tìm kiếm
+              {t("text-20")}
             </div>
           </div>
           <div className="grid grid-cols-4 gap-3 pt-4 pr-4 pb-10">
@@ -263,7 +265,7 @@ const ProductList = () => {
                 </div>
                 {getDateIfWithin7Days(item.createAt) ? (
                   <div className="absolute top-2 left-2 w-10 h-6 bg-red-500 flex justify-center items-center rounded-sm text-sm text-white">
-                    Mới
+                    {t("text-21")}
                   </div>
                 ) : (
                   <></>
@@ -272,7 +274,7 @@ const ProductList = () => {
             ))}
             <div className="col-span-4">
               <div className="flex justify-center items-center h-full">
-                {filteredData.length === 0 && <>Không có kết quả</>}
+                {filteredData.length === 0 && <>{t("text-22")}</>}
               </div>
             </div>
           </div>

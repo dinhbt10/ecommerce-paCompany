@@ -12,6 +12,7 @@ import CategoryDetail from "./CategoryDetail";
 import UiBox from "../../../components/UiBox";
 import instance from "../../../utils/http";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 // import { AppContext } from "../../../context/app.context";
 
 const ProductDetail = () => {
@@ -21,6 +22,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const userInfo = getUserInfoLocalStorage();
+  const { t } = useTranslation();
   // const { setRenderOne } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
@@ -37,7 +39,7 @@ const ProductDetail = () => {
     const { success, data } = res.data;
 
     if (success) {
-      toast.success("Thêm sản phẩm mới thành công", {
+      toast.success(t("text-62"), {
         autoClose: 1000,
         position: "bottom-right",
       });
@@ -60,11 +62,11 @@ const ProductDetail = () => {
     <div className="max-w-[1100px] mx-auto mt-6">
       <div className="h-10 flex items-center gap-3 justify-start bg-white mb-4 px-2 border">
         <Link className="text-sm text-gray-700" to="/">
-          Trang chủ
+          {t("text-13")}
         </Link>
         <MdKeyboardArrowRight />
         <Link className="text-sm text-gray-700" to="/product">
-          Cửa hàng
+          {t("text-14")}
         </Link>
         <MdKeyboardArrowRight />
         <span className="text-sm text-black border-l-2 border-[#9F9F9F] font-medium pl-4">
@@ -113,7 +115,7 @@ const ProductDetail = () => {
               {book.nameBook}
             </span>
             <div className="flex items-center gap-[45px]">
-              <div className="text-[15px] text-[#757575]">Danh mục:</div>
+              <div className="text-[15px] text-[#757575]">{t("text-11")}:</div>
               <div
                 className="text-[15px] text-[#2a87cd] cursor-pointer"
                 onClick={() =>
@@ -124,21 +126,21 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="my-4 text-[#757575] text-[15px] flex items-center gap-[60px]">
-              <div className="">Giá tiền:</div>{" "}
+              <div className="">{t("text-23")}:</div>{" "}
               <div className="text-[#d71a00] font-semibold text-xl">
                 {formatNumber(book.price)}
               </div>
             </div>
 
             <div className="flex items-center gap-[30px]">
-              <div className="text-[15px] text-[#757575]">Vận chuyển:</div>
+              <div className="text-[15px] text-[#757575]">{t("text-24")}:</div>
               <div className="text-[14px] flex items-center gap-1">
                 <img
                   src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/productdetailspage/d9e992985b18d96aab90.png"
                   alt="anh"
                   className="w-[30px]"
                 />
-                Miễn phí vận chuyển
+                {t("text-25")}
               </div>
             </div>
             <div
@@ -148,7 +150,7 @@ const ProductDetail = () => {
               }}
             >
               <div className="text-[15px] text-[#757575] min-w-[43px]">
-                Mô tả:
+                {t("text-26")}:
               </div>
               <div
                 className="text-[14px] flex items-center"
@@ -158,7 +160,7 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="text-[15px] text-[#757575] flex justify-start items-center">
-              <span className="inline-block mr-[50px]">Số lượng: </span>{" "}
+              <span className="inline-block mr-[50px]">{t("text-27")}: </span>{" "}
               <div className="flex justify-center items-center mr-6">
                 <div
                   className="border px-3 py-1 cursor-pointer"
@@ -178,54 +180,48 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="my-4 text-[#757575] text-[15px] flex items-center gap-[50px]">
-              <div className="">Kho còn lại:</div>{" "}
+              <div className="">{t("text-28")}:</div>{" "}
               <div className="text-[14px]">
                 {book.quantity > 0 ? (
                   <>
                     <span className="font-semibold text-black mr-3">
                       {book.quantity}
                     </span>{" "}
-                    sản phẩm
+                    {t("text-29")}
                   </>
                 ) : (
-                  <>Hết hàng</>
+                  <>{t("text-30")}</>
                 )}
               </div>
             </div>
             <div className="flex justify-start items-center gap-[45px] mt-4 mb-2">
               <div className="text-[15px] text-[#757575] min-w-[43px]">
-                Đặt hàng:
+                {t("text-31")}:
               </div>
               <button
                 className="bg-red-600 hover:bg-red-600 rounded px-3 text-white text-[15px] w-1/2 h-[45px] flex justify-center items-center gap-2"
                 onClick={handleAddProduct}
               >
                 <FaCartPlus />
-                Thêm Vào Giỏ Hàng
+                {t("text-32")}
               </button>
             </div>
           </div>
-          <div className="mt-4 text-[14px] text-[#505050]">
-            THÔNG TIN & KHUYẾN MÃI
-          </div>
+          <div className="mt-4 text-[14px] text-[#505050]">{t("text-33")}</div>
           <div className="flex justify-start flex-col bg-white p-3 text-[14px] border border-gray-200">
             <div className="flex justify-start items-center mb-1 gap-1">
               <img src="https://newshop.vn/public/uploads/hot.gif" alt="anh" />
               <span className="text-[#323232] text-[15px] font-bold">
-                Nhiều sản phẩm độc quyền chỉ có tại BookStore
+                {t("text-34")}
               </span>
             </div>
+            <div className="">✅ {t("text-35")}</div>
+            <div className="">✅ {t("text-36")}</div>
             <div className="">
-              ✅ Được kiểm tra hàng và Thanh toán khi nhận hàng.
-            </div>
-            <div className="">✅ Giao hàng trên Toàn Quốc</div>
-            <div className="">
-              ✅ Đặt online hoặc gọi ngay{" "}
+              ✅ {t("text-37")}{" "}
               <div className="inline font-bold text-red-500">0123456789</div>
             </div>
-            <div className="">
-              ✅ Chiết khấu cao cho các đại lý và khách đặt sỉ
-            </div>
+            <div className="">✅ {t("text-38")}</div>
           </div>
         </div>
         <div className="col-span-3">
@@ -235,10 +231,7 @@ const ProductDetail = () => {
                 src="https://newshop.vn/public/assets/frontend/img/shipping.png"
                 alt="abc"
               />
-              <div className="text-white text-[14px]">
-                Sale Bạt Ngàn, Đón Hè Sang Với Nhiều Ưu Đãi Hấp Dẫn Cùng
-                BookStore
-              </div>
+              <div className="text-white text-[14px]">{t("text-39")}</div>
             </div>
             <div className="flex flex-col gap-3 p-3">
               <div className="flex items-center gap-1">
@@ -246,7 +239,7 @@ const ProductDetail = () => {
                   <IoLocationSharp className="text-white text-[18px]" />
                 </div>
                 <div className="text-[#828282] text-[14px]">
-                  Giao hàng bởi Công Ty TNHH Trực Tuyến
+                  {t("text-40")}
                   <div className="font-bold inline ml-1">BookStore</div>
                 </div>
               </div>
@@ -254,17 +247,13 @@ const ProductDetail = () => {
                 <div className="bg-[#92bd2a] min-w-[40px] h-[40px] rounded-[50%] flex items-center justify-center">
                   <MdLocalShipping className="text-white text-[18px]" />
                 </div>
-                <div className="text-[#828282] text-[14px]">
-                  Giao hàng trên toàn Quốc
-                </div>
+                <div className="text-[#828282] text-[14px]">{t("text-41")}</div>
               </div>
               <div className="flex items-center gap-1">
                 <div className="bg-[#92bd2a] min-w-[40px] h-[40px] rounded-[50%] flex items-center justify-center">
                   <IoLocationSharp className="text-white text-[18px]" />
                 </div>
-                <div className="text-[#828282] text-[14px]">
-                  Nhận hàng rồi mới thanh toán tiền ( COD )
-                </div>
+                <div className="text-[#828282] text-[14px]">{t("text-42")}</div>
               </div>
             </div>
           </div>

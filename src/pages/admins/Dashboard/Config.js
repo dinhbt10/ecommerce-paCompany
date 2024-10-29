@@ -4,11 +4,12 @@ export const optionChart = {
   series: [],
   chart: {
     type: "bar",
-    height: 350,
+    height: 200,
     toolbar: {
       show: false,
     },
   },
+  colors: ["#cd5f5f"],
   plotOptions: {
     bar: {
       horizontal: false,

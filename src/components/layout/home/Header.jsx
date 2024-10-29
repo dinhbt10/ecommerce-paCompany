@@ -25,7 +25,7 @@ function Header() {
   const searchListRef = useRef(null);
   const userInfo = getUserInfoLocalStorage();
   const [total, setTotal] = useState(0);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -126,9 +126,7 @@ function Header() {
   return (
     <div className="max-w-[1100px] w-full mx-auto">
       <div className="flex justify-between items-center mb-2">
-        <div className="text-white text-sm">
-          Chào mừng bạn đến với BookStore
-        </div>
+        <div className="text-white text-sm">{t("text-1")}</div>
         {userInfo && (
           <div className="flex items-center gap-4 justify-end">
             <div className="flex justify-center items-center gap-1">
@@ -153,21 +151,21 @@ function Header() {
                     className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                     onClick={() => navigate("/user")}
                   >
-                    <LuUserSquare2 /> Thông tin cá nhân
+                    <LuUserSquare2 /> {t("text-2")}
                   </div>
                   {userInfo?.roles[0] === "ROLE_ADMIN" && (
                     <div
                       className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                       onClick={() => navigate("/admin")}
                     >
-                      <MdOutlineDashboard /> Đi tới trang quản trị
+                      <MdOutlineDashboard /> {t("text-3")}
                     </div>
                   )}
                   <div
                     className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                     onClick={handleLogout}
                   >
-                    <CiLogout /> Đăng xuất
+                    <CiLogout /> {t("text-4")}
                   </div>
                 </div>
               }
@@ -182,17 +180,31 @@ function Header() {
         )}
         {!userInfo && (
           <div className="flex justify-end items-center mt-3 text-white text-sm gap-3 mb-3">
+            <div className="flex justify-center items-center gap-1">
+              <img
+                src={FlagEN}
+                width="25px"
+                className="cursor-pointer"
+                onClick={() => changeLanguage("en")}
+              />
+              <img
+                src={FlagVN}
+                width="28px"
+                className="cursor-pointer"
+                onClick={() => changeLanguage("vi")}
+              />
+            </div>
             <div
               className="flex justify-start items-center cursor-pointer gap-1"
               onClick={() => navigate("/register")}
             >
-              Tạo tài khoản
+              {t("text-5")}
             </div>
             <div
               className="flex justify-start items-center cursor-pointer gap-1"
               onClick={() => navigate("/login")}
             >
-              Đăng nhập
+              {t("text-6")}
             </div>
           </div>
         )}
@@ -214,11 +226,11 @@ function Header() {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 type="text"
-                placeholder="Nhập từ khoá tìm kiếm"
+                placeholder={t("text-9")}
                 className="flex-1 rounded-tl-[5px] rounded-bl-[5px] placeholder:text-[14px] h-[37px]"
               />
               <button className="bg-[#ff9c00] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3">
-                Tìm kiếm
+                {t("text-7")}
               </button>
               {isFocused && (
                 <>
@@ -270,7 +282,7 @@ function Header() {
                 <BsFillBagCheckFill />
               </div>
               <div className="text-white text-[12px] leading-[13px]">
-                <div className="uppercase">Giỏ hàng</div>
+                <div className="uppercase"> {t("text-8")}</div>
                 <div className="pb-1">{formatNumber(total)}</div>
               </div>
             </div>

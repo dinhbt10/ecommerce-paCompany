@@ -5,11 +5,16 @@ import {
   isWithin24Hours,
 } from "../../../utils/common";
 import { DeleteModal } from "./DeleteModal";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const PurchaseOrder = ({ data }) => {
+const PurchaseOrder = ({ data, getAllStatus }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const handleCancel = async (id) => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const handleCancel = async (e, id) => {
+    e.stopPropagation();
     setOrderId(id);
     setOpenModalDelete(true);
   };
@@ -19,12 +24,13 @@ const PurchaseOrder = ({ data }) => {
       {data &&
         data.map((item, index) => (
           <div
-            className="bg-white p-5 flex flex-col gap-3 rounded-sm cursor-pointer"
+            className="bg-white py-5 px-8 flex flex-col gap-3 rounded-sm cursor-pointer"
             key={index}
+            onClick={() => navigate(`/orders/${item.id}`)}
           >
             <div className="flex justify-between items-center">
               <p className="text-black">
-                Ngày nhận hàng: {convertDate(item.deliveryDate)}
+                {t("text-85")}: {convertDate(item.deliveryDate)}
               </p>
               <p className="text-[#cd5f5f]">{item.status}</p>
             </div>
@@ -56,7 +62,7 @@ const PurchaseOrder = ({ data }) => {
             </div>
             <div className="flex flex-col items-end">
               <div className="flex items-center gap-2 py-4">
-                <div className="text-sm">Thành tiền:</div>
+                <div className="text-sm">{t("text-86")}:</div>
                 <div className="text-xl font-semibold text-[#cd5f5f]">
                   {formatNumber(item.total)}
                 </div>
@@ -65,13 +71,13 @@ const PurchaseOrder = ({ data }) => {
                 isWithin24Hours(item.createdAt) && (
                   <div className="flex items-center gap-2">
                     <button className="text-sm border rounded-sm py-2 px-12 bg-gray-200 cursor-not-allowed">
-                      Chờ
+                      {t("text-87")}
                     </button>
                     <button
                       className="text-sm border rounded-sm py-2 px-4"
-                      onClick={() => handleCancel(item.id)}
+                      onClick={(e) => handleCancel(e, item.id)}
                     >
-                      Hủy đơn hàng
+                      {t("text-88")}
                     </button>
                   </div>
                 )}
@@ -84,7 +90,7 @@ const PurchaseOrder = ({ data }) => {
             src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/orderlist/5fafbb923393b712b964.png"
             className="h-[100px]"
           />
-          Chưa có đơn hàng
+          {t("text-88")}
         </div>
       )}
       {openModalDelete && (
@@ -92,6 +98,7 @@ const PurchaseOrder = ({ data }) => {
           orderId={orderId}
           openModal={openModalDelete}
           setOpenModal={setOpenModalDelete}
+          getAllStatus={getAllStatus}
         />
       )}
     </div>

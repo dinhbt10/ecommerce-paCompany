@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { getBook } from "../../../apis/product";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../../../utils/common";
+import { useTranslation } from "react-i18next";
 
 const OurProduct = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+  const { t } = useTranslation();
 
   const getProductList = async () => {
     const res = await getBook();
@@ -19,7 +21,7 @@ const OurProduct = () => {
   return (
     <div className="mt-5 max-w-[1100px] mx-auto">
       <span className="flex justify-center text-[#3A3A3A] font-bold text-3xl mb-5">
-        Sản phẩm của chúng tôi
+        {t("text-12")}
       </span>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 gap-4 bg-white p-4">
         {books?.map((item, index) => (

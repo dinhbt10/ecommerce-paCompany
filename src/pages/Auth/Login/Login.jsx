@@ -35,10 +35,6 @@ const Login = () => {
       });
       const { success, data } = res.data;
       if (success) {
-        toast.success("Đăng nhập thành công", {
-          position: "bottom-right",
-          autoClose: 1500,
-        });
         saveToLocalStorage(data);
         setTimeout(() => {
           navigate("/");

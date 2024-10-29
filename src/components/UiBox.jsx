@@ -2,8 +2,11 @@ import { BsBox2 } from "react-icons/bs";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { GoCreditCard } from "react-icons/go";
 import { TfiCup } from "react-icons/tfi";
+import { useTranslation } from "react-i18next";
 
 const UiBox = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="grid grid-cols-4 bg-white my-3 border">
       <div className="col-span-1">
@@ -12,9 +15,9 @@ const UiBox = () => {
             <BsBox2 className="text-2xl" />
           </div>
           <div className="">
-            <div className="uppercase text-[14px]">Vận chuyển nhanh</div>
+            <div className="uppercase text-[14px]">{t("text-54")}</div>
             <div className="uppercase text-[12px] text-[#5F6C72]">
-              Giao hàng trong 24h
+              {t("text-55")}
             </div>
           </div>
         </div>
@@ -25,9 +28,9 @@ const UiBox = () => {
             <TfiCup className="text-2xl" />
           </div>
           <div className="">
-            <div className="uppercase text-[14px]">24h trả lại</div>
+            <div className="uppercase text-[14px]">{t("text-56")}</div>
             <div className="uppercase text-[12px] text-[#5F6C72]">
-              Hoàn 100% giá trị
+              {t("text-57")}
             </div>
           </div>
         </div>
@@ -38,9 +41,9 @@ const UiBox = () => {
             <GoCreditCard className="text-2xl" />
           </div>
           <div className="">
-            <div className="uppercase text-[14px]">Thanh toán an toàn</div>
+            <div className="uppercase text-[14px]">{t("text-58")}</div>
             <div className="uppercase text-[12px] text-[#5F6C72]">
-              Tiền của bạn được đảm bảo
+              {t("text-59")}
             </div>
           </div>
         </div>
@@ -51,9 +54,9 @@ const UiBox = () => {
             <TfiHeadphoneAlt className="text-2xl" />
           </div>
           <div className="">
-            <div className="uppercase text-[14px]">Hỗ trợ 24/7</div>
+            <div className="uppercase text-[14px]">{t("text-60")}</div>
             <div className="uppercase text-[12px] text-[#5F6C72]">
-              Liên hệ/tin nhắn trực tiếp
+              {t("text-61")}
             </div>
           </div>
         </div>

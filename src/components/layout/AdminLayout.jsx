@@ -1,5 +1,5 @@
 import { Sidebar } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   HiChartPie,
   HiShoppingCart,
@@ -9,6 +9,8 @@ import {
 import { FaUser } from "react-icons/fa";
 import { SiLibreofficewriter } from "react-icons/si";
 import { FaWarehouse } from "react-icons/fa";
+import { clearLocalStorage } from "../../utils/common";
+import { BiSolidLogOut } from "react-icons/bi";
 
 const router = [
   {
@@ -55,7 +57,14 @@ const router = [
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPathKey = location.pathname.split("/admin/")[1]?.split("/")[0];
+
+  const handleLogout = () => {
+    clearLocalStorage();
+    navigate("/");
+  };
+
   return (
     <div className="flex">
       <Sidebar className="h-[100vh]">
@@ -98,6 +107,13 @@ const AdminLayout = ({ children }) => {
                 </Sidebar.Item>
               );
             })}
+            <Sidebar.Item
+              icon={BiSolidLogOut}
+              onClick={handleLogout}
+              className="cursor-pointer"
+            >
+              Logut out
+            </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
