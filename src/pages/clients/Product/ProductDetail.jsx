@@ -13,6 +13,7 @@ import UiBox from "../../../components/UiBox";
 import instance from "../../../utils/http";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { Rating } from "flowbite-react";
 // import { AppContext } from "../../../context/app.context";
 
 const ProductDetail = () => {
@@ -23,12 +24,14 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const userInfo = getUserInfoLocalStorage();
   const { t } = useTranslation();
+  const [comments, setComments] = useState([]);
   // const { setRenderOne } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
     setBook(res.data);
     setUrlBook(res.data.imageUrls[0]);
+    setComments(res.data.feedbacks.map((item) => item));
   };
 
   const handleAddProduct = async () => {
@@ -261,6 +264,30 @@ const ProductDetail = () => {
       </div>
       <CategoryDetail categoryName={book.categoryName} idBook={book.idBook} />
       <DetailDescription description={book.description_long} />
+      {comments.length > 0 && (
+        <div className="bg-white max-w-[1100px] mx-auto mt-5 p-5">
+          <div className="mb-3">{t("text-152")}</div>
+          <div className="flex flex-col gap-3">
+            {comments.map((comment, index) => (
+              <div key={index} className="border p-3 rounded">
+                <div className="flex items-center justify-start gap-2">
+                  <div className="text-[16px]">{comment.username}</div>
+                  <Rating>
+                    {Array(comment.rating)
+                      .fill(0)
+                      .map((_item, key) => (
+                        <Rating.Star key={key} />
+                      ))}
+                  </Rating>
+                </div>
+                <div className="flex flex-col gap-1 justify-start">
+                  {comment.comment}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <DetailProduct book={book} />
       <UiBox />
     </div>

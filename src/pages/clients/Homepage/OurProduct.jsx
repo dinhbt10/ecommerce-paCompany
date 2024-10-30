@@ -35,11 +35,11 @@ const OurProduct = () => {
                 alt={item.nameBook}
                 className="object-contain  h-2/3 rounded"
               />
-              <div className="bg-[#F4F5F7] py-5 h-1/3">
+              <div className="py-5 h-1/3">
                 <span className="block text-center text-[#333333] font-semibold text-sm px-1 line-clamp-2">
                   {item.nameBook}
                 </span>
-                <span className="block text-center text-[#333333] font-semibold text-[16px]">
+                <span className="block text-center text-[#d71a00] font-semibold text-[16px]">
                   {formatNumber(item.price)}
                 </span>
               </div>

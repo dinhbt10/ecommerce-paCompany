@@ -5,11 +5,13 @@ import instance from "../../../utils/http";
 import { useParams } from "react-router-dom";
 import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
 import { useTranslation } from "react-i18next";
+import { Rating } from "flowbite-react";
 
 const OrderDetail = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const [data, setData] = useState();
+  const [comments, setComments] = useState([]);
   const userId = getUserInfoLocalStorage().idUser;
   const getOrderDetail = async () => {
     const res = await instance(
@@ -17,6 +19,14 @@ const OrderDetail = () => {
     );
     const { data } = res.data;
     setData(data);
+    setComments(
+      data.books.map((item) => ({
+        username: item.feedbacks[0].username || "",
+        comment: item.feedbacks[0].comment || "",
+        rating: item.feedbacks[0].rating || "",
+        nameBook: item.nameBook,
+      }))
+    );
   };
   useEffect(() => {
     getOrderDetail();
@@ -150,7 +160,38 @@ const OrderDetail = () => {
           </div>
           {data.status === "Completed" && (
             <div className="bg-white max-w-[1100px] mx-auto mt-5 p-5">
-              <div className="">{t("text-114")}</div>
+              <div className="mb-3">{t("text-114")}</div>
+              <div className="flex flex-col gap-3">
+                {comments.length > 0 &&
+                  comments.map((comment, index) => (
+                    <div key={index} className="border p-3 rounded">
+                      <div className="flex items-center justify-start gap-2 mb-2">
+                        <div className="text-[16px]">{comment.username}</div>
+                        <div className="text-[16px]">{comment.nameBook}</div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <Rating>
+                          {Array(comment.rating)
+                            .fill(0)
+                            .map((_item, key) => (
+                              <Rating.Star key={key} />
+                            ))}
+                        </Rating>
+                        <textarea
+                          rows={2}
+                          type="text"
+                          value={comment.comment}
+                          onChange={(e) => {
+                            const cloneComent = [...comments];
+                            cloneComent[index].comment = e.target.value;
+                            setComments(cloneComent);
+                          }}
+                          className="w-full rounded focus:outline-none border-[#A8B6E2] text-sm"
+                        />
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           )}
         </>

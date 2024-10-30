@@ -43,9 +43,7 @@ const CategoryDetail = ({ categoryName, idBook }) => {
                       alt="anh"
                       className="w-[200px] h-[250px] object-cover"
                     />
-                    <div className="text-[15px] mt-1 truncate">
-                      {item.nameBook}
-                    </div>
+                    <div className="text-[15px] mt-1">{item.nameBook}</div>
                     <div className="text-[15px] text-[#d71a00] font-semibold">
                       {formatNumber(item.price)}
                     </div>
@@ -62,26 +60,27 @@ const CategoryDetail = ({ categoryName, idBook }) => {
             {t("text-44")}
           </div>
           <div className="p-4">
-            <div className="flex justify-start items-center gap-5 overflow-auto">
+            <div className="grid grid-cols-4 gap-3">
               {books
                 .filter((item) => item.idBook !== idBook)
                 .map((item, key) => {
                   return (
-                    <div
-                      key={key}
-                      className="flex flex-col items-start cursor-pointer"
-                      onClick={() => navigate(`/product/${item.idBook}`)}
-                    >
-                      <img
-                        src={item.imageUrls[0]}
-                        alt="anh"
-                        className="w-[200px] h-[250px] object-cover"
-                      />
-                      <div className="text-[15px] mt-1 truncate">
-                        {item.nameBook}
-                      </div>
-                      <div className="text-[15px] text-[#d71a00] font-semibold">
-                        {formatNumber(item.price)}
+                    <div className="col-span-1 border" key={key}>
+                      <div
+                        className="flex flex-col items-center cursor-pointer p-2"
+                        onClick={() => navigate(`/product/${item.idBook}`)}
+                      >
+                        <img
+                          src={item.imageUrls[0]}
+                          alt="anh"
+                          className="w-full h-[250px] object-contain"
+                        />
+                        <div className="text-[15px] mt-1 text-wrap">
+                          {item.nameBook}
+                        </div>
+                        <div className="text-[15px] text-[#d71a00] font-semibold">
+                          {formatNumber(item.price)}
+                        </div>
                       </div>
                     </div>
                   );
