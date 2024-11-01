@@ -16,6 +16,7 @@ import instance from "../../../utils/http";
 import FlagEN from "../../../../public/english.png";
 import FlagVN from "../../../../public/vietnam.png";
 import { useTranslation } from "react-i18next";
+import { MdKeyboardVoice } from "react-icons/md";
 
 function Header() {
   const [value, setValue] = useState("");
@@ -26,13 +27,14 @@ function Header() {
   const userInfo = getUserInfoLocalStorage();
   const [total, setTotal] = useState(0);
   const { t, i18n } = useTranslation();
+  const [isListening, setIsListening] = useState(false);
 
   const navigate = useNavigate();
 
   const getProductList = async (value) => {
     const res = await getBook({ nameBook: value });
 
-    if (res.data.data.books && res.data.data.books.length > 0) {
+    if (res.data.data?.books && res.data.data.books.length > 0) {
       setBooks(res.data.data.books);
     } else {
       setBooks([]);
@@ -122,6 +124,51 @@ function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "vi-VN";
+
+      let silenceTimeout;
+
+      // Khi nhận kết quả từ giọng nói
+      recognition.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map((result) => result[0].transcript)
+          .join("");
+        setValue(transcript);
+
+        // Xóa timer hiện tại và đặt lại để kiểm tra 3 giây im lặng
+        clearTimeout(silenceTimeout);
+        silenceTimeout = setTimeout(() => {
+          setIsListening(false);
+        }, 1000);
+      };
+
+      // Dừng ghi âm khi hết thời gian im lặng
+      recognition.onend = () => setIsListening(false);
+
+      // Bắt đầu hoặc dừng ghi âm dựa trên isListening
+      if (isListening) {
+        recognition.start();
+      } else {
+        recognition.stop();
+        clearTimeout(silenceTimeout); // Xóa timer khi dừng ghi âm
+      }
+
+      return () => {
+        recognition.stop();
+        clearTimeout(silenceTimeout);
+      };
+    } else {
+      console.warn("Trình duyệt của bạn không hỗ trợ Web Speech API.");
+    }
+  }, [isListening]);
 
   return (
     <div className="max-w-[1100px] w-full mx-auto">
@@ -229,8 +276,23 @@ function Header() {
                 placeholder={t("text-9")}
                 className="flex-1 rounded-tl-[5px] rounded-bl-[5px] placeholder:text-[14px] h-[37px]"
               />
-              <button className="bg-[#ff9c00] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3">
-                {t("text-7")}
+              <button
+                className="bg-[#ff9c00] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+                type="button"
+              >
+                {isListening ? (
+                  <div className="recording-indicator">
+                    <div className="recording-dot"></div>
+                    <span className="recording-text">{t("text-155")}...</span>
+                  </div>
+                ) : (
+                  <MdKeyboardVoice
+                    onClick={() => {
+                      setValue("");
+                      setIsListening(true);
+                    }}
+                  />
+                )}
               </button>
               {isFocused && (
                 <>

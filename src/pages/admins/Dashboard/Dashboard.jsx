@@ -3,7 +3,7 @@ import instance from "../../../utils/http";
 import { Table } from "flowbite-react";
 import { convertDate, formatNumber } from "../../../utils/common";
 import Chart from "react-apexcharts";
-import { optionChart } from "./Config";
+import { optionChart, optionChart1 } from "./Config";
 import { CiUser } from "react-icons/ci";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { CiShoppingCart } from "react-icons/ci";
@@ -38,6 +38,8 @@ const Dashboard = () => {
   const [topBookSale, setTopBookSale] = useState([]);
   const [orders, setOrders] = useState([]);
   const [charts, setCharts] = useState(optionChart);
+  const [chartPies, setChartPies] = useState(optionChart1);
+  const [chartType, setChartType] = useState("bar");
   const [totals, setTotals] = useState({
     totalBook: 0,
     totalUsers: 0,
@@ -62,6 +64,10 @@ const Dashboard = () => {
             data: r[2].data.data.data,
           },
         ],
+      }));
+      setChartPies((prev) => ({
+        ...prev,
+        series: [...r[2].data.data.data],
       }));
       setTotals(r[3].data.data);
     });
@@ -95,13 +101,35 @@ const Dashboard = () => {
         ))}
       </div>
       <div className="bg-white mb-5 p-2 rounded">
-        <div className="text-xl font-medium px-2">Doanh thu năm hiện tại</div>
-        <Chart
-          series={charts.series}
-          options={charts}
-          type="bar"
-          height={200}
-        />
+        <div className="flex items-center justify-between">
+          <div className="text-xl font-medium px-2">Doanh thu năm hiện tại</div>
+          <div className="h-[30px]">
+            <select
+              className="focus:outline-none rounded"
+              value={chartType}
+              onChange={(e) => setChartType(e.target.value)}
+            >
+              <option value="bar">Biển đồ cột</option>
+              <option value="pie">Biển đồ tròn</option>
+            </select>
+          </div>
+        </div>
+        {chartType === "bar" && (
+          <Chart
+            series={charts.series}
+            options={charts}
+            type="bar"
+            height={200}
+          />
+        )}
+        {chartType === "pie" && (
+          <Chart
+            series={chartPies.series}
+            options={chartPies}
+            type="pie"
+            height={200}
+          />
+        )}
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="col-span-1">

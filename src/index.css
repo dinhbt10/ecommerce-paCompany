@@ -20,3 +20,36 @@ input:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* Container hiệu ứng */
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Chấm tròn */
+.recording-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+/* Hiệu ứng nhấp nháy */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* Text ghi âm */
+.recording-text {
+  font-size: 14px;
+  color: #ff0000;
+}

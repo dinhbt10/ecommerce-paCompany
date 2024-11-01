@@ -14,7 +14,6 @@ import instance from "../../../utils/http";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Rating } from "flowbite-react";
-// import { AppContext } from "../../../context/app.context";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -25,7 +24,6 @@ const ProductDetail = () => {
   const userInfo = getUserInfoLocalStorage();
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
-  // const { setRenderOne } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
@@ -35,6 +33,13 @@ const ProductDetail = () => {
   };
 
   const handleAddProduct = async () => {
+    if (!userInfo) {
+      toast.error(t("text-154"), {
+        autoClose: 1000,
+        position: "bottom-right",
+      });
+      return;
+    }
     const res = await instance.post("/cart/add", undefined, {
       params: { bookId: book.idBook, quantity, userId: userInfo.idUser },
     });
@@ -46,7 +51,6 @@ const ProductDetail = () => {
         autoClose: 1000,
         position: "bottom-right",
       });
-      // setRenderOne((prev) => prev + 1);
     } else {
       toast.error(data, {
         autoClose: 1000,

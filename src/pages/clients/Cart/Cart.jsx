@@ -94,7 +94,7 @@ const Cart = () => {
     if (userInfo?.idUser) {
       getCart(userInfo.idUser);
     }
-  }, [userInfo]);
+  }, [userInfo?.idUser]);
 
   useEffect(() => {
     const handleIsCheckedAll = () => {
