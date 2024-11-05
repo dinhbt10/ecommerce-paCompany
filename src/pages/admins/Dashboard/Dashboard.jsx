@@ -82,7 +82,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-4 mb-5 gap-5">
         {totalData.map((item, index) => (
           <div
-            className="col-span-1 bg-white rounded cursor-pointer"
+            className="col-span-1 bg-[#d76e6e] text-white rounded cursor-pointer"
             key={index}
             onClick={() => navigate(item.link)}
           >

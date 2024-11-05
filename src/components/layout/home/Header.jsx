@@ -95,6 +95,7 @@ function Header() {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng); // Thay đổi ngôn ngữ
+    localStorage.setItem("lang", lng);
   };
 
   useEffect(() => {

@@ -5,6 +5,8 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { getBook } from "../../../apis/product";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../../../utils/common";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const tableHead = [
   {
@@ -49,6 +51,23 @@ const Product = () => {
     setBooks(res.data.data ? res.data.data.books : []);
   };
 
+  const exportToExcel = () => {
+    // Tạo worksheet từ dữ liệu JSON
+    const worksheet = XLSX.utils.json_to_sheet(books);
+
+    // Tạo workbook và thêm worksheet vào workbook
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Xuất workbook thành file Excel
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, `products.xlsx`);
+  };
+
   useEffect(() => {
     getProductList();
   }, []);
@@ -58,13 +77,15 @@ const Product = () => {
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Sản phẩm</h1>
         <div className="flex justify-center gap-2">
-          <Button color="light">Xuất Excel</Button>
-          <Button
-            className="outline-none"
+          <Button color="light" onClick={exportToExcel}>
+            Xuất Excel
+          </Button>
+          <button
+            className="outline-none bg-[#d76e6e] px-2 rounded text-white"
             onClick={() => navigate("/admin/products/create")}
           >
             + Thêm sản phẩm
-          </Button>
+          </button>
         </div>
       </div>
       <Table hoverable>

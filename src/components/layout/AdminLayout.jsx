@@ -83,7 +83,7 @@ const AdminLayout = ({ children }) => {
                     icon={route.icon}
                     className={
                       isActive
-                        ? "text-slate-600 font-bold bg-slate-300 hover:text-slate-600 hover:bg-slate-300"
+                        ? "text-white font-bold bg-[#d76e6e] hover:bg-[#d76e6e]"
                         : ""
                     }
                   >
@@ -99,7 +99,7 @@ const AdminLayout = ({ children }) => {
                   icon={route.icon}
                   className={
                     active
-                      ? "text-slate-600 font-bold bg-slate-300 hover:text-slate-600 hover:bg-slate-300"
+                      ? "text-white font-bold bg-[#d76e6e] hover:bg-[#d76e6e]"
                       : ""
                   }
                 >

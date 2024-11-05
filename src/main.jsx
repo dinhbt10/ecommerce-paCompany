@@ -6,19 +6,24 @@ import "react-toastify/dist/ReactToastify.css";
 import { I18nextProvider } from "react-i18next";
 import { initReactI18next } from "react-i18next";
 import i18n from "i18next";
-
 import translationEN from "./locales/en/translation.json";
 import translationVI from "./locales/vi/translation.json";
+
+const locales = localStorage.getItem("lang");
+
+if (!locales) {
+  localStorage.setItem("lang", "vi");
+}
 
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: translationEN },
     vi: { translation: translationVI },
   },
-  lng: "en", // Ngôn ngữ mặc định
-  fallbackLng: "en", // Ngôn ngữ dự phòng nếu không tìm thấy dịch
+  lng: locales,
+  fallbackLng: "en",
   interpolation: {
-    escapeValue: false, // React đã bảo vệ chống XSS
+    escapeValue: false,
   },
 });
 
