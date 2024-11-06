@@ -2,13 +2,19 @@ import { Select, Table, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { MdOutlineWrongLocation } from "react-icons/md";
 import instance from "../../../utils/http";
-import { useParams } from "react-router-dom";
-import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  formatNumber,
+  getUserInfoLocalStorage,
+  isWithin24Hours,
+} from "../../../utils/common";
 import { useTranslation } from "react-i18next";
 import { Rating } from "flowbite-react";
+import { toast } from "react-toastify";
 
 const OrderDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [data, setData] = useState();
   const [comments, setComments] = useState([]);
@@ -21,13 +27,50 @@ const OrderDetail = () => {
     setData(data);
     setComments(
       data.books.map((item) => ({
-        username: item.feedbacks[0].username || "",
-        comment: item.feedbacks[0].comment || "",
-        rating: item.feedbacks[0].rating || "",
+        username: item.feedbacks[0]?.username || "",
+        comment: item.feedbacks[0]?.comment || "",
+        rating: item.feedbacks[0]?.rating || 5,
         nameBook: item.nameBook,
+        orderDetailId: item.orderDetailId,
+        idBook: item.idBook,
       }))
     );
   };
+
+  const handleSubmit = async () => {
+    try {
+      const cleanData = comments.map((item) => ({
+        orderDetailId: item.orderDetailId,
+        bookId: item.idBook,
+        comment: item.comment,
+        rating: item.rating,
+      }));
+
+      const res = await instance.post(
+        `feedback/create?userId=${userId}&orderId=${data.id}`,
+        cleanData
+      );
+
+      const { success } = res.data;
+
+      if (success) {
+        toast.success(t("text-156"), {
+          autoClose: 1500,
+          position: "bottom-right",
+        });
+        navigate("/user?active=1");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleRatingChange = (index, key) => {
+    const cloneComent = [...comments];
+    cloneComent[index].rating = key;
+    setComments(cloneComent);
+  };
+
   useEffect(() => {
     getOrderDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,13 +214,18 @@ const OrderDetail = () => {
                       </div>
                       <div className="flex flex-col gap-1">
                         <Rating>
-                          {Array(comment.rating)
-                            .fill(0)
-                            .map((_item, key) => (
-                              <Rating.Star key={key} />
-                            ))}
+                          {[1, 2, 3, 4, 5].map((star, key) => (
+                            <Rating.Star
+                              key={key}
+                              filled={star <= comment.rating}
+                              onClick={() => handleRatingChange(index, key + 1)}
+                              className="cursor-pointer"
+                            />
+                          ))}
                         </Rating>
                         <textarea
+                          disabled={!isWithin24Hours(data.createdAt)}
+                          placeholder="Nhập đánh giá của sản phẩm"
                           rows={2}
                           type="text"
                           value={comment.comment}
@@ -192,6 +240,16 @@ const OrderDetail = () => {
                     </div>
                   ))}
               </div>
+              {isWithin24Hours(data.createdAt) && (
+                <div className="flex justify-end mt-5" onClick={handleSubmit}>
+                  <button
+                    type="button"
+                    className="bg-[#d76e6e] py-2 px-4 rounded text-white"
+                  >
+                    Đánh giá
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </>

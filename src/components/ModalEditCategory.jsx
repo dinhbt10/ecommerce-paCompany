@@ -78,7 +78,12 @@ export function ModalEdit({
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleSubmit}>Cập nhật</Button>
+          <button
+            className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+            onClick={handleSubmit}
+          >
+            Cập nhật
+          </button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy
           </Button>

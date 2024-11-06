@@ -1,64 +1,75 @@
 import { Sidebar } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  HiChartPie,
-  HiShoppingCart,
-  HiShoppingBag,
-  HiViewBoards,
-} from "react-icons/hi";
-import { FaUser } from "react-icons/fa";
-import { SiLibreofficewriter } from "react-icons/si";
-import { FaWarehouse } from "react-icons/fa";
 import { clearLocalStorage } from "../../utils/common";
-import { BiSolidLogOut } from "react-icons/bi";
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  BookOpenCheck,
+  User,
+  LogOut,
+} from "lucide-react";
 
-const router = [
+const childrenRoute = [
   {
+    type: "item",
     path: "/admin",
     title: "Thống kê",
-    icon: HiChartPie,
+    icon: LayoutDashboard,
   },
   {
-    path: "/admin/categories",
-    title: "Danh mục",
-    icon: HiViewBoards,
+    type: "collapse",
+    title: "E-commerce",
+    icon: ShoppingCart,
+    children: [
+      {
+        path: "/admin/categories",
+        title: "Danh mục",
+      },
+      {
+        path: "/admin/products",
+        title: "Sản phẩm",
+      },
+      {
+        path: "/admin/orders",
+        title: "Đơn hàng",
+      },
+    ],
   },
   {
-    path: "/admin/products",
-    title: "Sản phẩm",
-    icon: HiShoppingBag,
+    type: "collapse",
+    title: "Nguồn hàng",
+    icon: BookOpenCheck,
+    children: [
+      {
+        path: "/admin/publisher",
+        title: "Nhà xuất bản",
+      },
+      {
+        path: "/admin/distributor",
+        title: "Nhà phân phối",
+      },
+    ],
   },
   {
-    path: "/admin/publisher",
-    title: "Nhà xuất bản",
-    icon: SiLibreofficewriter,
-  },
-  {
-    path: "/admin/distributor",
-    title: "Nhà phân phối",
-    icon: FaWarehouse,
-  },
-  {
-    path: "/admin/customers",
-    title: "Khách hàng",
-    icon: FaUser,
-  },
-  {
-    path: "/admin/orders",
-    title: "Đơn hàng",
-    icon: HiShoppingCart,
-  },
-  {
-    path: "/admin/employee",
-    title: "Nhân viên",
-    icon: FaUser,
+    type: "collapse",
+    title: "Users",
+    icon: User,
+    children: [
+      {
+        path: "/admin/customers",
+        title: "Khách hàng",
+      },
+      {
+        path: "/admin/employee",
+        title: "Nhân viên",
+      },
+    ],
   },
 ];
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const currentPathKey = location.pathname.split("/admin/")[1]?.split("/")[0];
 
   const handleLogout = () => {
     clearLocalStorage();
@@ -71,48 +82,57 @@ const AdminLayout = ({ children }) => {
         <Sidebar.Logo href="/admin">BOOKSTORE</Sidebar.Logo>
         <Sidebar.Items>
           <Sidebar.ItemGroup>
-            {router.map((route, index) => {
-              const active = route.path.includes(currentPathKey);
-              if (route.path === "/admin") {
-                const isActive = location.pathname === "/admin";
+            {childrenRoute.map((item, key) => {
+              if (item.type === "collapse") {
                 return (
-                  <Sidebar.Item
-                    key={index}
-                    as={Link}
-                    to={route.path}
-                    icon={route.icon}
-                    className={
-                      isActive
-                        ? "text-white font-bold bg-[#d76e6e] hover:bg-[#d76e6e]"
-                        : ""
-                    }
+                  <Sidebar.Collapse
+                    icon={item.icon}
+                    label={item.title}
+                    key={key}
                   >
-                    {route.title}
-                  </Sidebar.Item>
+                    {item.children.map((child, index) => {
+                      const active = child.path === location.pathname;
+                      return (
+                        <Sidebar.Item
+                          key={index}
+                          as={Link}
+                          to={child.path}
+                          className={
+                            active
+                              ? "text-white font-bold bg-[#d76e6e] hover:bg-[#d76e6e]"
+                              : ""
+                          }
+                        >
+                          {child.title}
+                        </Sidebar.Item>
+                      );
+                    })}
+                  </Sidebar.Collapse>
                 );
               }
+              const active = location.pathname === "/admin";
               return (
                 <Sidebar.Item
-                  key={index}
                   as={Link}
-                  to={route.path}
-                  icon={route.icon}
+                  to={item.path}
+                  icon={item.icon}
+                  key={key}
                   className={
                     active
                       ? "text-white font-bold bg-[#d76e6e] hover:bg-[#d76e6e]"
                       : ""
                   }
                 >
-                  {route.title}
+                  {item.title}
                 </Sidebar.Item>
               );
             })}
             <Sidebar.Item
-              icon={BiSolidLogOut}
+              icon={LogOut}
               onClick={handleLogout}
               className="cursor-pointer"
             >
-              Logut out
+              Đăng xuất
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>

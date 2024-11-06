@@ -1,4 +1,3 @@
-import { Button } from "flowbite-react";
 import { createCategory, getCategory } from "../../../apis/category";
 import { useEffect, useState } from "react";
 import { ModalComponents } from "../../../components/Modal";
@@ -85,9 +84,12 @@ const Categories = () => {
     <div>
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Danh mục</h1>
-        <Button className="outline-none" onClick={() => setIsOpen(true)}>
+        <button
+          className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+          onClick={() => setIsOpen(true)}
+        >
           + Thêm danh mục
-        </Button>
+        </button>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {category &&

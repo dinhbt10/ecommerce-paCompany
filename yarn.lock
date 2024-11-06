@@ -3069,6 +3069,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.454.0":
+  version: 0.454.0
+  resolution: "lucide-react@npm:0.454.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+  checksum: 6f4dc004d84730fd7b246d531a4b801e850ba81e390bd1ac3bd66a4e02ee6dd81e023acf789eb8aec5c030c53915d058badda174d6095664610fe41ba1310208
+  languageName: node
+  linkType: hard
+
 "make-fetch-happen@npm:^13.0.0":
   version: 13.0.1
   resolution: "make-fetch-happen@npm:13.0.1"
@@ -3474,6 +3483,7 @@ __metadata:
     globals: ^15.9.0
     i18next: ^23.16.0
     lodash: ^4.17.21
+    lucide-react: ^0.454.0
     postcss: ^8.4.41
     react: ^18.3.1
     react-apexcharts: ^1.4.4

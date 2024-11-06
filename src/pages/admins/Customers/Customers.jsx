@@ -1,7 +1,5 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { RiEdit2Fill } from "react-icons/ri";
 import instance from "../../../utils/http";
 
 const tableHead = [
@@ -49,9 +47,6 @@ const Customers = () => {
           {tableHead.map((item) => (
             <Table.HeadCell key={item.id}>{item.name}</Table.HeadCell>
           ))}
-          <Table.HeadCell>
-            <span className="sr-only">Edit</span>
-          </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {users &&
@@ -73,12 +68,6 @@ const Customers = () => {
                 <Table.Cell>{item.username}</Table.Cell>
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>
-                  <div className="flex justify-center items-center gap-2">
-                    <RiEdit2Fill fontSize={20} />
-                    <FaRegTrashAlt />
-                  </div>
-                </Table.Cell>
               </Table.Row>
             ))}
           {users.length === 0 && (

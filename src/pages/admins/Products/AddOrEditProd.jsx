@@ -130,7 +130,12 @@ export function AddOrEditProduct() {
             <Button color="gray" onClick={() => navigate(-1)}>
               Trở lại
             </Button>
-            <Button type="submit">Tạo sản phẩm</Button>
+            <button
+              type="submit"
+              className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+            >
+              Tạo sản phẩm
+            </button>
           </div>
         </div>
         <div className="">

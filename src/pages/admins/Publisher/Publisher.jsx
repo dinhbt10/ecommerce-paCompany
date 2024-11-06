@@ -1,4 +1,3 @@
-import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Table } from "flowbite-react";
 import { ModalPublisherAddOrEdit } from "./ModalAddOrEdit";
@@ -128,9 +127,12 @@ const Publisher = () => {
     <div>
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Nhà xuất bản</h1>
-        <Button className="outline-none" onClick={() => setIsOpen(true)}>
+        <button
+          className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+          onClick={() => setIsOpen(true)}
+        >
           + Thêm nhà xuất bản
-        </Button>
+        </button>
       </div>
       <Table hoverable>
         <Table.Head>

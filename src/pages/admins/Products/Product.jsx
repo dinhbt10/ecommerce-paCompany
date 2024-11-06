@@ -11,7 +11,7 @@ import { saveAs } from "file-saver";
 const tableHead = [
   {
     id: "1",
-    name: "Ảnh sản phẩm",
+    name: "Ảnh",
   },
   {
     id: "2",
@@ -23,7 +23,7 @@ const tableHead = [
   },
   {
     id: "4",
-    name: "Nhà xuất bản",
+    name: "NXB",
   },
   {
     id: "5",
@@ -39,7 +39,7 @@ const tableHead = [
   },
   {
     id: "8",
-    name: "Nhà sản xuất",
+    name: "NSX",
   },
 ];
 
@@ -81,7 +81,7 @@ const Product = () => {
             Xuất Excel
           </Button>
           <button
-            className="outline-none bg-[#d76e6e] px-2 rounded text-white"
+            className="outline-none bg-[#d76e6e] px-4 rounded text-white"
             onClick={() => navigate("/admin/products/create")}
           >
             + Thêm sản phẩm
@@ -91,7 +91,9 @@ const Product = () => {
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (
-            <Table.HeadCell key={item.id}>{item.name}</Table.HeadCell>
+            <Table.HeadCell className="text-[14px]" key={item.id}>
+              {item.name}
+            </Table.HeadCell>
           ))}
           <Table.HeadCell>
             <span className="sr-only">Edit</span>

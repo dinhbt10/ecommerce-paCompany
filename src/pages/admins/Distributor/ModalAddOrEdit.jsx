@@ -102,7 +102,12 @@ export function ModalDistributorAddOrEdit({
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleSubmit}>{item ? "Sửa" : "Thêm"}</Button>
+          <button
+            className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+            onClick={handleSubmit}
+          >
+            {item ? "Sửa" : "Thêm"}
+          </button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy
           </Button>

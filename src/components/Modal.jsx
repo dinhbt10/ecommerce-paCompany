@@ -52,7 +52,12 @@ export function ModalComponents({
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleSubmit}>Thêm</Button>
+          <button
+            className="outline-none bg-[#d76e6e] py-2 px-4 rounded-lg text-white"
+            onClick={handleSubmit}
+          >
+            Thêm
+          </button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy
           </Button>

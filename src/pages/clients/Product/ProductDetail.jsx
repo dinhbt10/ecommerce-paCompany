@@ -271,7 +271,7 @@ const ProductDetail = () => {
       {comments.length > 0 && (
         <div className="bg-white max-w-[1100px] mx-auto mt-5 p-5">
           <div className="mb-3">{t("text-152")}</div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 overflow-auto h-[300px]">
             {comments.map((comment, index) => (
               <div key={index} className="border p-3 rounded">
                 <div className="flex items-center justify-start gap-2">
