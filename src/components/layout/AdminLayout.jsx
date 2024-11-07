@@ -7,6 +7,7 @@ import {
   BookOpenCheck,
   User,
   LogOut,
+  House,
 } from "lucide-react";
 
 const childrenRoute = [
@@ -127,6 +128,13 @@ const AdminLayout = ({ children }) => {
                 </Sidebar.Item>
               );
             })}
+            <Sidebar.Item
+              icon={House}
+              onClick={() => navigate("/")}
+              className="cursor-pointer"
+            >
+              Về trang sản phẩm
+            </Sidebar.Item>
             <Sidebar.Item
               icon={LogOut}
               onClick={handleLogout}

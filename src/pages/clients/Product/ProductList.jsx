@@ -278,10 +278,10 @@ const ProductList = () => {
                   className="object-cover h-[265px] w-full"
                 />
                 <div className="flex flex-col p-2 pb-0">
-                  <span className="font-bold text-[#3A3A3A]">
+                  <span className="font-bold text-[#3A3A3A] truncate">
                     {item.nameBook}
                   </span>
-                  <span className="text-md font-semibold">
+                  <span className="block text-center text-[#d71a00] font-semibold text-[16px]">
                     {formatNumber(item.price)}
                   </span>
                 </div>

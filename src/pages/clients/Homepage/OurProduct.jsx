@@ -1,51 +1,66 @@
 import { useEffect, useState } from "react";
 import { getBook } from "../../../apis/product";
-import { useNavigate } from "react-router-dom";
-import { formatNumber } from "../../../utils/common";
 import { useTranslation } from "react-i18next";
+import Card from "../../../components/Card";
+import CarouselProd from "../../../components/CarouselProd";
+import instance from "../../../utils/http";
 
 const OurProduct = () => {
-  const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+  const [bookSales, setBookSales] = useState([]);
   const { t } = useTranslation();
 
   const getProductList = async () => {
     const res = await getBook();
     setBooks(res.data.data.books || []);
   };
+  const getProductPrice = async () => {
+    const res = await instance.get("/book/books-sales");
+    setBookSales(res.data.data || []);
+  };
 
   useEffect(() => {
     getProductList();
+    getProductPrice();
   }, []);
 
   return (
     <div className="mt-5 max-w-[1100px] mx-auto">
-      <span className="flex justify-center text-[#3A3A3A] font-bold text-3xl mb-5">
-        {t("text-12")}
-      </span>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 gap-4 bg-white p-4">
-        {books?.map((item, index) => (
-          <div className="col-span-1 border p-3" key={index}>
-            <div
-              className="h-[300px] flex justify-center flex-col gap-1 cursor-pointer"
-              onClick={() => navigate(`/product/${item.idBook}`)}
-            >
-              <img
-                src={item.imageUrls[0]}
-                alt={item.nameBook}
-                className="object-contain  h-2/3 rounded"
-              />
-              <div className="py-5 h-1/3">
-                <span className="block text-center text-[#333333] font-semibold text-sm px-1 line-clamp-2">
-                  {item.nameBook}
-                </span>
-                <span className="block text-center text-[#d71a00] font-semibold text-[16px]">
-                  {formatNumber(item.price)}
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="flex flex-col gap-6">
+        <Card title={t("text-157")}>
+          <CarouselProd
+            data={bookSales?.map((item) => ({
+              image: item.imageUrls[0],
+              name: item.bookName,
+              id: item.bookId,
+              price: item.bookPrice,
+            }))}
+          />
+        </Card>
+        <Card title={t("text-158")}>
+          <CarouselProd
+            data={books
+              ?.map((item) => ({
+                image: item.imageUrls[0],
+                name: item.nameBook,
+                id: item.idBook,
+                price: item.price,
+                createAt: item.createAt,
+              }))
+              .sort((a, b) => new Date(b.createAt) - new Date(a.createAt))}
+          />
+        </Card>
+        <Card title={t("text-159")}>
+          <CarouselProd
+            data={books?.map((item) => ({
+              image: item.imageUrls[0],
+              name: item.nameBook,
+              id: item.idBook,
+              price: item.price,
+              createAt: item.createAt,
+            }))}
+          />
+        </Card>
       </div>
     </div>
   );

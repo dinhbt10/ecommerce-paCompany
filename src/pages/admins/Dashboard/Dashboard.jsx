@@ -135,7 +135,7 @@ const Dashboard = () => {
         <div className="col-span-1">
           <div className="bg-white rounded p-2">
             <div className="text-xl font-medium px-2">Giao dịch gần đây</div>
-            <Table className="mt-3">
+            <Table className="mt-3" hoverable>
               <Table.Head className="border-b">
                 <Table.HeadCell className="text-[10px]">
                   Khác hàng
@@ -182,7 +182,7 @@ const Dashboard = () => {
             <div className="text-xl font-medium px-2">
               Top sản phẩm bán chạy
             </div>
-            <Table className="mt-3">
+            <Table className="mt-3" hoverable>
               <Table.Head className="border-b">
                 <Table.HeadCell className="text-[10px]">
                   Tên sản phẩm
@@ -195,7 +195,11 @@ const Dashboard = () => {
               <Table.Body>
                 {topBookSale.length > 0 &&
                   topBookSale?.map((item, index) => (
-                    <Table.Row key={index} className="bg-white border-b">
+                    <Table.Row
+                      key={index}
+                      className="bg-white border-b cursor-pointer"
+                      onClick={() => navigate(`/product/${item.bookId}`)}
+                    >
                       <Table.Cell>
                         <div className="flex flex-row items-center gap-2">
                           <div className="bg-black h-[30px] min-w-[30px]">

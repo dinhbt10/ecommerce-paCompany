@@ -5,9 +5,13 @@ import PrivateRouter from "./navigation/PrivateRouter";
 import Login from "./pages/Auth/Login/Login";
 import { ToastContainer } from "react-toastify";
 import Register from "./pages/Auth/Register/Register";
+import useScrollToTop from "./hook/useScrollToTop";
 
 function App() {
   const isAdmin = true;
+
+  useScrollToTop();
+
   return (
     <>
       <Routes>
