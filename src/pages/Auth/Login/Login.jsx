@@ -5,7 +5,6 @@ import { MdCancel } from "react-icons/md";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import instance from "../../../utils/http";
-import { saveToLocalStorage } from "../../../utils/common";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,12 +29,13 @@ const Login = () => {
       });
     }
     if (allFieldsValid) {
-      const res = await instance.post("/user/auth/login", undefined, {
+      const res = await instance.post("/user/auth/login-token", undefined, {
         params: state,
       });
       const { success, data } = res.data;
       if (success) {
-        saveToLocalStorage(data);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
         setTimeout(() => {
           navigate("/");
         }, 500);

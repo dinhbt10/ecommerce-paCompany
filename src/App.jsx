@@ -6,11 +6,33 @@ import Login from "./pages/Auth/Login/Login";
 import { ToastContainer } from "react-toastify";
 import Register from "./pages/Auth/Register/Register";
 import useScrollToTop from "./hook/useScrollToTop";
+import { useEffect } from "react";
+import instance from "./utils/http";
+import { saveToLocalStorage } from "./utils/common";
 
 function App() {
   const isAdmin = true;
-
+  const token = localStorage.getItem("token");
   useScrollToTop();
+
+  const getUserInfo = async () => {
+    try {
+      if (!token) return;
+      const res = await instance.get("user/auth/me");
+      const { data, success } = res.data;
+      if (success) {
+        console.log(data);
+        saveToLocalStorage(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   return (
     <>
