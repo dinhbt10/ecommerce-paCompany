@@ -201,7 +201,7 @@ function Header() {
                   >
                     <LuUserSquare2 /> {t("text-2")}
                   </div>
-                  {userInfo?.roles[0] === "ROLE_ADMIN" && (
+                  {userInfo?.roles[0].name === "ROLE_ADMIN" && (
                     <div
                       className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                       onClick={() => navigate("/admin")}
