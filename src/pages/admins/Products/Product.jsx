@@ -1,5 +1,4 @@
-import { Button } from "flowbite-react";
-import { Table } from "flowbite-react";
+import { Table, Button, Pagination } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { RiEdit2Fill } from "react-icons/ri";
 import { getBook } from "../../../apis/product";
@@ -9,6 +8,10 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
 const tableHead = [
+  {
+    id: 1,
+    name: "STT",
+  },
   {
     id: "1",
     name: "Ảnh",
@@ -46,8 +49,17 @@ const tableHead = [
 const Product = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
+  const [totalPages, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const onPageChange = (page) => setCurrentPage(page - 1);
+
   const getProductList = async () => {
     const res = await getBook();
+    if (res.data.data.totalPages) {
+      setTotalPage(res.data.data.totalPages);
+    }
+
     setBooks(res.data.data ? res.data.data.books : []);
   };
 
@@ -106,6 +118,11 @@ const Product = () => {
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
               <Table.Cell>
+                <div className="pl-1">
+                  {(currentPage + 1 - 1) * 10 + index + 1}
+                </div>
+              </Table.Cell>
+              <Table.Cell>
                 <img
                   src={item.imageUrls[0]}
                   alt={item.imageUrls}
@@ -140,6 +157,13 @@ const Product = () => {
           )}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
+import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
 import { RiEdit2Fill } from "react-icons/ri";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -35,6 +35,8 @@ const Distributor = () => {
   const [isOpenEdit, setIsOpenEdit] = useState();
   const [openDelete, setDelete] = useState(false);
   const [distributor, setDistributor] = useState([]);
+  const [totalPages, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [item, setItem] = useState({
     idDistributor: "",
     nameDistributor: "",
@@ -61,10 +63,13 @@ const Distributor = () => {
 
   const getDistributor = async () => {
     try {
-      const res = await instance.get("distributor/list");
+      const res = await instance.get(
+        `distributor/list?page=${currentPage}&size=10`
+      );
       const { data, success } = res.data;
       if (success) {
         setDistributor(data.categories);
+        setTotalPage(data.totalPages);
       }
     } catch (error) {
       console.log(error);
@@ -118,9 +123,12 @@ const Distributor = () => {
     }
   };
 
+  const onPageChange = (page) => setCurrentPage(page - 1);
+
   useEffect(() => {
     getDistributor();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <div>
@@ -148,7 +156,9 @@ const Distributor = () => {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
-                  <div className="pl-1">{index + 1}</div>
+                  <div className="pl-1">
+                    {(currentPage + 1 - 1) * 10 + index + 1}
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{item.nameDistributor}</Table.Cell>
                 <Table.Cell>{item.address}</Table.Cell>
@@ -180,6 +190,13 @@ const Distributor = () => {
           )}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
       {isOpen && (
         <ModalDistributorAddOrEdit
           openModal={isOpen}

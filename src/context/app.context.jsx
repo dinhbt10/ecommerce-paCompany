@@ -14,7 +14,7 @@ const AppProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.clear();
     setUserInfo(null);
     setIsAdmin(false);
   };

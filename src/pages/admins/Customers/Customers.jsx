@@ -1,11 +1,11 @@
-import { Table } from "flowbite-react";
+import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
 
 const tableHead = [
   {
-    id: 1,
-    name: "Ảnh khách hàng",
+    id: 5,
+    name: "STT",
   },
   {
     id: 2,
@@ -19,15 +19,30 @@ const tableHead = [
     id: 4,
     name: "Số điện thoại",
   },
+  {
+    id: 5,
+    name: "Tổng số đơn hàng đã đặt",
+  },
+  {
+    id: 6,
+    name: "Tổng số tiền",
+  },
 ];
 
 const Customers = () => {
   const [users, setUsers] = useState([]);
+  const [totalPages, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const onPageChange = (page) => setCurrentPage(page - 1);
 
   const getUser = async () => {
     try {
-      const res = await instance.get("/user/auth/list");
+      const res = await instance.get(
+        `/user/auth/list?page=${currentPage}&size=10`
+      );
       setUsers(res.data.data.users);
+      setTotalPage(res.data.data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +50,8 @@ const Customers = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <div>
@@ -51,23 +67,22 @@ const Customers = () => {
         <Table.Body className="divide-y">
           {users &&
             users.length > 0 &&
-            users.map((item) => (
+            users.map((item, index) => (
               <Table.Row
                 key={item.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
-                  <img
-                    src={
-                      "https://danviet.mediacdn.vn/296231569849192448/2024/6/13/son-tung-mtp-17182382517241228747767.jpg"
-                    }
-                    alt={item.name}
-                    className="ml-6 w-[50px] h-[50px] object-cover rounded-[50%]"
-                  />
+                  <div className="pl-1">
+                    {(currentPage + 1 - 1) * 10 + index + 1}
+                  </div>
                 </Table.Cell>
+
                 <Table.Cell>{item.username}</Table.Cell>
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
+                <Table.Cell>{10}</Table.Cell>
+                <Table.Cell>100.000đ</Table.Cell>
               </Table.Row>
             ))}
           {users.length === 0 && (
@@ -81,6 +96,13 @@ const Customers = () => {
           )}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
     </div>
   );
 };

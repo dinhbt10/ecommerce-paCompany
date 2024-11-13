@@ -1,4 +1,4 @@
-import { Table } from "flowbite-react";
+import { Pagination, Table } from "flowbite-react";
 import { useContext, useEffect, useState } from "react";
 import { CiViewBoard } from "react-icons/ci";
 import instance from "../../../utils/http";
@@ -6,6 +6,7 @@ import { convertDate, formatNumber } from "../../../utils/common";
 import { orderStatus } from "./Config";
 import { toast } from "react-toastify";
 import { AppContext } from "../../../context/app";
+import ModalDetailOrders from "./ModalDetailOrders";
 
 const tableHead = [
   { id: 10, name: "STT" },
@@ -23,11 +24,11 @@ const tableHead = [
   },
   {
     id: 4,
-    name: "Trạng thái",
+    name: "Trạng thái đơn hàng",
   },
   {
     id: 5,
-    name: "SDT",
+    name: "Thanh toán",
   },
   {
     id: 7,
@@ -37,13 +38,19 @@ const tableHead = [
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [totalPages, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [orderDetailData, setOrderDetailData] = useState(null);
+
   const { userInfo } = useContext(AppContext);
   const getOrderListAdmin = async () => {
     const res = await instance.get(
-      `orders/list/admin?userId=${userInfo.idUser}`
+      `orders/list/admin?userId=${userInfo.idUser}&page=${currentPage}&size=10`
     );
     const { success, data } = res.data;
     if (success) {
+      setTotalPage(data.totalPages);
       setOrders(data.orders);
     }
   };
@@ -62,11 +69,23 @@ const Orders = () => {
       getOrderListAdmin();
     }
   };
+  const onPageChange = (page) => setCurrentPage(page - 1);
+
+  const handleGetDetail = async (orderId) => {
+    try {
+      const res = await instance.get(`orders/detail_admin?orderId=${orderId}`);
+      const { data } = res.data;
+      setOrderDetailData(data);
+      setOpenModal(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getOrderListAdmin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   return (
     <div>
@@ -89,8 +108,10 @@ const Orders = () => {
                 key={item.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell>{index + 1}</Table.Cell>
-                <Table.Cell>{item.id}</Table.Cell>
+                <Table.Cell>
+                  {(currentPage + 1 - 1) * 10 + index + 1}
+                </Table.Cell>
+                <Table.Cell>{item.orderCode}</Table.Cell>
                 <Table.Cell>{convertDate(item.createdAt)}</Table.Cell>
                 <Table.Cell>{convertDate(item.deliveryDate)}</Table.Cell>
                 <Table.Cell>
@@ -115,10 +136,13 @@ const Orders = () => {
                     ))}
                   </select>
                 </Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
+                <Table.Cell className="uppercase">{item.payment}</Table.Cell>
                 <Table.Cell>{formatNumber(item.total)}</Table.Cell>
                 <Table.Cell>
-                  <div className="flex justify-center items-center gap-2">
+                  <div
+                    className="flex justify-center items-center gap-2"
+                    onClick={() => handleGetDetail(item.id)}
+                  >
                     <CiViewBoard fontSize={18} className="cursor-pointer" />
                   </div>
                 </Table.Cell>
@@ -126,6 +150,20 @@ const Orders = () => {
             ))}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
+      {openModal && (
+        <ModalDetailOrders
+          isOpen={openModal}
+          setOpenModal={setOpenModal}
+          data={orderDetailData}
+        />
+      )}
     </div>
   );
 };

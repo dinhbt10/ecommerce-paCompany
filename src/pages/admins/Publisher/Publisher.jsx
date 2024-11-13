@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
+import { Pagination, Table } from "flowbite-react";
 import { ModalPublisherAddOrEdit } from "./ModalAddOrEdit";
 import instance from "../../../utils/http";
 import { RiEdit2Fill } from "react-icons/ri";
@@ -34,6 +34,8 @@ const Publisher = () => {
   const [isOpenEdit, setIsOpenEdit] = useState();
   const [publisher, setPublisher] = useState([]);
   const [openDelete, setDelete] = useState(false);
+  const [totalPages, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [idDelete, setIdDelete] = useState();
   const [item, setItem] = useState({
     idPublisher: "",
@@ -61,10 +63,13 @@ const Publisher = () => {
 
   const getPublisher = async () => {
     try {
-      const res = await instance.get("publisher/list");
+      const res = await instance.get(
+        `publisher/list?page=${currentPage}&size=10`
+      );
       const { data, success } = res.data;
       if (success) {
         setPublisher(data.categories);
+        setTotalPage(data.totalPages);
       }
     } catch (error) {
       console.log(error);
@@ -119,9 +124,12 @@ const Publisher = () => {
     }
   };
 
+  const onPageChange = (page) => setCurrentPage(page - 1);
+
   useEffect(() => {
     getPublisher();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <div>
@@ -149,7 +157,9 @@ const Publisher = () => {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
-                  <div className="pl-1">{index + 1}</div>
+                  <div className="pl-1">
+                    {(currentPage + 1 - 1) * 10 + index + 1}
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{item.namePublisher}</Table.Cell>
                 <Table.Cell>{item.addressPublisher}</Table.Cell>
@@ -181,6 +191,13 @@ const Publisher = () => {
           )}
         </Table.Body>
       </Table>
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+        />
+      </div>
       {isOpen && (
         <ModalPublisherAddOrEdit
           openModal={isOpen}
