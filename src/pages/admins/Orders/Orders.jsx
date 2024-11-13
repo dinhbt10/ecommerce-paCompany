@@ -7,6 +7,7 @@ import { orderStatus } from "./Config";
 import { toast } from "react-toastify";
 import { AppContext } from "../../../context/app";
 import ModalDetailOrders from "./ModalDetailOrders";
+import { Search } from "lucide-react";
 
 const tableHead = [
   { id: 10, name: "STT" },
@@ -91,6 +92,19 @@ const Orders = () => {
     <div>
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Đơn hàng</h1>
+      </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          placeholder="Tìm kiếm nhà xuất bản"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+        >
+          <Search size="16px" />
+        </button>
       </div>
       <Table hoverable>
         <Table.Head>

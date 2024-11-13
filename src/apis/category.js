@@ -1,7 +1,9 @@
 import instance from "../utils/http";
 
-export const getCategory = () => {
-  return instance.get("/category/list");
+export const getCategory = (nameCategory) => {
+  return instance.get("/category/list", {
+    params: { nameCategory: nameCategory || undefined },
+  });
 };
 
 export const createCategory = (formData) => {

@@ -6,6 +6,7 @@ import { ModalEdit } from "../../../components/ModalEditCategory";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ConfirmCategory } from "./Confirm";
 import instance from "../../../utils/http";
+import { Search } from "lucide-react";
 
 const Categories = () => {
   const [category, setCategory] = useState([]);
@@ -14,9 +15,10 @@ const Categories = () => {
   const [openDelete, setDelete] = useState(false);
   const [idDelete, setIdDelete] = useState();
   const [item, setItem] = useState();
+  const [nameCategory, setNameCategory] = useState("");
   const getCategoryApi = async () => {
     try {
-      const res = await getCategory();
+      const res = await getCategory(nameCategory);
       const { success, data } = res.data;
       if (success) {
         setCategory(data.categories);
@@ -78,6 +80,7 @@ const Categories = () => {
 
   useEffect(() => {
     getCategoryApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -89,6 +92,22 @@ const Categories = () => {
           onClick={() => setIsOpen(true)}
         >
           + Thêm danh mục
+        </button>
+      </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          value={nameCategory}
+          onChange={(e) => setNameCategory(e.target.value)}
+          placeholder="Tìm kiếm danh mục"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+          onClick={getCategoryApi}
+        >
+          <Search size="16px" />
         </button>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

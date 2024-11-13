@@ -5,6 +5,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ModalDistributorAddOrEdit } from "./ModalAddOrEdit";
 import { ConfirmDistributor } from "./ConfirmDistributor";
+import { Search } from "lucide-react";
 
 const tableHead = [
   {
@@ -37,6 +38,8 @@ const Distributor = () => {
   const [distributor, setDistributor] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [nameDistributor, setNameDistributor] = useState("");
+
   const [item, setItem] = useState({
     idDistributor: "",
     nameDistributor: "",
@@ -63,9 +66,13 @@ const Distributor = () => {
 
   const getDistributor = async () => {
     try {
-      const res = await instance.get(
-        `distributor/list?page=${currentPage}&size=10`
-      );
+      const res = await instance.get(`distributor/list`, {
+        params: {
+          page: currentPage,
+          size: 10,
+          nameDistributor,
+        },
+      });
       const { data, success } = res.data;
       if (success) {
         setDistributor(data.categories);
@@ -139,6 +146,22 @@ const Distributor = () => {
           onClick={() => setIsOpen(true)}
         >
           + Thêm nhà phân phối
+        </button>
+      </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          value={nameDistributor}
+          onChange={(e) => setNameDistributor(e.target.value)}
+          placeholder="Tìm kiếm nhà phân phối"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+          onClick={getDistributor}
+        >
+          <Search size="16px" />
         </button>
       </div>
       <Table hoverable>

@@ -2,8 +2,6 @@ import { Modal } from "flowbite-react";
 import { convertDate, formatNumber } from "../../../utils/common";
 
 const ModalDetailOrders = ({ isOpen, setOpenModal, data }) => {
-  console.log(data);
-
   return (
     <Modal show={isOpen} onClose={() => setOpenModal(false)}>
       <Modal.Header>Chi tiết đặt hàng</Modal.Header>
