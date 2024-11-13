@@ -1,10 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
+import { formatNumber } from "../../../utils/common";
 import { MdOutlineWrongLocation } from "react-icons/md";
 import { Select, Table, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import instance from "../../../utils/http";
 import { useTranslation } from "react-i18next";
+import { AppContext } from "../../../context/app";
 
 const Checkout = () => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const Checkout = () => {
     shipmentId: 1,
     paymentId: 1,
   });
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
 
   const handleSubmit = async () => {
     try {

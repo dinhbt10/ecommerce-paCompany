@@ -2,15 +2,15 @@ import { CgProfile } from "react-icons/cg";
 import TabsStatus from "./TabsCartStatus";
 import { MdOutlineEventNote } from "react-icons/md";
 import PurchaseOrder from "./PurchaseOrder";
-import { useEffect, useState } from "react";
-import { getUserInfoLocalStorage } from "../../../utils/common";
+import { useContext, useEffect, useState } from "react";
 import instance from "../../../utils/http";
 import { useTranslation } from "react-i18next";
+import { AppContext } from "../../../context/app";
 
 const CartStatus = () => {
   const [data, setData] = useState([]);
   const { t } = useTranslation();
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
   const getAllStatus = async () => {
     const res = await instance.get(
       `orders/list/order_user?userId=${userInfo.idUser}`

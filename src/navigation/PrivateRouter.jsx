@@ -1,18 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
 import AdminLayout from "../components/layout/AdminLayout";
-import { getUserInfoLocalStorage } from "../utils/common";
+import { useContext } from "react";
+import { AppContext } from "../context/app";
 
-const PrivateRouter = ({ isAdmin }) => {
-  const userInfo = getUserInfoLocalStorage();
+const PrivateRouter = () => {
+  const { userInfo } = useContext(AppContext);
+
   if (!userInfo) {
     return <Navigate to="/login" />;
   }
 
-  if (!isAdmin) {
-    return <Navigate to="/unauthorized" />;
-  }
-
-  if (userInfo.roles[0] === "USER") {
+  if (userInfo.roles[0].name === "ROLE_USER") {
     return <Navigate to="/" />;
   }
 

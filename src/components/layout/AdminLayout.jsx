@@ -1,6 +1,5 @@
 import { Sidebar } from "flowbite-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { clearLocalStorage } from "../../utils/common";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -9,6 +8,8 @@ import {
   LogOut,
   House,
 } from "lucide-react";
+import { AppContext } from "../../context/app";
+import { useContext } from "react";
 
 const childrenRoute = [
   {
@@ -69,13 +70,17 @@ const childrenRoute = [
 ];
 
 const AdminLayout = ({ children }) => {
+  const { logout } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   const handleLogout = () => {
-    clearLocalStorage();
-    navigate("/");
+    logout();
   };
+
+  if (!token) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex">

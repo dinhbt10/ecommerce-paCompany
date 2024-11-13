@@ -1,12 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { BsFillBagCheckFill } from "react-icons/bs";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { getBook } from "../../../apis/product";
-import {
-  clearLocalStorage,
-  formatNumber,
-  getUserInfoLocalStorage,
-} from "../../../utils/common";
+import { formatNumber } from "../../../utils/common";
 import { FaUserAlt } from "react-icons/fa";
 import { Popover } from "flowbite-react";
 import { CiLogout } from "react-icons/ci";
@@ -17,6 +13,7 @@ import FlagEN from "../../../../public/english.png";
 import FlagVN from "../../../../public/vietnam.png";
 import { useTranslation } from "react-i18next";
 import { MdKeyboardVoice } from "react-icons/md";
+import { AppContext } from "../../../context/app";
 
 function Header() {
   const [value, setValue] = useState("");
@@ -24,7 +21,7 @@ function Header() {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const searchListRef = useRef(null);
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo, logout } = useContext(AppContext);
   const [total, setTotal] = useState(0);
   const { t, i18n } = useTranslation();
   const [isListening, setIsListening] = useState(false);
@@ -70,7 +67,7 @@ function Header() {
 
   const handleLogout = () => {
     setTotal(0);
-    clearLocalStorage();
+    logout();
     navigate("/");
   };
 
@@ -201,7 +198,7 @@ function Header() {
                   >
                     <LuUserSquare2 /> {t("text-2")}
                   </div>
-                  {userInfo?.roles[0] === "ROLE_ADMIN" && (
+                  {userInfo?.roles[0].name === "ROLE_ADMIN" && (
                     <div
                       className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                       onClick={() => navigate("/admin")}
@@ -337,18 +334,20 @@ function Header() {
                 0123456789
               </div>
             </div>
-            <div
-              onClick={() => navigate("/cart")}
-              className="flex items-center border border-white w-3/7 h-[36px] pt-[4px] pr-[2px] rounded gap-1 flex-1 justify-start cursor-pointer"
-            >
-              <div className="text-white text-[20px] uppercase pl-[10px] pr-1 pb-[5px]">
-                <BsFillBagCheckFill />
+            {userInfo?.roles[0].name !== "ROLE_ADMIN" && (
+              <div
+                onClick={() => navigate("/cart")}
+                className="flex items-center border border-white w-3/7 h-[36px] pt-[4px] pr-[2px] rounded gap-1 flex-1 justify-start cursor-pointer"
+              >
+                <div className="text-white text-[20px] uppercase pl-[10px] pr-1 pb-[5px]">
+                  <BsFillBagCheckFill />
+                </div>
+                <div className="text-white text-[12px] leading-[13px]">
+                  <div className="uppercase"> {t("text-8")}</div>
+                  <div className="pb-1">{formatNumber(total)}</div>
+                </div>
               </div>
-              <div className="text-white text-[12px] leading-[13px]">
-                <div className="uppercase"> {t("text-8")}</div>
-                <div className="pb-1">{formatNumber(total)}</div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
