@@ -1,16 +1,13 @@
 import { Select, Table, TextInput } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdOutlineWrongLocation } from "react-icons/md";
 import instance from "../../../utils/http";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  formatNumber,
-  getUserInfoLocalStorage,
-  isWithin24Hours,
-} from "../../../utils/common";
+import { formatNumber, isWithin24Hours } from "../../../utils/common";
 import { useTranslation } from "react-i18next";
 import { Rating } from "flowbite-react";
 import { toast } from "react-toastify";
+import { AppContext } from "../../../context/app";
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -18,7 +15,8 @@ const OrderDetail = () => {
   const { t } = useTranslation();
   const [data, setData] = useState();
   const [comments, setComments] = useState([]);
-  const userId = getUserInfoLocalStorage().idUser;
+  const { userInfo } = useContext(AppContext);
+  const userId = userInfo.idUser;
   const getOrderDetail = async () => {
     const res = await instance(
       `orders/detail_user?orderId=${id}&userId=${userId}`

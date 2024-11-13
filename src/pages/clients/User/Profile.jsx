@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { getUserInfoLocalStorage } from "../../../utils/common";
+import { useContext } from "react";
+import { AppContext } from "../../../context/app";
 
 const Profile = () => {
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
   const { t } = useTranslation();
 
   return (

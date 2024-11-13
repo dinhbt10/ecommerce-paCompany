@@ -8,6 +8,7 @@ import { initReactI18next } from "react-i18next";
 import i18n from "i18next";
 import translationEN from "./locales/en/translation.json";
 import translationVI from "./locales/vi/translation.json";
+import AppProvider from "./context/app.context.jsx";
 
 const locales = localStorage.getItem("lang");
 
@@ -28,9 +29,11 @@ i18n.use(initReactI18next).init({
 });
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <I18nextProvider i18n={i18n}>
-      <App />
-    </I18nextProvider>
-  </BrowserRouter>
+  <AppProvider>
+    <BrowserRouter>
+      <I18nextProvider i18n={i18n}>
+        <App />
+      </I18nextProvider>
+    </BrowserRouter>
+  </AppProvider>
 );

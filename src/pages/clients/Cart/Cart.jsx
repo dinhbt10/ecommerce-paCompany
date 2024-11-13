@@ -1,19 +1,20 @@
 import { FaCartShopping } from "react-icons/fa6";
 import instance from "../../../utils/http";
-import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
-import { useEffect, useState } from "react";
+import { formatNumber } from "../../../utils/common";
+import { useContext, useEffect, useState } from "react";
 import { Checkbox } from "flowbite-react";
 import classNames from "classnames";
 import { toast } from "react-toastify";
 import { FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { AppContext } from "../../../context/app";
 
 const Cart = () => {
   const [carts, setCarts] = useState([]);
   const { t } = useTranslation();
   const [isCheckedAll, setIsCheckedAll] = useState(false);
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
   const navigate = useNavigate();
   const getCart = async (idUser) => {
     const res = await instance.get(`/cart/list?userId=${idUser}`);

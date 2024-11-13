@@ -1,16 +1,14 @@
 import { Table } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CiViewBoard } from "react-icons/ci";
 import instance from "../../../utils/http";
-import {
-  convertDate,
-  formatNumber,
-  getUserInfoLocalStorage,
-} from "../../../utils/common";
+import { convertDate, formatNumber } from "../../../utils/common";
 import { orderStatus } from "./Config";
 import { toast } from "react-toastify";
+import { AppContext } from "../../../context/app";
 
 const tableHead = [
+  { id: 10, name: "STT" },
   {
     id: 1,
     name: "Mã đơn hàng",
@@ -39,7 +37,7 @@ const tableHead = [
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
   const getOrderListAdmin = async () => {
     const res = await instance.get(
       `orders/list/admin?userId=${userInfo.idUser}`
@@ -86,11 +84,12 @@ const Orders = () => {
         </Table.Head>
         <Table.Body className="divide-y">
           {orders.length > 0 &&
-            orders.map((item) => (
+            orders.map((item, index) => (
               <Table.Row
                 key={item.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
+                <Table.Cell>{index + 1}</Table.Cell>
                 <Table.Cell>{item.id}</Table.Cell>
                 <Table.Cell>{convertDate(item.createdAt)}</Table.Cell>
                 <Table.Cell>{convertDate(item.deliveryDate)}</Table.Cell>

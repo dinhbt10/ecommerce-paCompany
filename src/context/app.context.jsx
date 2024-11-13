@@ -1,16 +1,29 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
+import { AppContext } from "./app";
 
-const initState = {
-  render: 0,
-};
+const AppProvider = ({ children }) => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userInfo, setUserInfo] = useState(() => {
+    const storedUser = localStorage.getItem("userInfo");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-export const AppContext = createContext(initState);
+  const login = (user) => {
+    localStorage.setItem("userInfo", JSON.stringify(user));
+    setUserInfo(user);
+  };
 
-const AppProvider = ({ childrens }) => {
-  const [render, setRender] = useState(0);
+  const logout = () => {
+    localStorage.removeItem("userInfo");
+    setUserInfo(null);
+    setIsAdmin(false);
+  };
+
   return (
-    <AppContext.Provider value={{ render, setRender }}>
-      {childrens}
+    <AppContext.Provider
+      value={{ userInfo, login, logout, isAdmin, setIsAdmin }}
+    >
+      {children}
     </AppContext.Provider>
   );
 };

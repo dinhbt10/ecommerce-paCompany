@@ -1,9 +1,10 @@
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import instance from "../../../utils/http";
-import { getUserInfoLocalStorage } from "../../../utils/common";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AppContext } from "../../../context/app";
 
 export function DeleteModal({
   orderId,
@@ -11,7 +12,7 @@ export function DeleteModal({
   setOpenModal,
   getAllStatus,
 }) {
-  const userInfo = getUserInfoLocalStorage();
+  const { userInfo } = useContext(AppContext);
   const { t } = useTranslation();
 
   const handleDeleteOrder = async () => {

@@ -6,23 +6,24 @@ import Login from "./pages/Auth/Login/Login";
 import { ToastContainer } from "react-toastify";
 import Register from "./pages/Auth/Register/Register";
 import useScrollToTop from "./hook/useScrollToTop";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import instance from "./utils/http";
-import { saveToLocalStorage } from "./utils/common";
+import { AppContext } from "./context/app";
 
 function App() {
-  const isAdmin = true;
   const token = localStorage.getItem("token");
+  const { login, setIsAdmin } = useContext(AppContext);
   useScrollToTop();
 
   const getUserInfo = async () => {
     try {
-      if (!token) return;
       const res = await instance.get("user/auth/me");
       const { data, success } = res.data;
       if (success) {
-        console.log(data);
-        saveToLocalStorage(data);
+        login(data);
+        if (data.roles[0].name === "ROLE_ADMIN") {
+          setIsAdmin(true);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -30,7 +31,9 @@ function App() {
   };
 
   useEffect(() => {
-    getUserInfo();
+    if (token) {
+      getUserInfo();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
@@ -44,7 +47,7 @@ function App() {
             element={<MainLayout>{route.component}</MainLayout>}
           />
         ))}
-        <Route element={<PrivateRouter isAdmin={isAdmin} />}>
+        <Route element={<PrivateRouter />}>
           {adminRouter.map((route, index) => (
             <Route key={index} path={route.path} element={route.component}>
               {route.children &&

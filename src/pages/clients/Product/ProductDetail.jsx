@@ -1,10 +1,10 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { getDetailBook } from "../../../apis/product";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdLocalShipping } from "react-icons/md";
-import { formatNumber, getUserInfoLocalStorage } from "../../../utils/common";
+import { formatNumber } from "../../../utils/common";
 import { FaCartPlus } from "react-icons/fa";
 import DetailDescription from "./DetailDescription";
 import DetailProduct from "./DetailProduct";
@@ -14,6 +14,7 @@ import instance from "../../../utils/http";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Rating } from "flowbite-react";
+import { AppContext } from "../../../context/app";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -21,9 +22,9 @@ const ProductDetail = () => {
   const [urlBook, setUrlBook] = useState();
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
-  const userInfo = getUserInfoLocalStorage();
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
+  const { userInfo } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
@@ -201,18 +202,20 @@ const ProductDetail = () => {
                 )}
               </div>
             </div>
-            <div className="flex justify-start items-center gap-[45px] mt-4 mb-2">
-              <div className="text-[15px] text-[#757575] min-w-[43px]">
-                {t("text-31")}:
+            {userInfo.roles[0].name !== "ROLE_ADMIN" && (
+              <div className="flex justify-start items-center gap-[45px] mt-4 mb-2">
+                <div className="text-[15px] text-[#757575] min-w-[43px]">
+                  {t("text-31")}:
+                </div>
+                <button
+                  className="bg-red-600 hover:bg-red-600 rounded px-3 text-white text-[15px] w-1/2 h-[45px] flex justify-center items-center gap-2"
+                  onClick={handleAddProduct}
+                >
+                  <FaCartPlus />
+                  {t("text-32")}
+                </button>
               </div>
-              <button
-                className="bg-red-600 hover:bg-red-600 rounded px-3 text-white text-[15px] w-1/2 h-[45px] flex justify-center items-center gap-2"
-                onClick={handleAddProduct}
-              >
-                <FaCartPlus />
-                {t("text-32")}
-              </button>
-            </div>
+            )}
           </div>
           <div className="mt-4 text-[14px] text-[#505050]">{t("text-33")}</div>
           <div className="flex justify-start flex-col bg-white p-3 text-[14px] border border-gray-200">
