@@ -4,42 +4,45 @@ import { useLocation } from "react-router-dom";
 import { MessageCircleMore, X } from "lucide-react";
 import ChatAI from "../../../public/chatbot-icon.svg";
 import { useState } from "react";
+import { SendHorizontal } from "lucide-react";
 
 const MainLayout = (props) => {
   const location = useLocation();
   const [showChat, setShowChat] = useState(false);
   const [content, setContent] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState([]);
   const { children } = props;
 
   async function callApi(event) {
     event.preventDefault();
-    const inputText = document.getElementById("inputText").value;
-    if (!inputText) {
-      document.getElementById("response").textContent =
-        "Please enter some text.";
+    if (!content) {
       return;
     }
+    setMessages((prev) => prev.concat({ role: 2, messages: content }));
     try {
+      setLoading(true);
       const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyAb_Eo16wpwQE2t-G-hzVygJeiDz3opLpE",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: inputText }] }],
+            contents: [{ parts: [{ text: content }] }],
           }),
         }
       );
+      setLoading(false);
       if (!response.ok) {
         throw new Error("Lỗi");
       }
       const data = await response.json();
       const dataResponse = data.candidates[0]?.content?.parts[0]?.text ?? "";
-      document.getElementById("response").innerHTML = dataResponse.replace(
-        /\n/g,
-        "<br>"
-      );
+      setMessages((prev) => prev.concat({ role: 1, messages: dataResponse }));
+      setContent("");
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   }
@@ -76,7 +79,7 @@ const MainLayout = (props) => {
                   "linear-gradient(to left, #ff8177 0%, #ff867a 0%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)",
               }}
             >
-              <div className="flex flex-row justify-start items-center gap-2  text-white">
+              <div className="flex flex-row justify-start items-center gap-2 text-white">
                 <img src={ChatAI} className="w-[40px]" />
                 <span>AI BookStore</span>
               </div>
@@ -89,19 +92,54 @@ const MainLayout = (props) => {
                 <X color="#fff" />
               </div>
             </div>
-            <div className="bg-white min-h-[400px] max-h-[400px] shadow-slate-500 shadow-md">
-              <div className="min-h-[358px] overflow-auto p-2">
-                {!content && (
-                  <div className="flex min-h-[348px] items-center justify-center flex-col">
-                    abc
+            <div className="bg-white min-h-[410px] max-h-[410px] shadow-slate-500 shadow-md">
+              <div className="min-h-[363px] overflow-auto px-2 pt-2">
+                {messages.length === 0 && (
+                  <div className="flex min-h-[348px] items-center justify-center flex-col text-md">
+                    Chưa có tin nhắn nào
+                  </div>
+                )}
+                {messages.length > 0 && (
+                  <div className="flex flex-col min-h-[348px] max-h-[348px] text-sm overflow-y-auto gap-2">
+                    {messages.map((item, key) => {
+                      return (
+                        <div
+                          key={key}
+                          className={`flex ${
+                            item.role === 2 ? "justify-end" : "justify-start"
+                          }`}
+                        >
+                          <div
+                            className={`max-w-[75%] ${
+                              item.role === 2 ? "text-right" : "text-left"
+                            } ${
+                              item.role === 2 ? "bg-[#ea7c7c]" : "bg-[#505050]"
+                            } p-2 rounded text-white`}
+                          >
+                            {item.messages}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
-              <div className="border-t-2">
+              <div className="flex items-center border-t-2 pr-2">
                 <input
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
                   type="text"
                   className="w-full placeholder:text-sm focus:outline-none focus:ring-0 border-none"
                   placeholder="Nhập tin nhắn..."
+                  onKeyDown={(e) => {
+                    if (e.code === "Enter") {
+                      callApi(e);
+                    }
+                  }}
+                />
+                <SendHorizontal
+                  className="h-full cursor-pointer"
+                  onClick={(e) => callApi(e)}
                 />
               </div>
             </div>
