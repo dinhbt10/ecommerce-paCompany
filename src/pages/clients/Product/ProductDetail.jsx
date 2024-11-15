@@ -202,7 +202,7 @@ const ProductDetail = () => {
                 )}
               </div>
             </div>
-            {userInfo.roles[0].name !== "ROLE_ADMIN" && (
+            {userInfo?.roles[0].name !== "ROLE_ADMIN" && (
               <div className="flex justify-start items-center gap-[45px] mt-4 mb-2">
                 <div className="text-[15px] text-[#757575] min-w-[43px]">
                   {t("text-31")}:

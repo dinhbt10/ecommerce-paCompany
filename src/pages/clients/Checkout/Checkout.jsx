@@ -26,8 +26,37 @@ const Checkout = () => {
         `/orders/create?userId=${userInfo.idUser}&shippingAddress=${userInfo.address}&selectedCartDetailIds=${selectedIds}&paymentId=${checkout.paymentId}&shipmentId=${checkout.shipmentId}&phone=${userInfo.phone}&receivingName=${userInfo.fullname}&note=${checkout.note}`
       );
       const { success } = res.data;
+
       if (success) {
-        navigate("/user?active=1");
+        if (checkout.shipmentId === "2") {
+          try {
+            const total =
+              data.length > 1
+                ? data.reduce(
+                    (a, b) => a.price * a.quantity + b.price * b.quantity
+                  )
+                : data[0].price * data[0].quantity;
+
+            const resListOrder = await instance.get(
+              `/orders/list/order_user?userId=${userInfo.idUser}`
+            );
+            const { data: dataListOrder, success: successOrder } =
+              resListOrder.data;
+            if (successOrder) {
+              console.log(dataListOrder);
+
+              const idorder = dataListOrder[0].id;
+              const res = await instance.post(
+                `api/payment/momo?idorder=${idorder}&amount=${total}&orderInfo=test&email=email=${userInfo.email}`
+              );
+              console.log(res);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          navigate("/user?active=1");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -172,18 +201,14 @@ const Checkout = () => {
               </span>
             </div>
             <div className="flex justify-between items-center w-[300px]">
-              <span className="text-sm text-gray-500">{t("text-131")}</span>
-              <span className="text-md">{formatNumber(30000)}</span>
-            </div>
-            <div className="flex justify-between items-center w-[300px]">
               <span className="text-sm text-gray-500">{t("text-132")}</span>
               <span className="text-xl text-[#cd5f5f] font-semibold">
                 {formatNumber(
-                  (data.length > 1
+                  data.length > 1
                     ? data.reduce(
                         (a, b) => a.price * a.quantity + b.price * b.quantity
                       )
-                    : data[0].price * data[0].quantity) + 30000
+                    : data[0].price * data[0].quantity
                 )}
               </span>
             </div>

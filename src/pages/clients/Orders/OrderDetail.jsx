@@ -126,7 +126,7 @@ const OrderDetail = () => {
                             className="min-w-[80px] h-[80px] object-contain"
                           />
                         </div>
-                        <div className="">{item.title}</div>
+                        <div className="">{item.nameBook || item.title}</div>
                       </Table.Cell>
                       <Table.Cell className="p-2 w-[14%]">
                         {formatNumber(item.price)}

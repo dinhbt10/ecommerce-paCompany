@@ -58,14 +58,14 @@ const Login = () => {
       }}
     >
       <div className="grid grid-cols-2 bg-white h-[80vh] w-3/4 rounded-xl">
-        <div className="col-span-1">
+        <div className="col-span-1 min-h-full">
           <img
             src={BookBG}
             alt="book-bg"
             className="w-full h-full object-cover rounded-tl-xl rounded-bl-xl"
           />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 min-h-full">
           <div className="flex justify-center items-center h-full flex-col relative">
             <form
               className="flex w-full flex-col gap-3 px-[80px] rounded-md bg-white mb-5 "
