@@ -24,7 +24,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
-  const { userInfo } = useContext(AppContext);
+  const { userInfo, setRefreshUserInfo } = useContext(AppContext);
 
   const getProductDetailApi = async (id) => {
     const res = await getDetailBook(id);
@@ -48,6 +48,7 @@ const ProductDetail = () => {
     const { success, data } = res.data;
 
     if (success) {
+      setRefreshUserInfo((prev) => prev + 1);
       toast.success(t("text-62"), {
         autoClose: 1000,
         position: "bottom-right",

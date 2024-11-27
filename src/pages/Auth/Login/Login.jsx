@@ -62,7 +62,7 @@ const Login = () => {
           <img
             src={BookBG}
             alt="book-bg"
-            className="w-full h-full object-cover rounded-tl-xl rounded-bl-xl"
+            className="w-full h-full max-h-full object-cover rounded-tl-xl rounded-bl-xl"
           />
         </div>
         <div className="col-span-1 min-h-full">

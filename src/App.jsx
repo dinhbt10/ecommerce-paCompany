@@ -12,7 +12,7 @@ import { AppContext } from "./context/app";
 
 function App() {
   const token = localStorage.getItem("token");
-  const { login, setIsAdmin } = useContext(AppContext);
+  const { login, setIsAdmin, refreshUserInfo } = useContext(AppContext);
   useScrollToTop();
 
   const getUserInfo = async () => {
@@ -35,7 +35,7 @@ function App() {
       getUserInfo();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, refreshUserInfo]);
 
   return (
     <>

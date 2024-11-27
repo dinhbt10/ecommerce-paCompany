@@ -21,7 +21,7 @@ function Header() {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const searchListRef = useRef(null);
-  const { userInfo, logout } = useContext(AppContext);
+  const { userInfo, logout, refreshUserInfo } = useContext(AppContext);
   const [total, setTotal] = useState(0);
   const { t, i18n } = useTranslation();
   const [isListening, setIsListening] = useState(false);
@@ -98,7 +98,7 @@ function Header() {
   useEffect(() => {
     handleGetListCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [refreshUserInfo]);
 
   useEffect(() => {
     if (value && isFocused) {
