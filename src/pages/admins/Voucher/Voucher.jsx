@@ -29,7 +29,7 @@ const tableHead = [
   },
 ];
 
-const Customers = () => {
+const Voucher = () => {
   const [users, setUsers] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
@@ -39,7 +39,7 @@ const Customers = () => {
   const getUser = async () => {
     try {
       const res = await instance.get(
-        `/user/auth/list?page=${currentPage}&size=10`
+        `/vouchers/list?page=${currentPage}&size=10`
       );
       setUsers(res.data.data.users);
       setTotalPage(res.data.data.totalPages);
@@ -56,7 +56,7 @@ const Customers = () => {
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
-        <h1 className="text-2xl font-semibold">Khách hàng</h1>
+        <h1 className="text-2xl font-semibold">Voucher</h1>
       </div>
       <Table hoverable>
         <Table.Head>
@@ -107,4 +107,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Voucher;

@@ -66,7 +66,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={1500} />
     </>
   );
 }

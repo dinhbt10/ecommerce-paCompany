@@ -5,6 +5,7 @@ import { getCategory } from "../../../apis/category";
 import instance from "../../../utils/http";
 import { useNavigate } from "react-router-dom";
 import { createBook } from "../../../apis/product";
+import { toast } from "react-toastify";
 
 export function AddOrEditProduct() {
   const navigate = useNavigate();
@@ -68,6 +69,11 @@ export function AddOrEditProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isValid = Object.values(product).every((e) => e);
+    if (!isValid) {
+      toast.error("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
     const formData = new FormData();
     Object.keys(product).forEach((key) => {
       if (key !== "images") {
@@ -147,6 +153,7 @@ export function AddOrEditProduct() {
                 </div>
                 <div className="mb-1">
                   <Label value="Tên sản phẩm" />
+                  <span className="text-red-600">*</span>
                 </div>
                 <TextInput
                   id="3"
@@ -164,6 +171,7 @@ export function AddOrEditProduct() {
                   <div className="col-span-1">
                     <div className="mb-1">
                       <Label value="Tên tác giả" />
+                      <span className="text-red-600">*</span>
                     </div>
                     <TextInput
                       id="3"
@@ -181,6 +189,7 @@ export function AddOrEditProduct() {
                   <div className="col-span-1">
                     <div className="mb-1">
                       <Label value="Năm phát hành" />
+                      <span className="text-red-600">*</span>
                     </div>
                     <TextInput
                       id="3"
@@ -201,6 +210,7 @@ export function AddOrEditProduct() {
                     <div className="col-span-1">
                       <div className="mb-1">
                         <Label value="Kích thước sách" />
+                        <span className="text-red-600">*</span>
                       </div>
                       <TextInput
                         id="3"
@@ -218,6 +228,7 @@ export function AddOrEditProduct() {
                     <div className="col-span-1">
                       <div className="mb-1">
                         <Label value="Số trang" />
+                        <span className="text-red-600">*</span>
                       </div>
                       <TextInput
                         id="3"
@@ -238,6 +249,7 @@ export function AddOrEditProduct() {
                   <div className="col-span-1">
                     <div className="mb-1">
                       <Label value="Mã vạch" />
+                      <span className="text-red-600">*</span>
                     </div>
                     <TextInput
                       id="3"
@@ -255,6 +267,7 @@ export function AddOrEditProduct() {
                   <div className="col-span-1">
                     <div className="mb-1">
                       <Label value="Giá tiền" />
+                      <span className="text-red-600">*</span>
                     </div>
                     <TextInput
                       id="3"
@@ -272,6 +285,7 @@ export function AddOrEditProduct() {
                   <div className="col-span-1">
                     <div className="mb-1">
                       <Label value="Số lượng" />
+                      <span className="text-red-600">*</span>
                     </div>
                     <TextInput
                       id="3"
@@ -288,7 +302,10 @@ export function AddOrEditProduct() {
                   </div>
                 </div>
                 <div className="my-2">
-                  <Label value="Ảnh" className="mb-2 block" />
+                  <div className="mb-1">
+                    <Label value="Ảnh" className="mb-2" />
+                    <span className="text-red-600">*</span>
+                  </div>
                   <div className="flex justify-start overflow-auto gap-3">
                     <label
                       htmlFor="image"
@@ -319,6 +336,7 @@ export function AddOrEditProduct() {
                 </div>
                 <div className="my-1">
                   <Label value="Mô tả ngắn" />
+                  <span className="text-red-600">*</span>
                 </div>
                 <Textarea
                   placeholder="Nhập mô tả ngắn"
@@ -334,6 +352,7 @@ export function AddOrEditProduct() {
                 <div className="my-2">
                   <div className="mb-2 block">
                     <Label value="Mô tả dài" />
+                    <span className="text-red-600">*</span>
                   </div>
                   <Textarea
                     placeholder="Nhập mô tả dài"
@@ -354,6 +373,7 @@ export function AddOrEditProduct() {
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
                     Danh mục
+                    <span className="text-red-600">*</span>
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
                     {category?.map((item, index) => (
@@ -383,6 +403,7 @@ export function AddOrEditProduct() {
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
                     Nhà phân phối
+                    <span className="text-red-600">*</span>
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
                     {distributor?.map((item, index) => (
@@ -414,6 +435,7 @@ export function AddOrEditProduct() {
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
                     Nhà sản xuất
+                    <span className="text-red-600">*</span>
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
                     {publisher?.map((item, index) => (

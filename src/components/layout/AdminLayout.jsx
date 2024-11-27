@@ -35,6 +35,10 @@ const childrenRoute = [
         path: "/admin/orders",
         title: "Đơn hàng",
       },
+      {
+        path: "/admin/voucher",
+        title: "Voucher",
+      },
     ],
   },
   {

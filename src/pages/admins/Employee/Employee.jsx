@@ -29,7 +29,7 @@ const tableHead = [
   },
 ];
 
-const Customers = () => {
+const Employee = () => {
   const [users, setUsers] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
@@ -38,9 +38,7 @@ const Customers = () => {
 
   const getUser = async () => {
     try {
-      const res = await instance.get(
-        `/user/auth/list?page=${currentPage}&size=10`
-      );
+      const res = await instance.get(`/user/auth/list/employee`);
       setUsers(res.data.data.users);
       setTotalPage(res.data.data.totalPages);
     } catch (error) {
@@ -77,7 +75,6 @@ const Customers = () => {
                     {(currentPage + 1 - 1) * 10 + index + 1}
                   </div>
                 </Table.Cell>
-
                 <Table.Cell>{item.username}</Table.Cell>
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
@@ -107,4 +104,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Employee;

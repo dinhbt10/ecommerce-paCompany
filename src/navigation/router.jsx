@@ -14,6 +14,8 @@ import { EditBook } from "../pages/admins/Products/EditBook";
 import User from "../pages/clients/User/User";
 import Checkout from "../pages/clients/Checkout/Checkout";
 import OrderDetail from "../pages/clients/Orders/OrderDetail";
+import Employee from "../pages/admins/Employee/Employee";
+import Voucher from "../pages/admins/Voucher/Voucher";
 
 export const router = [
   {
@@ -85,6 +87,10 @@ export const adminRouter = [
   },
   {
     path: "/admin/employee",
-    component: <span>Đang phát triển</span>,
+    component: <Employee />,
+  },
+  {
+    path: "/admin/voucher",
+    component: <Voucher />,
   },
 ];

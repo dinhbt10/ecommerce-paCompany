@@ -1,6 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import { FileInput, Label, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export function ModalComponents({
   openModal,
@@ -12,6 +13,10 @@ export function ModalComponents({
   const [file, setFile] = useState(null);
 
   const handleSubmit = () => {
+    if (!name || !file) {
+      toast.error("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
     handleAddCategory(name, file);
   };
 
@@ -29,6 +34,7 @@ export function ModalComponents({
           <div className="mb-3">
             <div className="mb-2 block">
               <Label htmlFor="category" value="Tên danh mục" />
+              <span className="text-red-600">*</span>
             </div>
             <TextInput
               id="category"
@@ -42,11 +48,11 @@ export function ModalComponents({
           <div>
             <div className="mb-2 block">
               <Label htmlFor="file-upload" value="Tải ảnh" />
+              <span className="text-red-600">*</span>
             </div>
             <FileInput
               id="file-upload"
               placeholder="Tải ảnh danh mục"
-              //   value={file}
               onChange={(e) => setFile(e.target.files)}
             />
           </div>

@@ -1,6 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import { Label, TextInput } from "flowbite-react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function ModalDistributorAddOrEdit({
   openModal,
@@ -18,6 +19,11 @@ export function ModalDistributorAddOrEdit({
   );
 
   const handleSubmit = () => {
+    const isValid = Object.values(distributor).every((e) => e);
+    if (!isValid) {
+      toast.error("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
     handleAddDistributor(distributor);
   };
 
@@ -31,6 +37,7 @@ export function ModalDistributorAddOrEdit({
           <div className="mb-3">
             <div className="mb-2 block">
               <Label htmlFor="1" value="Tên nhà phân phối" />
+              <span className="text-red-600">*</span>
             </div>
             <TextInput
               id="1"
@@ -49,6 +56,7 @@ export function ModalDistributorAddOrEdit({
           <div className="mb-3">
             <div className="mb-2 block">
               <Label htmlFor="2" value="Địa chỉ" />
+              <span className="text-red-600">*</span>
             </div>
             <TextInput
               id="2"
@@ -67,6 +75,7 @@ export function ModalDistributorAddOrEdit({
           <div className="mb-3">
             <div className="mb-2 block">
               <Label htmlFor="3" value="Số điện thoại" />
+              <span className="text-red-600">*</span>
             </div>
             <TextInput
               id="3"
@@ -85,6 +94,7 @@ export function ModalDistributorAddOrEdit({
           <div className="mb-3">
             <div className="mb-2 block">
               <Label htmlFor="4" value="Email" />
+              <span className="text-red-600">*</span>
             </div>
             <TextInput
               id="4"
