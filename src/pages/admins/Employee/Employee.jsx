@@ -1,73 +1,95 @@
-import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
+import { ModalAddEditEmployee } from "./ModalAddEditEmployee";
 
 const tableHead = [
   {
-    id: 5,
+    id: "1",
     name: "STT",
   },
   {
-    id: 2,
-    name: "Tên khách hàng",
+    id: "2",
+    name: "Tên nhân viên",
   },
   {
-    id: 3,
+    id: "3",
     name: "Địa chỉ",
   },
   {
-    id: 4,
+    id: "4",
     name: "Số điện thoại",
   },
   {
-    id: 5,
-    name: "Tổng số đơn hàng đã đặt",
-  },
-  {
-    id: 6,
-    name: "Tổng số tiền",
+    id: "5",
+    name: "Email",
   },
 ];
 
 const Employee = () => {
-  const [users, setUsers] = useState([]);
+  const [isOpen, setIsOpen] = useState();
+  const [employee, setEmployee] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const onPageChange = (page) => setCurrentPage(page - 1);
-
-  const getUser = async () => {
+  const getDistributor = async () => {
     try {
-      const res = await instance.get(`/user/auth/list/employee`);
-      setUsers(res.data.data.users);
-      setTotalPage(res.data.data.totalPages);
+      const res = await instance.get(`user/auth/employee/list`);
+      const { data, success } = res.data;
+      if (success) {
+        setEmployee(data.users);
+        setTotalPage(data.totalPages);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const onPageChange = (page) => setCurrentPage(page - 1);
+
   useEffect(() => {
-    getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getDistributor();
   }, [currentPage]);
 
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
-        <h1 className="text-2xl font-semibold">Khách hàng</h1>
+        <h1 className="text-2xl font-semibold">Nhân viên</h1>
+        <button
+          className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
+          onClick={() => setIsOpen(true)}
+        >
+          + Thêm nhân viên
+        </button>
       </div>
+      {/* <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          value={nameDistributor}
+          onChange={(e) => setNameDistributor(e.target.value)}
+          placeholder="Tìm kiếm nhà phân phối"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+          onClick={getDistributor}
+        >
+          <Search size="16px" />
+        </button>
+      </div> */}
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (
             <Table.HeadCell key={item.id}>{item.name}</Table.HeadCell>
           ))}
+          <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {users &&
-            users.length > 0 &&
-            users.map((item, index) => (
+          {employee.length > 0 &&
+            employee?.map((item, index) => (
               <Table.Row
-                key={item.id}
+                key={item.idUser}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
@@ -75,14 +97,14 @@ const Employee = () => {
                     {(currentPage + 1 - 1) * 10 + index + 1}
                   </div>
                 </Table.Cell>
-                <Table.Cell>{item.username}</Table.Cell>
+                <Table.Cell>{item.fullname}</Table.Cell>
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>{10}</Table.Cell>
-                <Table.Cell>100.000đ</Table.Cell>
+                <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell></Table.Cell>
               </Table.Row>
             ))}
-          {users.length === 0 && (
+          {employee.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>
                 <div className="flex justify-center items-center h-[300px]">
@@ -100,6 +122,13 @@ const Employee = () => {
           onPageChange={onPageChange}
         />
       </div>
+      {isOpen && (
+        <ModalAddEditEmployee
+          openModal={isOpen}
+          setOpenModal={setIsOpen}
+          getDistributor={getDistributor}
+        />
+      )}
     </div>
   );
 };

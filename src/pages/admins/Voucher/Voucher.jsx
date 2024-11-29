@@ -9,19 +9,27 @@ const tableHead = [
   },
   {
     id: 2,
-    name: "Tên khách hàng",
+    name: "Mã voucher",
+  },
+  {
+    id: 22,
+    name: "Nội dung voucher",
   },
   {
     id: 3,
-    name: "Địa chỉ",
+    name: "Số lượng",
+  },
+  {
+    id: 31,
+    name: "Số lượng còn lại",
   },
   {
     id: 4,
-    name: "Số điện thoại",
+    name: "Người tạo",
   },
   {
     id: 5,
-    name: "Tổng số đơn hàng đã đặt",
+    name: "Người sửa",
   },
   {
     id: 6,
@@ -30,7 +38,7 @@ const tableHead = [
 ];
 
 const Voucher = () => {
-  const [users, setUsers] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -41,8 +49,10 @@ const Voucher = () => {
       const res = await instance.get(
         `/vouchers/list?page=${currentPage}&size=10`
       );
-      setUsers(res.data.data.users);
-      setTotalPage(res.data.data.totalPages);
+      if (typeof res.data.data !== "string") {
+        setVouchers(res.data.data.voucher);
+        setTotalPage(res.data.data.totalPages);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -65,9 +75,9 @@ const Voucher = () => {
           ))}
         </Table.Head>
         <Table.Body className="divide-y">
-          {users &&
-            users.length > 0 &&
-            users.map((item, index) => (
+          {vouchers &&
+            vouchers.length > 0 &&
+            vouchers.map((item, index) => (
               <Table.Row
                 key={item.id}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -78,14 +88,16 @@ const Voucher = () => {
                   </div>
                 </Table.Cell>
 
-                <Table.Cell>{item.username}</Table.Cell>
-                <Table.Cell>{item.address}</Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>{10}</Table.Cell>
+                <Table.Cell>{item.code}</Table.Cell>
+                <Table.Cell>{item.discount}</Table.Cell>
+                <Table.Cell>{item.maxU}</Table.Cell>
+                <Table.Cell>{item.minO}</Table.Cell>
+                <Table.Cell>{item.created_by}</Table.Cell>
+                <Table.Cell>{item.updated_by}</Table.Cell>
                 <Table.Cell>100.000đ</Table.Cell>
               </Table.Row>
             ))}
-          {users.length === 0 && (
+          {vouchers.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>
                 <div className="flex justify-center items-center h-[300px]">
