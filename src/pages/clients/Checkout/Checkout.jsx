@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { formatNumber } from "../../../utils/common";
 import { MdOutlineWrongLocation } from "react-icons/md";
 import { Select, Table, TextInput } from "flowbite-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import instance from "../../../utils/http";
 import { useTranslation } from "react-i18next";
 import { AppContext } from "../../../context/app";
@@ -12,18 +12,43 @@ const Checkout = () => {
   const { data } = location.state || {};
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [vouchers, setVouchers] = useState([]);
   const [checkout, setCheckout] = useState({
     note: "",
     shipmentId: 1,
     paymentId: 1,
+    voucher: undefined,
   });
   const { userInfo } = useContext(AppContext);
+
+  const getUser = async () => {
+    try {
+      const res = await instance.get(`/vouchers/list`);
+      if (typeof res.data.data !== "string") {
+        setVouchers(res.data.data.voucher);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const handleSubmit = async () => {
     try {
       const selectedIds = data.map((item) => item.idCart).join(",");
       const res = await instance.post(
-        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${userInfo.address}&selectedCartDetailIds=${selectedIds}&paymentId=${checkout.paymentId}&shipmentId=${checkout.shipmentId}&phone=${userInfo.phone}&receivingName=${userInfo.fullname}&note=${checkout.note}`
+        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${
+          userInfo.address
+        }&selectedCartDetailIds=${selectedIds}&paymentId=${
+          checkout.paymentId
+        }&shipmentId=${checkout.shipmentId}&phone=${
+          userInfo.phone
+        }&receivingName=${userInfo.fullname}&note=${checkout.note}&voucher=${
+          checkout.voucher === "1122" ? undefined : Number(checkout.voucher)
+        }`
       );
       const { success } = res.data;
 
@@ -186,7 +211,26 @@ const Checkout = () => {
             <option value={2}>{t("text-129")}</option>
           </Select>
         </div>
-        <div className="flex justify-end p-5 border-b">
+        <div className="flex justify-end px-5 py-3">
+          <div className="flex justify-between items-center gap-1">
+            <Select
+              onChange={(e) =>
+                setCheckout((prev) => ({
+                  ...prev,
+                  voucher: e.target.value,
+                }))
+              }
+            >
+              <option value={1122}>{t("text-162")}</option>
+              {vouchers.map((item, key) => (
+                <option key={key} value={item.id}>
+                  {item.code} : {t("text-163")} {item.discount}%
+                </option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        <div className="flex justify-end px-5 pb-5 border-b">
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center w-[300px]">
               <span className="text-sm text-gray-500">{t("text-130")}</span>
