@@ -24,7 +24,7 @@ const ProductList = () => {
   const [sortOrder, setSortOrder] = useState(queryParams.sortOrder || "desc");
 
   const getProductList = async () => {
-    const res = await getBook();
+    const res = await getBook({ page: 0, size: 12 });
     setBooks(res.data.data.books);
   };
 

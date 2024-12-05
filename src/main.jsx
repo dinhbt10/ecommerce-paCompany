@@ -22,7 +22,7 @@ i18n.use(initReactI18next).init({
     vi: { translation: translationVI },
   },
   lng: locales,
-  fallbackLng: "en",
+  fallbackLng: "vi",
   interpolation: {
     escapeValue: false,
   },

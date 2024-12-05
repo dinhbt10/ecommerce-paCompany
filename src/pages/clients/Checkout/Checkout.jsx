@@ -47,7 +47,7 @@ const Checkout = () => {
         }&shipmentId=${checkout.shipmentId}&phone=${
           userInfo.phone
         }&receivingName=${userInfo.fullname}&note=${checkout.note}&voucher=${
-          checkout.voucher === "1122" ? undefined : Number(checkout.voucher)
+          checkout.voucher === 1122 ? undefined : Number(checkout.voucher)
         }`
       );
       const { success } = res.data;
@@ -68,8 +68,6 @@ const Checkout = () => {
             const { data: dataListOrder, success: successOrder } =
               resListOrder.data;
             if (successOrder) {
-              console.log(dataListOrder);
-
               const idorder = dataListOrder[0].id;
               const res = await instance.post(
                 `api/payment/momo?idorder=${idorder}&amount=${total}&orderInfo=test&email=email=${userInfo.email}`
