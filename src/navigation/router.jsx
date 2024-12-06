@@ -17,6 +17,7 @@ import OrderDetail from "../pages/clients/Orders/OrderDetail";
 import Employee from "../pages/admins/Employee/Employee";
 import Voucher from "../pages/admins/Voucher/Voucher";
 import CheckOutSuccess from "../pages/clients/Checkout/CheckOutSuccess";
+import FeedBack from "../pages/admins/Feedback/FeedBack";
 
 export const router = [
   {
@@ -97,5 +98,9 @@ export const adminRouter = [
   {
     path: "/admin/voucher",
     component: <Voucher />,
+  },
+  {
+    path: "/admin/feedback",
+    component: <FeedBack />,
   },
 ];

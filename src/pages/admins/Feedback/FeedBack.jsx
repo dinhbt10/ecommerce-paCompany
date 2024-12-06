@@ -10,20 +10,19 @@ const tableHead = [
   },
   {
     id: 2,
-    name: "Tên khách hàng",
+    name: "TÊN TÀI KHOẢN",
+  },
+  {
+    id: 22,
+    name: "TÊN SÁCH",
   },
   {
     id: 3,
-    name: "Địa chỉ",
+    name: "Comment",
   },
   {
-    id: 4,
-    name: "Số điện thoại",
-  },
-
-  {
-    id: 5,
-    name: "Tổng số đơn hàng đã đặt",
+    id: 31,
+    name: "Rating",
   },
   {
     id: "44",
@@ -31,8 +30,8 @@ const tableHead = [
   },
 ];
 
-const Customers = () => {
-  const [users, setUsers] = useState([]);
+const FeedBack = () => {
+  const [vouchers, setVouchers] = useState([]);
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -41,10 +40,12 @@ const Customers = () => {
   const getUser = async () => {
     try {
       const res = await instance.get(
-        `/user/auth/list?page=${currentPage}&size=10`
+        `/vouchers/list?page=${currentPage}&size=10`
       );
-      setUsers(res.data.data.users);
-      setTotalPage(res.data.data.totalPages);
+      if (typeof res.data.data !== "string") {
+        setVouchers(res.data.data.voucher);
+        setTotalPage(res.data.data.totalPages);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +59,7 @@ const Customers = () => {
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
-        <h1 className="text-2xl font-semibold">Khách hàng</h1>
+        <h1 className="text-2xl font-semibold">Đánh giá</h1>
       </div>
       <Table hoverable>
         <Table.Head>
@@ -67,31 +68,29 @@ const Customers = () => {
           ))}
         </Table.Head>
         <Table.Body className="divide-y">
-          {users &&
-            users.length > 0 &&
-            users.map((item, index) => (
-              <Table.Row
-                key={item.id}
-                className="bg-white dark:border-gray-700 dark:bg-gray-800"
-              >
-                <Table.Cell>
-                  <div className="pl-1">
-                    {(currentPage + 1 - 1) * 10 + index + 1}
-                  </div>
-                </Table.Cell>
+          {[1, 2, 3, 4, 5, 6].map((item, index) => (
+            <Table.Row
+              key={item.id}
+              className="bg-white dark:border-gray-700 dark:bg-gray-800"
+            >
+              <Table.Cell>
+                <div className="pl-1">
+                  {(currentPage + 1 - 1) * 10 + index + 1}
+                </div>
+              </Table.Cell>
 
-                <Table.Cell>{item.username}</Table.Cell>
-                <Table.Cell>{item.address}</Table.Cell>
-                <Table.Cell>{item.phone}</Table.Cell>
-                <Table.Cell>{10}</Table.Cell>
-                <Table.Cell>
-                  <div className="pl-4">
-                    <Eye />
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          {users.length === 0 && (
+              <Table.Cell>Tài khoản {index + 1}</Table.Cell>
+              <Table.Cell>Sách {index + 1}</Table.Cell>
+              <Table.Cell>Comment {index + 1}</Table.Cell>
+              <Table.Cell>Rating {index + 1}</Table.Cell>
+              <Table.Cell>
+                <div className="pl-4">
+                  <Eye />
+                </div>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+          {vouchers.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>
                 <div className="flex justify-center items-center h-[300px]">
@@ -113,4 +112,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default FeedBack;

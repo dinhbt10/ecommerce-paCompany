@@ -2,7 +2,7 @@ import { Datepicker, Pagination, Table } from "flowbite-react";
 import { useContext, useEffect, useState } from "react";
 import { CiViewBoard } from "react-icons/ci";
 import instance from "../../../utils/http";
-import { convertDate, formatNumber } from "../../../utils/common";
+import { convertDate, formatNumber, formatDate } from "../../../utils/common";
 import { orderStatus } from "./Config";
 import { toast } from "react-toastify";
 import { AppContext } from "../../../context/app";
@@ -43,11 +43,25 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [orderDetailData, setOrderDetailData] = useState(null);
+  const [searchItem, setSearchItem] = useState({
+    orderCode: "",
+    startDate: "",
+    endDate: "",
+  });
 
   const { userInfo } = useContext(AppContext);
   const getOrderListAdmin = async () => {
     const res = await instance.get(
-      `orders/list/admin?userId=${userInfo.idUser}&page=${currentPage}&size=10`
+      `orders/list/admin?userId=${userInfo.idUser}`,
+      {
+        params: {
+          page: currentPage,
+          size: 10,
+          orderCode: searchItem.orderCode || undefined,
+          startDate: formatDate(searchItem.startDate) || undefined,
+          searchItem: formatDate(searchItem.endDate) || undefined,
+        },
+      }
     );
     const { success, data } = res.data;
     if (success) {
@@ -96,7 +110,12 @@ const Orders = () => {
       <div className="flex items-center justify-end z-[100000] mb-3">
         <div className="flex flex-row items-center gap-2 mr-2">
           <Datepicker
-            onChange={(e) => console.log(e)}
+            onChange={(e) =>
+              setSearchItem((prev) => ({
+                ...prev,
+                startDate: e,
+              }))
+            }
             className="h-[34px]"
             language="vi-VN"
             labelTodayButton="Hôm nay"
@@ -104,6 +123,12 @@ const Orders = () => {
           />
           <div className="">~</div>
           <Datepicker
+            onChange={(e) =>
+              setSearchItem((prev) => ({
+                ...prev,
+                endDate: e,
+              }))
+            }
             className="h-[34px]"
             language="vi-VN"
             labelTodayButton="Hôm nay"
@@ -113,12 +138,20 @@ const Orders = () => {
         <div className="flex flex-row items-center">
           <input
             type="text"
+            value={searchItem.orderCode}
+            onChange={(e) =>
+              setSearchItem((prev) => ({
+                ...prev,
+                orderCode: e.target.value,
+              }))
+            }
             placeholder="Tìm kiếm đơn hàng"
             className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
           />
           <button
             className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
             type="button"
+            onClick={getOrderListAdmin}
           >
             <Search size="16px" />
           </button>

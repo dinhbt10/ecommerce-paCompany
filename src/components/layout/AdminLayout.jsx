@@ -71,6 +71,10 @@ const childrenRoute = [
         title: "Nhân viên",
         check: true,
       },
+      {
+        path: "/admin/feedback",
+        title: "Đánh giá",
+      },
     ],
   },
 ];

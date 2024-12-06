@@ -52,3 +52,16 @@ export function convertDate(dateString) {
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
+
+export function formatDate(date) {
+  if (!date) return;
+  const day = String(date.getDate()).padStart(2, "0"); // Lấy ngày, đảm bảo có 2 chữ số
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng (tháng bắt đầu từ 0)
+  const year = date.getFullYear(); // Lấy năm
+
+  const hours = String(date.getHours()).padStart(2, "0"); // Lấy giờ
+  const minutes = String(date.getMinutes()).padStart(2, "0"); // Lấy phút
+  const seconds = String(date.getSeconds()).padStart(2, "0"); // Lấy giây
+
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
 import { ModalAddEditEmployee } from "./ModalAddEditEmployee";
+import { Eye } from "lucide-react";
 
 const tableHead = [
   {
@@ -23,6 +24,10 @@ const tableHead = [
   {
     id: "5",
     name: "Email",
+  },
+  {
+    id: "44",
+    name: "Trạng thái",
   },
 ];
 
@@ -101,6 +106,11 @@ const Employee = () => {
                 <Table.Cell>{item.address}</Table.Cell>
                 <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
+                <Table.Cell>
+                  <div className="pl-4">
+                    <Eye />
+                  </div>
+                </Table.Cell>
                 <Table.Cell></Table.Cell>
               </Table.Row>
             ))}
