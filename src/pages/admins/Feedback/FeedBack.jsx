@@ -1,4 +1,4 @@
-import { Pagination, Table } from "flowbite-react";
+import { Rating, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
 import { Eye } from "lucide-react";
@@ -32,19 +32,12 @@ const tableHead = [
 
 const FeedBack = () => {
   const [vouchers, setVouchers] = useState([]);
-  const [totalPages, setTotalPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const onPageChange = (page) => setCurrentPage(page - 1);
 
   const getUser = async () => {
     try {
-      const res = await instance.get(
-        `/vouchers/list?page=${currentPage}&size=10`
-      );
+      const res = await instance.get(`feedback/list`);
       if (typeof res.data.data !== "string") {
-        setVouchers(res.data.data.voucher);
-        setTotalPage(res.data.data.totalPages);
+        setVouchers(res.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -53,8 +46,7 @@ const FeedBack = () => {
 
   useEffect(() => {
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, []);
 
   return (
     <div>
@@ -68,28 +60,29 @@ const FeedBack = () => {
           ))}
         </Table.Head>
         <Table.Body className="divide-y">
-          {[1, 2, 3, 4, 5, 6].map((item, index) => (
-            <Table.Row
-              key={item.id}
-              className="bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-              <Table.Cell>
-                <div className="pl-1">
-                  {(currentPage + 1 - 1) * 10 + index + 1}
-                </div>
-              </Table.Cell>
+          {vouchers.length > 0 &&
+            vouchers.map((item, index) => (
+              <Table.Row
+                key={item.id}
+                className="bg-white dark:border-gray-700 dark:bg-gray-800"
+              >
+                <Table.Cell>{index + 1}</Table.Cell>
 
-              <Table.Cell>Tài khoản {index + 1}</Table.Cell>
-              <Table.Cell>Sách {index + 1}</Table.Cell>
-              <Table.Cell>Comment {index + 1}</Table.Cell>
-              <Table.Cell>Rating {index + 1}</Table.Cell>
-              <Table.Cell>
-                <div className="pl-4">
-                  <Eye />
-                </div>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+                <Table.Cell>{item.username}</Table.Cell>
+                <Table.Cell>{item.bookTitle}</Table.Cell>
+                <Table.Cell>{item.comment}</Table.Cell>
+                <Table.Cell>
+                  <Rating>
+                    <Rating.Star filled={item.rating} />
+                  </Rating>
+                </Table.Cell>
+                <Table.Cell>
+                  <div className="pl-4">
+                    <Eye />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
           {vouchers.length === 0 && (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell colSpan={6}>
@@ -101,13 +94,6 @@ const FeedBack = () => {
           )}
         </Table.Body>
       </Table>
-      <div className="flex overflow-x-auto sm:justify-center">
-        <Pagination
-          currentPage={currentPage + 1}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
-      </div>
     </div>
   );
 };
