@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import { ModalPublisherAddOrEdit } from "./ModalAddOrEdit";
 import instance from "../../../utils/http";
@@ -6,6 +6,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ConfirmPublisher } from "./ConfirmPublisher";
 import { Search } from "lucide-react";
+import { AppContext } from "../../../context/app";
 
 const tableHead = [
   {
@@ -31,6 +32,7 @@ const tableHead = [
 ];
 
 const Publisher = () => {
+  const { userInfo } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState();
   const [isOpenEdit, setIsOpenEdit] = useState();
   const [publisher, setPublisher] = useState([]);
@@ -193,11 +195,13 @@ const Publisher = () => {
                       fontSize={22}
                       onClick={() => handleUpdate(item)}
                     />
-                    <FaRegTrashAlt
-                      fontSize={18}
-                      className="text-red-700"
-                      onClick={() => handleRemove(item.idPublisher)}
-                    />
+                    {userInfo.roles[0].name !== "ROLE_EMPLOYEE" && (
+                      <FaRegTrashAlt
+                        fontSize={18}
+                        className="text-red-700"
+                        onClick={() => handleRemove(item.idPublisher)}
+                      />
+                    )}
                   </div>
                 </Table.Cell>
               </Table.Row>

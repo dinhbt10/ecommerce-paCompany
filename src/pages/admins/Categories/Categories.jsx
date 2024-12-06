@@ -1,5 +1,5 @@
 import { createCategory, getCategory } from "../../../apis/category";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalComponents } from "../../../components/Modal";
 import { AiFillEdit } from "react-icons/ai";
 import { ModalEdit } from "../../../components/ModalEditCategory";
@@ -7,8 +7,10 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ConfirmCategory } from "./Confirm";
 import instance from "../../../utils/http";
 import { Search } from "lucide-react";
+import { AppContext } from "../../../context/app";
 
 const Categories = () => {
+  const { userInfo } = useContext(AppContext);
   const [category, setCategory] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setItEdit] = useState(false);
@@ -131,10 +133,12 @@ const Categories = () => {
                   >
                     <AiFillEdit className="text-2xl" />
                   </div>
-                  <FaRegTrashAlt
-                    className="text-[18px] text-red-700 cursor-pointer"
-                    onClick={() => handleDelete(item.idCategory)}
-                  />
+                  {userInfo.roles[0].name !== "ROLE_EMPLOYEE" && (
+                    <FaRegTrashAlt
+                      className="text-[18px] text-red-700 cursor-pointer"
+                      onClick={() => handleDelete(item.idCategory)}
+                    />
+                  )}
                 </div>
               </div>
             </div>

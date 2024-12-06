@@ -198,10 +198,16 @@ function Header() {
                   >
                     <LuUserSquare2 /> {t("text-2")}
                   </div>
-                  {userInfo?.roles[0].name === "ROLE_ADMIN" && (
+                  {userInfo?.roles[0].name !== "ROLE_USER" && (
                     <div
                       className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
-                      onClick={() => navigate("/admin")}
+                      onClick={() => {
+                        if (userInfo?.roles[0].name === "ROLE_ADMIN") {
+                          navigate("/admin");
+                        } else {
+                          navigate("/admin/categories");
+                        }
+                      }}
                     >
                       <MdOutlineDashboard /> {t("text-3")}
                     </div>

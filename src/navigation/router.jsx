@@ -16,6 +16,7 @@ import Checkout from "../pages/clients/Checkout/Checkout";
 import OrderDetail from "../pages/clients/Orders/OrderDetail";
 import Employee from "../pages/admins/Employee/Employee";
 import Voucher from "../pages/admins/Voucher/Voucher";
+import CheckOutSuccess from "../pages/clients/Checkout/CheckOutSuccess";
 
 export const router = [
   {
@@ -45,6 +46,10 @@ export const router = [
   {
     path: "/orders/:id",
     component: <OrderDetail />,
+  },
+  {
+    path: "checkout-success",
+    component: <CheckOutSuccess />,
   },
 ];
 

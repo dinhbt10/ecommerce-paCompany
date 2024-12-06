@@ -15,11 +15,13 @@ const User = () => {
       title: t("text-83"),
       content: <Profile />,
       icons: <CgProfile />,
+      check: false,
     },
     {
       title: t("text-84"),
       content: <CartStatus />,
       icons: <MdOutlineEventNote />,
+      check: true,
     },
   ];
   return (

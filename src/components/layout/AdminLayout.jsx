@@ -17,6 +17,7 @@ const childrenRoute = [
     path: "/admin",
     title: "Thống kê",
     icon: LayoutDashboard,
+    check: true,
   },
   {
     type: "collapse",
@@ -68,13 +69,14 @@ const childrenRoute = [
       {
         path: "/admin/employee",
         title: "Nhân viên",
+        check: true,
       },
     ],
   },
 ];
 
 const AdminLayout = ({ children }) => {
-  const { logout } = useContext(AppContext);
+  const { logout, userInfo } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -93,6 +95,9 @@ const AdminLayout = ({ children }) => {
         <Sidebar.Items>
           <Sidebar.ItemGroup>
             {childrenRoute.map((item, key) => {
+              if (item.check && userInfo.roles[0].name === "ROLE_EMPLOYEE") {
+                return;
+              }
               if (item.type === "collapse") {
                 return (
                   <Sidebar.Collapse
@@ -102,6 +107,12 @@ const AdminLayout = ({ children }) => {
                   >
                     {item.children.map((child, index) => {
                       const active = child.path === location.pathname;
+                      if (
+                        child.check &&
+                        userInfo.roles[0].name === "ROLE_EMPLOYEE"
+                      ) {
+                        return;
+                      }
                       return (
                         <Sidebar.Item
                           key={index}

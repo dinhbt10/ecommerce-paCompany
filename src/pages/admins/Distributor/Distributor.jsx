@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
 import { RiEdit2Fill } from "react-icons/ri";
@@ -6,6 +6,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ModalDistributorAddOrEdit } from "./ModalAddOrEdit";
 import { ConfirmDistributor } from "./ConfirmDistributor";
 import { Search } from "lucide-react";
+import { AppContext } from "../../../context/app";
 
 const tableHead = [
   {
@@ -31,6 +32,7 @@ const tableHead = [
 ];
 
 const Distributor = () => {
+  const { userInfo } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState();
   const [idDelete, setIdDelete] = useState();
   const [isOpenEdit, setIsOpenEdit] = useState();
@@ -193,11 +195,13 @@ const Distributor = () => {
                       fontSize={22}
                       onClick={() => handleUpdate(item)}
                     />
-                    <FaRegTrashAlt
-                      fontSize={18}
-                      className="text-red-700"
-                      onClick={() => handleRemove(item.idDistributor)}
-                    />
+                    {userInfo.roles[0].name !== "ROLE_EMPLOYEE" && (
+                      <FaRegTrashAlt
+                        fontSize={18}
+                        className="text-red-700"
+                        onClick={() => handleRemove(item.idDistributor)}
+                      />
+                    )}
                   </div>
                 </Table.Cell>
               </Table.Row>

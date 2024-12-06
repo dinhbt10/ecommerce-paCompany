@@ -40,15 +40,7 @@ const Checkout = () => {
     try {
       const selectedIds = data.map((item) => item.idCart).join(",");
       const res = await instance.post(
-        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${
-          userInfo.address
-        }&selectedCartDetailIds=${selectedIds}&paymentId=${
-          checkout.paymentId
-        }&shipmentId=${checkout.shipmentId}&phone=${
-          userInfo.phone
-        }&receivingName=${userInfo.fullname}&note=${checkout.note}&voucher=${
-          checkout.voucher === 1122 ? undefined : Number(checkout.voucher)
-        }`
+        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${userInfo.address}&selectedCartDetailIds=${selectedIds}&paymentId=${checkout.paymentId}&shipmentId=${checkout.shipmentId}&phone=${userInfo.phone}&receivingName=${userInfo.fullname}&note=${checkout.note}`
       );
       const { success } = res.data;
 
@@ -72,7 +64,11 @@ const Checkout = () => {
               const res = await instance.post(
                 `api/payment/momo?idorder=${idorder}&amount=${total}&orderInfo=test&email=email=${userInfo.email}`
               );
-              console.log(res);
+              if (res.status == 200) {
+                const data = res.data;
+                window.open(data.payUrl, "_blank");
+                navigate("/checkout-success");
+              }
             }
           } catch (error) {
             console.log(error);
