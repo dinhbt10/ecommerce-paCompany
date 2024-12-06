@@ -7,7 +7,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { Popover } from "flowbite-react";
 import { CiLogout } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
-import { LuUserSquare2 } from "react-icons/lu";
+// import { LuUserSquare2 } from "react-icons/lu";
 import instance from "../../../utils/http";
 import FlagEN from "../../../../public/english.png";
 import FlagVN from "../../../../public/vietnam.png";
@@ -196,7 +196,8 @@ function Header() {
                     className="flex justify-start items-center gap-1 hover:bg-slate-200 px-5 py-2"
                     onClick={() => navigate("/user")}
                   >
-                    <LuUserSquare2 /> {t("text-2")}
+                    {/* <LuUserSquare2 /> {t("text-2")} */}
+                    {t("text-2")}
                   </div>
                   {userInfo?.roles[0].name !== "ROLE_USER" && (
                     <div

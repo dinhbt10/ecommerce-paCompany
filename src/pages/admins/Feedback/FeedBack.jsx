@@ -73,7 +73,11 @@ const FeedBack = () => {
                 <Table.Cell>{item.comment}</Table.Cell>
                 <Table.Cell>
                   <Rating>
-                    <Rating.Star filled={item.rating} />
+                    {Array(item.rating)
+                      .fill(0)
+                      .map((_, key) => (
+                        <Rating.Star key={key} />
+                      ))}
                   </Rating>
                 </Table.Cell>
                 <Table.Cell>
