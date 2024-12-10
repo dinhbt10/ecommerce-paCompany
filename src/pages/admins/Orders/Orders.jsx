@@ -59,7 +59,7 @@ const Orders = () => {
           size: 10,
           orderCode: searchItem.orderCode || undefined,
           startDate: formatDate(searchItem.startDate) || undefined,
-          searchItem: formatDate(searchItem.endDate) || undefined,
+          endDate: formatDate(searchItem.endDate) || undefined,
         },
       }
     );
