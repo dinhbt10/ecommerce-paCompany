@@ -65,3 +65,28 @@ export function formatDate(date) {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
+
+export function convertToISO(dateString) {
+  // Chuyển đổi chuỗi thành đối tượng Date
+  const date = new Date(dateString);
+
+  // Lấy các thành phần của ngày và giờ
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  const milliseconds = String(date.getMilliseconds()).padStart(3, "0");
+
+  // Kết hợp các thành phần theo định dạng mong muốn
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
+}
+
+export function convertFromISO(isoString) {
+  // Chuyển chuỗi ISO thành đối tượng Date
+  const date = new Date(isoString);
+
+  // Trả về chuỗi dạng chuẩn Date của JavaScript
+  return date.toString();
+}

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
 import { ModalAddEditEmployee } from "./ModalAddEditEmployee";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 const tableHead = [
   {
@@ -51,6 +52,19 @@ const Employee = () => {
   };
 
   const onPageChange = (page) => setCurrentPage(page - 1);
+
+  const handleChangeStatus = async (id) => {
+    try {
+      const res = await instance.post(`user/auth/disable/${id}`);
+      const { success } = res.data;
+      if (success) {
+        toast.success("Thay đổi trạng thái thành công");
+        getDistributor();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getDistributor();
@@ -107,8 +121,11 @@ const Employee = () => {
                 <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{item.email}</Table.Cell>
                 <Table.Cell>
-                  <div className="pl-4">
-                    <Eye />
+                  <div
+                    className="pl-4 cursor-pointer"
+                    onClick={() => handleChangeStatus(item.idUser)}
+                  >
+                    {item.disable ? <EyeOff /> : <Eye />}
                   </div>
                 </Table.Cell>
                 <Table.Cell></Table.Cell>

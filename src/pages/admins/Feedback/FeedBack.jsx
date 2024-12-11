@@ -1,7 +1,8 @@
 import { Rating, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 const tableHead = [
   {
@@ -38,6 +39,18 @@ const FeedBack = () => {
       const res = await instance.get(`feedback/list`);
       if (typeof res.data.data !== "string") {
         setVouchers(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangeStatus = async (id) => {
+    try {
+      const res = await instance.post(`feedback/disable/${id}`);
+      if (res.status === 200) {
+        toast.success("Thay đổi trạng thái thành công");
+        getUser();
       }
     } catch (error) {
       console.log(error);
@@ -81,8 +94,11 @@ const FeedBack = () => {
                   </Rating>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="pl-4">
-                    <Eye />
+                  <div
+                    className="pl-4 cursor-pointer"
+                    onClick={() => handleChangeStatus(item.id)}
+                  >
+                    {item.visible ? <EyeOff /> : <Eye />}
                   </div>
                 </Table.Cell>
               </Table.Row>

@@ -1,7 +1,8 @@
 import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 const tableHead = [
   {
@@ -50,6 +51,19 @@ const Customers = () => {
     }
   };
 
+  const handleChangeStatus = async (id) => {
+    try {
+      const res = await instance.post(`user/auth/disable/${id}`);
+      const { success } = res.data;
+      if (success) {
+        toast.success("Thay đổi trạng thái thành công");
+        getUser();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,7 +85,7 @@ const Customers = () => {
             users.length > 0 &&
             users.map((item, index) => (
               <Table.Row
-                key={item.id}
+                key={item.idUser}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
@@ -85,8 +99,11 @@ const Customers = () => {
                 <Table.Cell>{item.phone}</Table.Cell>
                 <Table.Cell>{10}</Table.Cell>
                 <Table.Cell>
-                  <div className="pl-4">
-                    <Eye />
+                  <div
+                    className="pl-4 cursor-pointer"
+                    onClick={() => handleChangeStatus(item.idUser)}
+                  >
+                    {item.disable ? <EyeOff /> : <Eye />}
                   </div>
                 </Table.Cell>
               </Table.Row>

@@ -99,9 +99,9 @@ const Checkout = () => {
         </div>
         <div className="flex text-xl text-black items-center justify-start gap-2  mt-3">
           <div className="font-medium">
-            {userInfo.fullname} {userInfo.phone}
+            {userInfo.fullname} {userInfo.address}
           </div>
-          <p className="text-gray-600">{userInfo.address}</p>
+          <p className="text-gray-600">{userInfo.phone}</p>
         </div>
       </div>
       <div className="max-w-[1100px] mx-auto bg-white">
