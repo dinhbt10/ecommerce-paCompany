@@ -9,17 +9,20 @@ import { AppContext } from "../../../context/app";
 
 const Checkout = () => {
   const location = useLocation();
+  const { userInfo } = useContext(AppContext);
   const { data } = location.state || {};
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [vouchers, setVouchers] = useState([]);
+  const [addrest, setAddrest] = useState(userInfo.address);
+  const [phone, setPhone] = useState(userInfo.phone);
+
   const [checkout, setCheckout] = useState({
     note: "",
     shipmentId: 1,
     paymentId: 1,
     voucher: undefined,
   });
-  const { userInfo } = useContext(AppContext);
 
   const getUser = async () => {
     try {
@@ -40,7 +43,7 @@ const Checkout = () => {
     try {
       const selectedIds = data.map((item) => item.idCart).join(",");
       const res = await instance.post(
-        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${userInfo.address}&selectedCartDetailIds=${selectedIds}&paymentId=${checkout.paymentId}&shipmentId=${checkout.shipmentId}&phone=${userInfo.phone}&receivingName=${userInfo.fullname}&note=${checkout.note}`
+        `/orders/create?userId=${userInfo.idUser}&shippingAddress=${addrest}&selectedCartDetailIds=${selectedIds}&paymentId=${checkout.paymentId}&shipmentId=${checkout.shipmentId}&phone=${phone}&receivingName=${userInfo.fullname}&note=${checkout.note}`
       );
       const { success } = res.data;
 
@@ -97,11 +100,23 @@ const Checkout = () => {
         <div className="flex text-xl text-[#cd5f5f] items-center justify-start gap-2 font-medium">
           <MdOutlineWrongLocation /> {t("text-116")}
         </div>
-        <div className="flex text-xl text-black items-center justify-start gap-2  mt-3">
+        <div className="flex text-xl text-black items-start justify-start gap-2 flex-col  mt-3">
           <div className="font-medium">
-            {userInfo.fullname} {userInfo.address}
+            {t("text-167")}:
+            <input
+              value={addrest}
+              onChange={(e) => setAddrest(e.target.value)}
+              className="p-1"
+            />
           </div>
-          <p className="text-gray-600">{userInfo.phone}</p>
+          <p className="text-gray-600 block">
+            {t("text-168")}:
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="p-1"
+            />
+          </p>
         </div>
       </div>
       <div className="max-w-[1100px] mx-auto bg-white">
@@ -216,11 +231,14 @@ const Checkout = () => {
               }
             >
               <option value={1122}>{t("text-162")}</option>
-              {vouchers.map((item, key) => (
-                <option key={key} value={item.id}>
-                  {item.code} : {t("text-163")} {item.discount}%
-                </option>
-              ))}
+              {vouchers.map((item, key) => {
+                if (item.disable) return;
+                return (
+                  <option key={key} value={item.id}>
+                    {item.code} : {t("text-163")} {item.discount}%
+                  </option>
+                );
+              })}
             </Select>
           </div>
         </div>
