@@ -20,7 +20,7 @@ export function ConfirmCategory({
             <FaRegTrashAlt className="text-center text-2xl text-red-700" />
           </div>
           <div className="text-center">
-            Bạn có chắc chắn muốn xoá danh mục này không?
+            Bạn có chắc chắn muốn xoá thể loại này không?
           </div>
         </Modal.Body>
         <Modal.Footer>

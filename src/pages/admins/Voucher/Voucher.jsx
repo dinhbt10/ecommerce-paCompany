@@ -1,6 +1,7 @@
 import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
+import { Search } from "lucide-react";
 
 const tableHead = [
   {
@@ -13,7 +14,7 @@ const tableHead = [
   },
   {
     id: 22,
-    name: "Nội dung voucher",
+    name: "Gía trị voucher",
   },
   {
     id: 3,
@@ -33,7 +34,7 @@ const tableHead = [
   },
   {
     id: 6,
-    name: "Tổng số tiền",
+    name: "Trạng thái",
   },
 ];
 
@@ -68,6 +69,22 @@ const Voucher = () => {
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Voucher</h1>
       </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          // value={nameDistributor}
+          // onChange={(e) => setNameDistributor(e.target.value)}
+          placeholder="Tìm kiếm voucher"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+          // onClick={getDistributor}
+        >
+          <Search size="16px" />
+        </button>
+        </div>
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (

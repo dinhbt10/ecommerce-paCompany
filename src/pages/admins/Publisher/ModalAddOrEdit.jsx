@@ -75,7 +75,7 @@ export function ModalPublisherAddOrEdit({
             </div>
             <TextInput
               id="3"
-              type="number"
+              type="tel"
               placeholder="Nhập tên số điện thoại"
               required
               value={publisher.phonePublisher}

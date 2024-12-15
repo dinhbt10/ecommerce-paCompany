@@ -20,7 +20,7 @@ export function ConfirmPublisher({
             <FaRegTrashAlt className="text-center text-2xl text-red-700" />
           </div>
           <div className="text-center">
-            Bạn có chắc chắn muốn xoá tác giả này không?
+            Bạn có chắc chắn muốn xoá nhà xuất bản này không?
           </div>
         </Modal.Body>
         <Modal.Footer>

@@ -3,6 +3,7 @@ import { Pagination, Table } from "flowbite-react";
 import instance from "../../../utils/http";
 import { ModalAddEditEmployee } from "./ModalAddEditEmployee";
 import { Eye } from "lucide-react";
+import { Search } from "lucide-react";
 
 const tableHead = [
   {
@@ -67,22 +68,22 @@ const Employee = () => {
           + Thêm nhân viên
         </button>
       </div>
-      {/* <div className="flex items-center justify-start z-[100000] mb-3">
+      <div className="flex items-center justify-start z-[100000] mb-3">
         <input
           type="text"
-          value={nameDistributor}
-          onChange={(e) => setNameDistributor(e.target.value)}
-          placeholder="Tìm kiếm nhà phân phối"
+          // value={nameDistributor}
+          // onChange={(e) => setNameDistributor(e.target.value)}
+          placeholder="Tìm kiếm nhân viên"
           className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
         />
         <button
           className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
           type="button"
-          onClick={getDistributor}
+          // onClick={getDistributor}
         >
           <Search size="16px" />
         </button>
-      </div> */}
+      </div>
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (

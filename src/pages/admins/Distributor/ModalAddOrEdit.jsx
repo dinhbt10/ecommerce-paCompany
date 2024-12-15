@@ -79,8 +79,8 @@ export function ModalDistributorAddOrEdit({
             </div>
             <TextInput
               id="3"
-              type="number"
-              placeholder="Nhập tên số điện thoại"
+              type="tel"
+              placeholder="Nhập số điện thoại"
               required
               value={distributor.phone}
               onChange={(e) =>
@@ -116,7 +116,7 @@ export function ModalDistributorAddOrEdit({
             className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
             onClick={handleSubmit}
           >
-            {item ? "Sửa" : "Thêm"}
+            {item ? "Chỉnh sửa" : "Thêm"}
           </button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy

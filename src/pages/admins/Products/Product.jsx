@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../../../utils/common";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
+import { Search } from "lucide-react";
 const tableHead = [
   {
     id: 1,
@@ -26,7 +26,7 @@ const tableHead = [
   },
   {
     id: "4",
-    name: "NXB",
+    name: "Nhà xuất bản",
   },
   {
     id: "5",
@@ -42,7 +42,7 @@ const tableHead = [
   },
   {
     id: "8",
-    name: "NSX",
+    name: "Nhà phân phối",
   },
 ];
 
@@ -88,6 +88,7 @@ const Product = () => {
     <div>
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Sản phẩm</h1>
+        
         <div className="flex justify-center gap-2">
           <Button color="light" onClick={exportToExcel}>
             Xuất Excel
@@ -100,6 +101,22 @@ const Product = () => {
           </button>
         </div>
       </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          // value={nameDistributor}
+          // onChange={(e) => setNameDistributor(e.target.value)}
+          placeholder="Tìm kiếm sản phẩm"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+          // onClick={getDistributor}
+        >
+          <Search size="16px" />
+        </button>
+        </div>
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (

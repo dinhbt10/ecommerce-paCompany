@@ -140,7 +140,7 @@ export function AddOrEditProduct() {
               type="submit"
               className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
             >
-              Tạo sản phẩm
+              Thêm sản phẩm
             </button>
           </div>
         </div>
@@ -339,7 +339,7 @@ export function AddOrEditProduct() {
                   <span className="text-red-600">*</span>
                 </div>
                 <Textarea
-                  placeholder="Nhập mô tả ngắn"
+                  placeholder="Nhập mô tả chung"
                   rows={2}
                   value={product?.description_short}
                   onChange={(e) =>
@@ -351,11 +351,11 @@ export function AddOrEditProduct() {
                 />
                 <div className="my-2">
                   <div className="mb-2 block">
-                    <Label value="Mô tả dài" />
+                    <Label value="Mô tả chi tiết" />
                     <span className="text-red-600">*</span>
                   </div>
                   <Textarea
-                    placeholder="Nhập mô tả dài"
+                    placeholder="Nhập mô tả chi tiết"
                     rows={4}
                     value={product?.description_long}
                     onChange={(e) =>
@@ -372,7 +372,7 @@ export function AddOrEditProduct() {
               <div className="flex flex-col gap-5">
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
-                    Danh mục
+                    Thể loại
                     <span className="text-red-600">*</span>
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
@@ -395,7 +395,7 @@ export function AddOrEditProduct() {
                     ))}
                     {category && category.length === 0 && (
                       <div className="flex justify-center items-center text-red-700">
-                        Bạn chưa có danh mục
+                        Bạn chưa có thể loại
                       </div>
                     )}
                   </fieldset>
@@ -434,7 +434,7 @@ export function AddOrEditProduct() {
                 </div>
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
-                    Nhà sản xuất
+                    Nhà xuất bản
                     <span className="text-red-600">*</span>
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
@@ -457,7 +457,7 @@ export function AddOrEditProduct() {
                     ))}
                     {publisher.length === 0 && (
                       <div className="flex justify-center items-center text-red-700">
-                        Bạn chưa có nhà sản xuất
+                        Bạn chưa có nhà xuất bản
                       </div>
                     )}
                   </fieldset>

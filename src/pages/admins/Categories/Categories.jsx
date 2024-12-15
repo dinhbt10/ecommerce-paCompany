@@ -88,12 +88,12 @@ const Categories = () => {
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
-        <h1 className="text-2xl font-semibold">Danh mục</h1>
+        <h1 className="text-2xl font-semibold">Thể loại sách</h1>
         <button
           className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
           onClick={() => setIsOpen(true)}
         >
-          + Thêm danh mục
+          + Thêm thể loại
         </button>
       </div>
       <div className="flex items-center justify-start z-[100000] mb-3">
@@ -101,7 +101,7 @@ const Categories = () => {
           type="text"
           value={nameCategory}
           onChange={(e) => setNameCategory(e.target.value)}
-          placeholder="Tìm kiếm danh mục"
+          placeholder="Tìm kiếm thể loại"
           className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
         />
         <button
@@ -147,7 +147,7 @@ const Categories = () => {
       <ModalComponents
         openModal={isOpen}
         setOpenModal={setIsOpen}
-        title="Thêm mới danh mục"
+        title="Thêm mới thể loại"
         handleAddCategory={handleAddCategory}
       />
       <ModalEdit

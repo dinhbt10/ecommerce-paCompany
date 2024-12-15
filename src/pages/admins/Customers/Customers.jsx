@@ -2,6 +2,7 @@ import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
 import { Eye } from "lucide-react";
+import { Search } from "lucide-react";
 
 const tableHead = [
   {
@@ -59,6 +60,20 @@ const Customers = () => {
     <div>
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Khách hàng</h1>
+      </div>
+      <div className="flex items-center justify-start z-[100000] mb-3">
+        <input
+          type="text"
+          placeholder="Tìm kiếm khách hàng"
+          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
+        />
+        <button
+          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
+          type="button"
+    
+        >
+          <Search size="16px" />
+        </button>
       </div>
       <Table hoverable>
         <Table.Head>

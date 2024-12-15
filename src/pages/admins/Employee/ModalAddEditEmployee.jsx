@@ -31,7 +31,7 @@ export function ModalAddEditEmployee({
       });
 
       if (res.data.success) {
-        toast.success("Tạo nhân viên thành công");
+        toast.success("Tạo  tài khoản nhân viên thành công");
         await getDistributor();
         setOpenModal(false);
       }
@@ -56,7 +56,7 @@ export function ModalAddEditEmployee({
                   className="w-full !focus:border-none"
                   id="email1"
                   type="text"
-                  placeholder="Nhập tài khoản"
+                  placeholder="Nhập tên tài khoản"
                   value={state.username}
                   onChange={(e) =>
                     setState({ ...state, username: e.target.value })
@@ -156,7 +156,7 @@ export function ModalAddEditEmployee({
             className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
             onClick={handleSubmit}
           >
-            Lưu
+            Thêm
           </button>
           <Button color="gray" onClick={() => setOpenModal(false)}>
             Hủy

@@ -142,7 +142,7 @@ export function EditBook() {
     <div>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className="flex mb-4 justify-between items-center">
-          <h1 className="text-2xl font-semibold">Sửa sản phẩm</h1>
+          <h1 className="text-2xl font-semibold">Chỉnh sửa sản phẩm</h1>
           <div className="flex flex-wrap gap-2">
             <Button color="gray" onClick={() => navigate(-1)}>
               Trở lại
@@ -151,7 +151,7 @@ export function EditBook() {
               type="submit"
               className="outline-none bg-[#d76e6e] py-2 px-4 rounded text-white"
             >
-              Sửa sản phẩm
+              Chỉnh sửa sản phẩm
             </button>
           </div>
         </div>
@@ -335,10 +335,10 @@ export function EditBook() {
                   </div>
                 </div>
                 <div className="my-1">
-                  <Label value="Mô tả ngắn" />
+                  <Label value="Mô tả chung" />
                 </div>
                 <Textarea
-                  placeholder="Nhập mô tả ngắn"
+                  placeholder="Nhập mô tả chung"
                   rows={2}
                   value={product?.description_short}
                   onChange={(e) =>
@@ -353,7 +353,7 @@ export function EditBook() {
                     <Label value="Mô tả dài" />
                   </div>
                   <Textarea
-                    placeholder="Nhập mô tả dài"
+                    placeholder="Nhập mô tả chi tiết"
                     rows={4}
                     value={product?.description_long}
                     onChange={(e) =>
@@ -370,7 +370,7 @@ export function EditBook() {
               <div className="flex flex-col gap-5">
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
-                    Danh mục
+                    Thể loại
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
                     {category?.map((item, index) => (
@@ -392,7 +392,7 @@ export function EditBook() {
                     ))}
                     {category && category.length === 0 && (
                       <div className="flex justify-center items-center text-red-700">
-                        Bạn chưa có danh mục
+                        Bạn chưa có thể loại
                       </div>
                     )}
                   </fieldset>
@@ -430,7 +430,7 @@ export function EditBook() {
                 </div>
                 <div className="bg-white p-5 rounded-md">
                   <div className="text-lg text=[#131523] font-semibold mb-3">
-                    Nhà sản xuất
+                    Nhà xuất bản
                   </div>
                   <fieldset className="flex max-w-md flex-col gap-4">
                     {publisher?.map((item, index) => (
@@ -452,7 +452,7 @@ export function EditBook() {
                     ))}
                     {publisher.length === 0 && (
                       <div className="flex justify-center items-center text-red-700">
-                        Bạn chưa có nhà sản xuất
+                        Bạn chưa có nhà xuất bản
                       </div>
                     )}
                   </fieldset>

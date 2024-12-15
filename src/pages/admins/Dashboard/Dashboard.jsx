@@ -134,7 +134,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 gap-3">
         <div className="col-span-1">
           <div className="bg-white rounded p-2">
-            <div className="text-xl font-medium px-2">Giao dịch gần đây</div>
+            <div className="text-xl font-medium px-2">Đơn hàng gần đây</div>
             <Table className="mt-3" hoverable>
               <Table.Head className="border-b">
                 <Table.HeadCell className="text-[10px]">
