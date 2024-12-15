@@ -1,7 +1,6 @@
 import { Pagination, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import instance from "../../../utils/http";
-import { Search } from "lucide-react";
 
 const tableHead = [
   {
@@ -18,11 +17,11 @@ const tableHead = [
   },
   {
     id: 3,
-    name: "Số lượng",
+    name: "Số lượng voucher",
   },
   {
     id: 31,
-    name: "Số lượng còn lại",
+    name: "Giá trị đơn hàng tối thiểu",
   },
   {
     id: 4,
@@ -34,33 +33,118 @@ const tableHead = [
   },
   {
     id: 6,
-    name: "Trạng thái",
+    name: "Tổng số tiền",
   },
 ];
 
 const Voucher = () => {
   const [vouchers, setVouchers] = useState([]);
+  const [nameVoucher, setNameVoucher] = useState("");
   const [totalPages, setTotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isOpen, setIsOpen] = useState();
+  const [isOpenEdit, setIsOpenEdit] = useState();
+  const [id, setID] = useState();
+  const [item, setItem] = useState({
+    code: "",
+    discountValue: "",
+    maxUsage: "",
+    minOrderValue: "",
+    startDate: "",
+    endDate: "",
+  });
 
   const onPageChange = (page) => setCurrentPage(page - 1);
 
-  const getUser = async () => {
+  const getVoucher = async () => {
     try {
-      const res = await instance.get(
-        `/vouchers/list?page=${currentPage}&size=10`
-      );
+      const res = await instance.get(`/vouchers/list`, {
+        params: {
+          page: currentPage,
+          size: 10,
+          code: nameVoucher,
+        },
+      });
       if (typeof res.data.data !== "string") {
         setVouchers(res.data.data.voucher);
         setTotalPage(res.data.data.totalPages);
+      } else {
+        setVouchers([]);
+        setTotalPage(1);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleChangeStatus = async (id) => {
+    try {
+      const res = await instance.post(`vouchers/disable/${id}`);
+      const { success } = res.data;
+      if (success) {
+        toast.success("Thay đổi trạng thái thành công");
+        getVoucher();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = (item) => {
+    setID(item.id);
+    const clone = {
+      code: item.code,
+      discountValue: item.discount,
+      maxUsage: item.maxU,
+      minOrderValue: item.minO,
+      startDate: "",
+      endDate: "",
+    };
+    setIsOpenEdit(true);
+    setItem(clone);
+  };
+
+  const handleAddVoucher = async (voucher) => {
+    const formData = new FormData();
+
+    Object.keys(voucher).forEach((item) => {
+      formData.append(item, voucher[item]);
+    });
+
+    const res = await instance.post("vouchers/create", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    if (res.data.success) {
+      setIsOpen(false);
+      getVoucher();
+    }
+  };
+
+  const handleUpdateVoucher = async (voucher) => {
+    const formData = new FormData();
+    Object.keys(voucher).forEach((item) => {
+      formData.append(item, voucher[item]);
+    });
+
+    const res = await instance.put(`/vouchers/update/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.data.success) {
+      setIsOpenEdit(false);
+      setItem({
+        idPublisher: "",
+        namePublisher: "",
+        addressPublisher: "",
+        phonePublisher: "",
+        emailPublisher: "",
+      });
+      getVoucher();
+    }
+  };
+
   useEffect(() => {
-    getUser();
+    getVoucher();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
@@ -69,27 +153,12 @@ const Voucher = () => {
       <div className="flex mb-4 justify-between items-center">
         <h1 className="text-2xl font-semibold">Voucher</h1>
       </div>
-      <div className="flex items-center justify-start z-[100000] mb-3">
-        <input
-          type="text"
-          // value={nameDistributor}
-          // onChange={(e) => setNameDistributor(e.target.value)}
-          placeholder="Tìm kiếm voucher"
-          className="flex-1 rounded-tl-[5px] max-w-[250px] rounded-bl-[5px] placeholder:text-[14px] h-[34px]"
-        />
-        <button
-          className="bg-[#d76e6e] text-white h-[35px] rounded-tr-[5px] rounded-br-[5px] px-3"
-          type="button"
-          // onClick={getDistributor}
-        >
-          <Search size="16px" />
-        </button>
-        </div>
       <Table hoverable>
         <Table.Head>
           {tableHead.map((item) => (
             <Table.HeadCell key={item.id}>{item.name}</Table.HeadCell>
           ))}
+          <Table.HeadCell></Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           {vouchers &&
@@ -111,7 +180,22 @@ const Voucher = () => {
                 <Table.Cell>{item.minO}</Table.Cell>
                 <Table.Cell>{item.created_by}</Table.Cell>
                 <Table.Cell>{item.updated_by}</Table.Cell>
-                <Table.Cell>100.000đ</Table.Cell>
+                <Table.Cell>
+                  <div
+                    className="pl-4 cursor-pointer"
+                    onClick={() => handleChangeStatus(item.id)}
+                  >
+                    {item.disable ? <EyeOff /> : <Eye />}
+                  </div>
+                </Table.Cell>
+                <Table.Cell>
+                  <div className="flex justify-center items-center gap-2 cursor-pointer">
+                    <RiEdit2Fill
+                      fontSize={22}
+                      onClick={() => handleUpdate(item)}
+                    />
+                  </div>
+                </Table.Cell>
               </Table.Row>
             ))}
           {vouchers.length === 0 && (
@@ -132,6 +216,22 @@ const Voucher = () => {
           onPageChange={onPageChange}
         />
       </div>
+      {isOpen && (
+        <ModalVoucherAddOrEdit
+          openModal={isOpen}
+          setOpenModal={setIsOpen}
+          handleAddVoucher={handleAddVoucher}
+        />
+      )}
+
+      {isOpenEdit && (
+        <ModalVoucherAddOrEdit
+          openModal={isOpenEdit}
+          setOpenModal={setIsOpenEdit}
+          handleAddVoucher={handleUpdateVoucher}
+          item={item}
+        />
+      )}
     </div>
   );
 };

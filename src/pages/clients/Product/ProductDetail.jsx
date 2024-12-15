@@ -275,23 +275,26 @@ const ProductDetail = () => {
         <div className="bg-white max-w-[1100px] mx-auto mt-5 p-5">
           <div className="mb-3">{t("text-152")}</div>
           <div className="flex flex-col gap-3 overflow-auto max-h-[300px]">
-            {comments.map((comment, index) => (
-              <div key={index} className="border p-3 rounded">
-                <div className="flex items-center justify-start gap-2">
-                  <div className="text-[16px]">{comment.username}</div>
-                  <Rating>
-                    {Array(comment.rating)
-                      .fill(0)
-                      .map((_item, key) => (
-                        <Rating.Star key={key} />
-                      ))}
-                  </Rating>
+            {comments.map((comment, index) => {
+              if (comment.visible) return;
+              return (
+                <div key={index} className="border p-3 rounded">
+                  <div className="flex items-center justify-start gap-2">
+                    <div className="text-[16px]">{comment.username}</div>
+                    <Rating>
+                      {Array(comment.rating)
+                        .fill(0)
+                        .map((_item, key) => (
+                          <Rating.Star key={key} />
+                        ))}
+                    </Rating>
+                  </div>
+                  <div className="flex flex-col gap-1 justify-start">
+                    {comment.comment}
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1 justify-start">
-                  {comment.comment}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

@@ -341,7 +341,7 @@ function Header() {
                 0123456789
               </div>
             </div>
-            {userInfo?.roles[0].name !== "ROLE_ADMIN" && (
+            {userInfo?.roles[0].name === "ROLE_USER" && (
               <div
                 onClick={() => navigate("/cart")}
                 className="flex items-center border border-white w-3/7 h-[36px] pt-[4px] pr-[2px] rounded gap-1 flex-1 justify-start cursor-pointer"
